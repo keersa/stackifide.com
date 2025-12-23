@@ -1,59 +1,159 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Stackifide
 
-## About Laravel
+Stackifide is a comprehensive web application platform built with Laravel that enables businesses to efficiently manage multiple customer websites from a single, centralized dashboard. Designed for web agencies, hosting providers, and digital service companies, Stackifide streamlines website management operations, client relationships, and team collaboration.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Multi-Website Management**
+- Centralized dashboard for managing multiple customer websites
+- Track website status, performance metrics, and updates
+- Organize websites by client, project, or category
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Role-Based Access Control**
+- **Admin**: Full system access and configuration
+- **Editor**: Content management and website editing capabilities
+- **Customer**: View and manage their own websites
+- **Public**: Limited access for public-facing features
 
-## Learning Laravel
+**User Management**
+- Secure authentication with first and last name support
+- Profile management and customization
+- Email verification and password reset functionality
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Modern Technology Stack**
+- Built with Laravel 12 for robust backend functionality
+- Tailwind CSS for modern, responsive UI design
+- MySQL database for reliable data storage
+- RESTful API architecture for extensibility
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Use Cases
 
-## Laravel Sponsors
+- **Web Agencies**: Manage all client websites from one platform
+- **Hosting Providers**: Offer website management as a service
+- **Digital Marketing Agencies**: Track and manage client website portfolios
+- **Freelancers**: Organize and maintain multiple client projects
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Getting Started
 
-### Premium Partners
+Stackifide provides a clean, intuitive interface that makes website management simple and efficient. Whether you're managing a handful of sites or hundreds, Stackifide scales with your business needs.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Installation
+
+### Requirements
+
+- PHP 8.2 or higher
+- Composer
+- MySQL 5.7+ or MariaDB 10.3+
+- Node.js 18+ and NPM
+
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/keersa/stackifide-app.git
+   cd stackifide-app
+   ```
+
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Install Node dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Configure environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   
+   Update the `.env` file with your database credentials:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=stackifide
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
+5. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Seed the database** (optional - creates a test admin user)
+   ```bash
+   php artisan db:seed
+   ```
+   
+   Default test user credentials:
+   - Email: `test@example.com`
+   - Password: `password`
+   - Role: `admin`
+
+7. **Build frontend assets**
+   ```bash
+   npm run build
+   ```
+   
+   Or for development with hot reloading:
+   ```bash
+   npm run dev
+   ```
+
+8. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
+
+Visit `http://localhost:8000` to access the application.
+
+## User Roles
+
+Stackifide includes four user roles with different permission levels:
+
+- **Admin**: Full system access, can manage all users and websites
+- **Editor**: Can create and edit website content
+- **Customer**: Can view and manage their own websites
+- **Public**: Limited access for public-facing features
+
+## Technology Stack
+
+- **Backend**: Laravel 12
+- **Frontend**: Blade templates with Tailwind CSS
+- **Database**: MySQL
+- **Authentication**: Laravel Breeze
+- **Asset Compilation**: Vite
+
+## Development
+
+### Running Tests
+
+```bash
+php artisan test
+```
+
+### Code Style
+
+This project uses Laravel Pint for code formatting:
+
+```bash
+./vendor/bin/pint
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, please send an e-mail to the project maintainers. All security vulnerabilities will be promptly addressed.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
