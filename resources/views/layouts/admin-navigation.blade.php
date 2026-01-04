@@ -1,18 +1,23 @@
-<nav x-data="{ open: false }" class="bg-indigo-600 border-b border-indigo-700">
+<nav x-data="{ open: false, darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" 
+     x-init="$watch('darkMode', value => { localStorage.setItem('darkMode', value); document.documentElement.classList.toggle('dark', value); })"
+     class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-white" />
+                    <a href="{{ url('/') }}" class="flex items-center gap-3">
+                        <x-application-logo class="block max-w-[60px] pl-4 fill-current text-gray-800 dark:text-gray-200" />
+                        <span class="text-gray-800 dark:text-gray-200 font-semibold text-3xl mt-1">Stackifide</span>
                     </a>
                 </div>
 
+                
+
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="text-white hover:text-indigo-200">
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="text-gray-800 dark:text-white hover:text-indigo-200">
                         {{ __('Admin Dashboard') }}
                     </x-nav-link>
                 </div>

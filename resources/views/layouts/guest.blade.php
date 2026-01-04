@@ -26,20 +26,20 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-600 dark:to-slate-700">
+        <div class="min-h-screen">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
+                <header class="">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
-            <main class="flex flex-col items-center pt-4 pb-4 sm:pt-24  sm:pb-24 bg-gray-100 dark:bg-gray-900">
+            <main class="flex flex-col items-center pt-4 pb-4 sm:pt-24  sm:pb-24">
                 <div class="">
                     <a href="/" title="Stackifide">
                         <x-application-logo class="w-24 h-24 fill-current text-gray-500 dark:text-gray-400" title="Stackifide" />

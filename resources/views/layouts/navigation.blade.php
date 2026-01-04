@@ -31,39 +31,39 @@
                 <nav class="flex items-center gap-4">
                     @auth
                         <a href="{{ url('/dashboard') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-gray-200 border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
                         </a>
                         <a href="{{ url('/websites') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Websites
                         </a>
                         <a href="{{ url('/profile') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Account
                         </a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" 
-                                    class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                                    class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                                 {{ __('Log Out') }}
                             </button>
                         </form>
                     @else
                         <a href="{{ route('about.index') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             About
                         </a>
                         <a href="{{ route('pricing.index') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Pricing
                         </a>
                         <a href="{{ route('contact.index') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Contact
                         </a>
                         <a href="{{ route('login') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Log In
                         </a>
                     @endauth

@@ -25,8 +25,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-600 dark:to-slate-700">
+        <div class="min-h-screen bg-gray-100 dark:bg-transparent">
             @include('layouts.admin-navigation')
 
             <!-- Page Heading -->

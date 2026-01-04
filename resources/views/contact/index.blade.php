@@ -7,34 +7,34 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Contact us.
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-white">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Contact Us</h2>
                     <form action="{{ route('contact.store') }}" method="post">
                         @csrf
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-white">Name</label>
                             <input type="text" name="name" id="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
                     </form>
                     <form action="{{ route('contact.store') }}" method="post">
                         @csrf
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">Email</label>
                             <input type="email" name="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
                     </form>
                     <form action="{{ route('contact.store') }}" method="post">
                         @csrf
                         <div class="mb-4">
-                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-white">Message</label>
                             <textarea name="message" id="message" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
                         </div>
                     </form>
                     <form action="{{ route('contact.store') }}" method="post">
                         @csrf
                         <div class="mb-4">
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-white border border-transparent dark:border-gray-300 rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-gray-200 focus:bg-gray-700 dark:focus:bg-gray-300 active:bg-gray-900 dark:active:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Send
                             </button>
                         </div>
