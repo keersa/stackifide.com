@@ -54,6 +54,10 @@
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             About
                         </a>
+                        <a href="{{ route('faqs.index') }}"
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                            FAQs
+                        </a>
                         <a href="{{ route('pricing.index') }}"
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Pricing
