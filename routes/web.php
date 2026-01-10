@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BasicController;
+use App\Http\Controllers\ProController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\PricingController;
@@ -13,6 +16,12 @@ Route::get('/', function () {
 });
 
     Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::get('/basic/get-started', [BasicController::class, 'survey'])->name('basic.get-started');
+    Route::get('/basic/learn-more', [BasicController::class, 'learn'])->name('basic.learn-more');
+    Route::get('/pro/get-started', [ProController::class, 'survey'])->name('pro.get-started');
+    Route::get('/pro/learn-more', [ProController::class, 'learn'])->name('pro.learn-more');
+    Route::get('/partner/get-started', [PartnerController::class, 'survey'])->name('partner.get-started');
+    Route::get('/partner/learn-more', [PartnerController::class, 'learn'])->name('partner.learn-more');
     Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs.index');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
@@ -35,6 +44,7 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('dashboard');
+    Route::resource('leads', \App\Http\Controllers\Admin\LeadController::class);
 });
 
 require __DIR__.'/auth.php';
