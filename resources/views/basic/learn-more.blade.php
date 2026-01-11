@@ -16,12 +16,12 @@
                     <p class="text-xl md:text-2xl text-indigo-100 mb-6">Everything you need to establish your restaurant's online presence</p>
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <div class="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
-                            <p class="text-sm text-indigo-200">Starting at</p>
-                            <p class="text-3xl font-bold">$199<span class="text-lg">/month</span></p>
-                        </div>
-                        <div class="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
                             <p class="text-sm text-indigo-200">One-time Setup</p>
                             <p class="text-3xl font-bold">$199</p>
+                        </div>
+                        <div class="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
+                            <p class="text-sm text-indigo-200">Starting at</p>
+                            <p class="text-3xl font-bold">$199<span class="text-lg">/month</span></p>
                         </div>
                     </div>
                 </div>
