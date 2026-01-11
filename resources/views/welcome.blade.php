@@ -61,10 +61,10 @@
                         </li>
                     </ul>
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8 px-4">
-                        <a href="{{ route('basic.learn-more') }}"  class="bg-gray-100 dark:bg-gray-800 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-white text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 hover:bg-white duration-200">
+                        <a href="{{ route('basic.learn-more') }}"  class="bg-white dark:bg-gray-700 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
                             Learn More
                         </a>
-                        <a href="{{ route('basic.get-started') }}"  class="bg-gray-100 dark:bg-gray-800 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-white text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 hover:bg-white duration-200">
+                        <a href="{{ route('basic.get-started') }}"  class="bg-white dark:bg-gray-700 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
                             Get Started
                         </a>
                     </div>
@@ -130,10 +130,10 @@
                         </li>
                     </ul>
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8 px-4">
-                        <a href="{{ route('pro.learn-more') }}"  class="bg-gray-100 dark:bg-gray-800 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-white text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 hover:bg-white duration-200">
+                        <a href="{{ route('pro.learn-more') }}"  class="bg-white dark:bg-gray-700 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
                             Learn More
                         </a>
-                        <a href="{{ route('pro.get-started') }}"  class="bg-gray-100 dark:bg-gray-800 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-white text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 hover:bg-white duration-200">
+                        <a href="{{ route('pro.get-started') }}"  class="bg-white dark:bg-gray-700 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
                             Get Started
                         </a>
                     </div>
@@ -227,7 +227,7 @@
                     </div>
                     
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 gap-4 mt-8 px-4">
-                        <a href="{{ route('partner.get-started') }}"  class="bg-gray-100 dark:bg-gray-800 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-white text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 hover:bg-white duration-200">
+                        <a href="{{ route('partner.get-started') }}"  class="bg-white dark:bg-gray-700 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
                             Let's Talk!
                         </a>
                     </div>
@@ -240,13 +240,13 @@
                     <h2 class="text-3xl text-center font-bold text-gray-800 dark:text-gray-200 mb-8">View Our Demos</h2>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <a href="https://demo.stackifide.com/restaurant-01" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-gray-200 text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/restaurant-01" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 1
                     </a>
-                    <a href="https://demo.stackifide.com/restaurant-02" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-gray-200 text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/restaurant-02" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 2
                     </a>
-                    <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-gray-200 text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 3
                     </a>
                 </div>

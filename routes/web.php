@@ -17,6 +17,7 @@ Route::get('/', function () {
 
     Route::get('/about', [AboutController::class, 'index'])->name('about.index');
     Route::get('/basic/get-started', [BasicController::class, 'survey'])->name('basic.get-started');
+    Route::post('/basic/get-started', [BasicController::class, 'store'])->name('basic.store');
     Route::get('/basic/learn-more', [BasicController::class, 'learn'])->name('basic.learn-more');
     Route::get('/pro/get-started', [ProController::class, 'survey'])->name('pro.get-started');
     Route::get('/pro/learn-more', [ProController::class, 'learn'])->name('pro.learn-more');

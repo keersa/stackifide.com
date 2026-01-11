@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use App\Models\User;
+use App\Notifications\NewLeadNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -113,7 +114,22 @@ class LeadController extends Controller
             }
         }
 
-        Lead::create($validated);
+        $lead = Lead::create($validated);
+
+        // Send notification to all admin users (except the one creating the lead if they're an admin)
+        try {
+            $admins = User::where('role', User::ROLE_ADMIN)
+                ->where('id', '!=', auth()->id())
+                ->get();
+            foreach ($admins as $admin) {
+                if ($admin->email) {
+                    $admin->notify(new NewLeadNotification($lead));
+                }
+            }
+        } catch (\Exception $e) {
+            // Log the error but don't fail the lead creation
+            \Log::error('Failed to send lead notification email: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.leads.index')
             ->with('success', 'Lead created successfully.');
