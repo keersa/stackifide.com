@@ -235,7 +235,7 @@
                 </div>
             </div>
 
-            <div id="demos" class="py-24">
+            <div id="demos" class="px-4 lg:px-0 py-24">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 class="text-3xl text-center font-bold text-gray-800 dark:text-gray-200 mb-8">View Our Demos</h2>
                 </div>
