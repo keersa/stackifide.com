@@ -1,1 +1,2 @@
-<img {{ $attributes->merge(['class' => 'h-auto']) }} src="{{ asset('images/stackifide-logo.png') }}" alt="Stackifide" />
+<img {{ $attributes->merge(['class' => 'h-auto block dark:hidden']) }} src="{{ asset('images/stackifide-logo.png') }}" alt="Stackifide" />
+<img {{ $attributes->merge(['class' => 'h-auto hidden dark:block']) }} src="{{ asset('images/stackifide-logo-dark.png') }}" alt="Stackifide" />
