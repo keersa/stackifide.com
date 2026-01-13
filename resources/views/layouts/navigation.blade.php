@@ -1,6 +1,6 @@
-<nav x-data="{ open: false, darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" 
+<nav x-data="{ open: false, darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true) }" 
      x-init="$watch('darkMode', value => { localStorage.setItem('darkMode', value); document.documentElement.classList.toggle('dark', value); })"
-     class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+     class="bg-gray-100 bg-opacity-60 dark:bg-black dark:bg-opacity-60 border-b border-gray-200 dark:border-gray-700">
     <div class="flex flex-col lg:flex-row w-full max-w-7xl p-4 mx-auto">
         <!-- Logo and Hamburger -->
         <div class="flex items-center justify-between lg:justify-start">
@@ -76,7 +76,7 @@
 
             <!-- Dark Mode Toggle (Desktop) -->
             <button @click="darkMode = !darkMode" 
-                    class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors"
+                    class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
                     aria-label="Toggle dark mode">
                 <svg x-show="!darkMode" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -114,46 +114,57 @@
                 @auth
                     <a href="{{ url('/dashboard') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-gray-200 border border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
                         Dashboard
                     </a>
                     <a href="{{ url('/websites') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                         Websites
                     </a>
                     <a href="{{ url('/profile') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                         Account
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" 
                                 @click="open = false"
-                                class="block w-full text-left px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                                class="block w-full text-left px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                             {{ __('Log Out') }}
                         </button>
                     </form>
                 @else
                     <a href="{{ route('login') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                         About
                     </a>
                     <a href="{{ route('login') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                         Contact
                     </a>
                     <a href="{{ route('login') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
                         Log In
                     </a>
                 @endauth
             @endif
         </div>
+        <!-- Dark Mode Toggle (Mobile) -->
+        <button @click="darkMode = !darkMode" 
+                class="block text-center p-2 mx-auto bg-gray-100 dark:bg-gray-700 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
+                aria-label="Toggle dark mode">
+            <svg x-show="!darkMode" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <svg x-show="darkMode" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </button>
     </div>
 
     <!-- Mobile Menu Overlay -->

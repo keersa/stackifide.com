@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-bind:class="{ 'dark': darkMode }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true) }" x-bind:class="{ 'dark': darkMode }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
             // Prevent flash of light mode - runs immediately before page render
             (function() {
                 const darkMode = localStorage.getItem('darkMode') === 'true' || 
-                    (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    (!localStorage.getItem('darkMode') && true);
                 if (darkMode) {
                     document.documentElement.classList.add('dark');
                 }
@@ -52,7 +52,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-blue-600 dark:via-lime-600 dark:to-blue-600">
+    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-lime-600 dark:to-gray-900">
         <div class="min-h-screen">
             @include('layouts.navigation')
 

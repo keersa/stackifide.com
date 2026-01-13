@@ -21,11 +21,30 @@
                     (!localStorage.getItem('darkMode') && true);
                 if (darkMode) {
                     document.documentElement.classList.add('dark');
+                    // Set initial background color immediately to prevent white flash
+                    const style = document.createElement('style');
+                    style.id = 'initial-bg-color';
+                    style.textContent = 'body { background-color: #65a30d !important; }';
+                    document.head.appendChild(style);
                 }
             })();
+        </script>        
+        
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/6963f68010a230197fa5e936/1jen7lpke';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
         </script>
+        <!--End of Tawk.to Script-->
 
-        <title>{{ config('app.name', 'Laravel') }} - Admin</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ asset('images/stackifide-logo.png') }}">
@@ -38,13 +57,13 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-lime-600 dark:to-gray-900">
-        <div class="min-h-screen bg-gray-100 dark:bg-transparent">
-            @include('layouts.admin-navigation')
+    <body class="font-sans antialiased bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-transparent dark:to-gray-900">
+        <div class="min-h-screen">
+            @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white dark:bg-gray-800 dark:bg-opacity-50 shadow">
+                <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -55,7 +74,7 @@
             <main>
                 {{ $slot }}
             </main>
+            <x-site-footer />
         </div>
     </body>
 </html>
-

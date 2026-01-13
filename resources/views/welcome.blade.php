@@ -1,13 +1,13 @@
-<x-app-layout>
+<x-home-layout>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="text-center mb-16">
                 <x-application-logo class="block !h-[140px] !w-auto fill-current text-gray-800 dark:text-gray-200 mx-auto animate-[fadeInScale_1s_ease-out] hover:scale-105 transition-transform duration-300" />
-                <h1 class="text-4xl font-bold text-gray-800 dark:text-white mt-4 animate-[fadeIn_1.2s_ease-out]">
+                <h1 class="px-4 text-4xl font-bold text-gray-800 dark:text-white mt-4 animate-[fadeIn_1.2s_ease-out]">
                     More Than Restaurant Websites</h1>
-                <p class="text-lg text-gray-600 dark:text-white mt-2 animate-[fadeIn_1.4s_ease-out]">
+                <p class="px-4 text-lg text-gray-600 dark:text-white mt-2 animate-[fadeIn_1.4s_ease-out]">
                 We manage restaurant websites and online presence so owners never have to think about it
                 </p>
             </div>
@@ -256,4 +256,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-home-layout>  
