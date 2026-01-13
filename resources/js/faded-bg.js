@@ -1,5 +1,5 @@
 // Array of hex color codes
-const colors = ['#65a30d', '#33FFBD', '#8E44AD', '#F1C40F', '#1ABC9C'];
+const colors = ['#65a30d', '#81bd2c', '#8E44AD', '#F1C40F', '#1a7dbc'];
 
 let index = 0;
 const interval = 10000; // Time in ms between color changes
