@@ -2,17 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Event;
+use App\Models\GolfCourse;
+use App\Models\GolfCourseFacility;
+use App\Models\EventCause;
 
-class FaqsController extends Controller
+class PublicPagesController extends Controller
 {
 
-    public function index(): View
+
+    /**
+     * Display the about page.
+     */
+    public function about()
     {
+
+
+        $title = 'About Stackifide';
+        return view('about', compact('title'));
+    }
+
+
+    /**
+     * Display the about page.
+     */
+    public function contact()
+    {
+        $title = 'Contact Stackifide';
+        return view('contact', compact('title'));
+    }
+
+
+    public function pricing(): View
+    {
+        $title = 'Pricing';
+        return view('pricing', compact('title'));
+    }
+
+
+    /**
+     * Display the about page.
+     */
+    public function faqs()
+    {
+
         $title = 'Frequently Asked Questions';
         
         $faqs = [
@@ -50,11 +85,12 @@ class FaqsController extends Controller
             ],
         ];
         
-        return view('faqs.index', [
+        return view('faqs', [
             'title' => $title,
             'faqs' => $faqs,
         ]);
     }
 
+   
 
 }

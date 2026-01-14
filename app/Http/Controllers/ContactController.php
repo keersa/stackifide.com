@@ -13,10 +13,7 @@ class ContactController extends Controller
 
     public function index(): View
     {
-        $title = 'Contact';
-        return view('contact.index', [
-            'title' => $title,
-        ]);
+
     }
     public function store(Request $request): RedirectResponse
     {

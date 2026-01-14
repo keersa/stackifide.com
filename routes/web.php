@@ -1,32 +1,31 @@
 <?php
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BasicController;
 use App\Http\Controllers\ProController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\FaqsController;
-use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicPagesController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () {return view('welcome'); })->name('welcome');
 
-    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-    Route::get('/basic/get-started', [BasicController::class, 'survey'])->name('basic.get-started');
-    Route::post('/basic/get-started', [BasicController::class, 'store'])->name('basic.store');
-    Route::get('/basic/learn-more', [BasicController::class, 'learn'])->name('basic.learn-more');
-    Route::get('/pro/get-started', [ProController::class, 'survey'])->name('pro.get-started');
-    Route::get('/pro/learn-more', [ProController::class, 'learn'])->name('pro.learn-more');
-    Route::get('/partner/get-started', [PartnerController::class, 'survey'])->name('partner.get-started');
-    Route::get('/partner/learn-more', [PartnerController::class, 'learn'])->name('partner.learn-more');
-    Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs.index');
-    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-    Route::get('/pricing', [PricingController::class, 'index'])->name('pricing.index');
+Route::get('/about', [PublicPagesController::class, 'about'])->name('about.index');
+Route::get('/contact', [PublicPagesController::class, 'contact'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/faqs', [PublicPagesController::class, 'faqs'])->name('faqs.index');
+Route::get('/pricing', [PublicPagesController::class, 'pricing'])->name('pricing.index');
+
+Route::get('/basic/get-started', [BasicController::class, 'survey'])->name('basic.get-started');
+Route::post('/basic/get-started', [BasicController::class, 'store'])->name('basic.store');
+Route::get('/basic/learn-more', [BasicController::class, 'learn'])->name('basic.learn-more');
+Route::get('/pro/get-started', [ProController::class, 'survey'])->name('pro.get-started');
+Route::get('/pro/learn-more', [ProController::class, 'learn'])->name('pro.learn-more');
+Route::get('/partner/get-started', [PartnerController::class, 'survey'])->name('partner.get-started');
+Route::get('/partner/learn-more', [PartnerController::class, 'learn'])->name('partner.learn-more');
+   
+    
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
