@@ -114,41 +114,51 @@
                 @auth
                     <a href="{{ url('/dashboard') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Dashboard
                     </a>
                     <a href="{{ url('/websites') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Websites
                     </a>
                     <a href="{{ url('/profile') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Account
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" 
                                 @click="open = false"
-                                class="block w-full text-left px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                                class="block w-full text-left px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                             {{ __('Log Out') }}
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('about.index') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         About
                     </a>
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('faqs.index') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
+                        FAQs
+                    </a>
+                    <a href="{{ route('pricing.index') }}"
+                       @click="open = false"
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
+                        Pricing
+                    </a>
+                    <a href="{{ route('contact.index') }}"
+                       @click="open = false"
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Contact
                     </a>
                     <a href="{{ route('login') }}"
                        @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white border border-transparent hover:bg-gray-50 rounded-md text-base font-medium transition-colors">
+                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Log In
                     </a>
                 @endauth
