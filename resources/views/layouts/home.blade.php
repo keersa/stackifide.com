@@ -55,7 +55,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/faded-bg.js'])
     </head>
     <body class="font-sans antialiased bg-white dark:bg-gradient-to-r md:dark:bg-gradient-to-br dark:from-gray-900 dark:via-transparent dark:to-gray-900">
         <div class="min-h-screen">

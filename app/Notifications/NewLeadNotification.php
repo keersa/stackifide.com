@@ -60,7 +60,7 @@ class NewLeadNotification extends Notification
             $message->line('Source: ' . ucfirst(str_replace('_', ' ', $this->lead->source)));
         }
 
-        $message->action('View Lead', route('admin.leads.show', $this->lead))
+        $message->action('View Lead', route('super-admin.leads.show', $this->lead))
             ->line('You can view and manage this lead in the admin panel.');
 
         return $message;

@@ -65,7 +65,7 @@ class BasicController extends Controller
 
         // Send notification to all admin users
         try {
-            $admins = User::where('role', User::ROLE_ADMIN)->get();
+            $admins = User::whereIn('role', [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])->get();
             foreach ($admins as $admin) {
                 if ($admin->email) {
                     $admin->notify(new NewLeadNotification($lead));

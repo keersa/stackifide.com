@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Actions\LogAction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +29,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = Auth::user();
+        
+        // Log the login
+        app(LogAction::class)->logLogin();
+        
+        // Redirect super admin users to super admin dashboard
+        if ($user->isSuperAdmin()) {
+            return redirect()->intended(route('super-admin.dashboard', absolute: false));
+        }
+        
         // Redirect admin users to admin dashboard
-        if (Auth::user()->isAdmin()) {
+        if ($user->isAdmin()) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 

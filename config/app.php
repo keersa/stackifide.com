@@ -56,6 +56,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Domain
+    |--------------------------------------------------------------------------
+    |
+    | This domain is used to generate the current active URI for the website. This is used to generate the current active URI for the website.
+    |
+    | Example: stackifide.com
+    */
+
+    'domain' => env('APP_DOMAIN', 'stackifide.com'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

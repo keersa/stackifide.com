@@ -43,7 +43,7 @@ class LeadController extends Controller
 
         $leads = $query->paginate(20);
 
-        return view('admin.leads.index', [
+        return view('super-admin.leads.index', [
             'leads' => $leads,
             'statuses' => ['new', 'contacted', 'qualified', 'proposal', 'negotiation', 'won', 'lost'],
             'sources' => ['website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
@@ -55,8 +55,8 @@ class LeadController extends Controller
      */
     public function create(): View
     {
-        return view('admin.leads.create', [
-            'users' => User::where('role', 'admin')->orWhere('role', 'editor')->get(),
+        return view('super-admin.leads.create', [
+            'users' => User::whereIn('role', ['admin', 'super_admin', 'editor'])->get(),
         ]);
     }
 
@@ -118,7 +118,7 @@ class LeadController extends Controller
 
         // Send notification to all admin users (except the one creating the lead if they're an admin)
         try {
-            $admins = User::where('role', User::ROLE_ADMIN)
+            $admins = User::whereIn('role', [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])
                 ->where('id', '!=', auth()->id())
                 ->get();
             foreach ($admins as $admin) {
@@ -131,7 +131,7 @@ class LeadController extends Controller
             \Log::error('Failed to send lead notification email: ' . $e->getMessage());
         }
 
-        return redirect()->route('admin.leads.index')
+        return redirect()->route('super-admin.leads.index')
             ->with('success', 'Lead created successfully.');
     }
 
@@ -142,7 +142,7 @@ class LeadController extends Controller
     {
         $lead->load('assignedUser');
 
-        return view('admin.leads.show', [
+        return view('super-admin.leads.show', [
             'lead' => $lead,
         ]);
     }
@@ -152,9 +152,9 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead): View
     {
-        return view('admin.leads.edit', [
+        return view('super-admin.leads.edit', [
             'lead' => $lead,
-            'users' => User::where('role', 'admin')->orWhere('role', 'editor')->get(),
+            'users' => User::whereIn('role', ['admin', 'super_admin', 'editor'])->get(),
         ]);
     }
 
@@ -200,7 +200,7 @@ class LeadController extends Controller
 
         $lead->update($validated);
 
-        return redirect()->route('admin.leads.show', $lead)
+        return redirect()->route('super-admin.leads.show', $lead)
             ->with('success', 'Lead updated successfully.');
     }
 
@@ -211,7 +211,7 @@ class LeadController extends Controller
     {
         $lead->delete();
 
-        return redirect()->route('admin.leads.index')
+        return redirect()->route('super-admin.leads.index')
             ->with('success', 'Lead deleted successfully.');
     }
 }

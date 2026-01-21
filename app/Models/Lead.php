@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasWebsiteScope;
 
 class Lead extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasWebsiteScope;
 
     protected $fillable = [
+        'website_id',
         'restaurant_name',
         'contact_first_name',
         'contact_last_name',

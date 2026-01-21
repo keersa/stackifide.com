@@ -15,6 +15,7 @@ class User extends Authenticatable
     /**
      * User role constants.
      */
+    public const ROLE_SUPER_ADMIN = 'super_admin';
     public const ROLE_ADMIN = 'admin';
     public const ROLE_CUSTOMER = 'customer';
     public const ROLE_EDITOR = 'editor';
@@ -88,6 +89,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is an admin or super admin.
+     *
+     * @return bool
+     */
+    public function isAdminOrSuperAdmin(): bool
+    {
+        return $this->isAdmin() || $this->isSuperAdmin();
+    }
+
+    /**
      * Check if the user is an editor.
      *
      * @return bool
@@ -98,6 +109,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a super admin.
+     *
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(self::ROLE_SUPER_ADMIN);
+    }
+
+    /**
      * Get all available roles.
      *
      * @return array
@@ -105,10 +126,27 @@ class User extends Authenticatable
     public static function getRoles(): array
     {
         return [
+            self::ROLE_SUPER_ADMIN,
             self::ROLE_ADMIN,
             self::ROLE_CUSTOMER,
             self::ROLE_EDITOR,
             self::ROLE_PUBLIC,
         ];
+    }
+
+    /**
+     * Get all websites owned by this user.
+     */
+    public function websites()
+    {
+        return $this->hasMany(\App\Models\Website::class);
+    }
+
+    /**
+     * Get all logs created by this user.
+     */
+    public function logs()
+    {
+        return $this->hasMany(\App\Models\Log::class);
     }
 }

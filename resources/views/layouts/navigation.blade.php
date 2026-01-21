@@ -30,7 +30,7 @@
             @if (Route::has('login'))
                 <nav class="flex items-center gap-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}"
+                        <a href="{{ url('/admin/dashboard') }}"
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
                         </a>
@@ -112,7 +112,7 @@
         <div class="p-4 space-y-4">
             @if (Route::has('login'))
                 @auth
-                    <a href="{{ url('/dashboard') }}"
+                    <a href="{{ url('/admin/dashboard') }}"
                        @click="open = false"
                        class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Dashboard

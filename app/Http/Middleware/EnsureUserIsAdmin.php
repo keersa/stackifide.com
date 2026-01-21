@@ -16,7 +16,8 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
+        $user = Auth::user();
+        if (!Auth::check() || (!$user->isAdmin() && !$user->isSuperAdmin())) {
             abort(403, 'Unauthorized access. Admin role required.');
         }
 

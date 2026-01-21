@@ -1,15 +1,13 @@
-<x-admin-layout>
+<x-super-admin-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Lead Details') }}
-            </h2>
+                <span>{{ __('Lead Details') }}</span>
             <div class="flex space-x-2">
-                <a href="{{ route('admin.leads.edit', $lead) }}" 
+                <a href="{{ route('super-admin.leads.edit', $lead) }}" 
                    class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                     Edit
                 </a>
-                <a href="{{ route('admin.leads.index') }}" 
+                <a href="{{ route('super-admin.leads.index') }}" 
                    class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     Back to Leads
                 </a>
@@ -17,8 +15,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div>
             @if (session('success'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
@@ -74,7 +71,7 @@
                                     <div>
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                            <a href="mailto:{{ $lead->email }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                            <a href="mailto:{{ $lead->email }}" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">
                                                 {{ $lead->email }}
                                             </a>
                                         </dd>
@@ -84,7 +81,7 @@
                                     <div>
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                            <a href="tel:{{ $lead->phone }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                            <a href="tel:{{ $lead->phone }}" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">
                                                 {{ $lead->phone }}
                                             </a>
                                         </dd>
@@ -94,7 +91,7 @@
                                     <div>
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Secondary Phone</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                            <a href="tel:{{ $lead->secondary_phone }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                            <a href="tel:{{ $lead->secondary_phone }}" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">
                                                 {{ $lead->secondary_phone }}
                                             </a>
                                         </dd>
@@ -123,7 +120,7 @@
                                     <div>
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Current Website</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                            <a href="{{ $lead->current_url }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                            <a href="{{ $lead->current_url }}" target="_blank" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">
                                                 {{ $lead->current_url }}
                                             </a>
                                         </dd>
@@ -218,7 +215,7 @@
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tags</dt>
                                         <dd class="mt-1 flex flex-wrap gap-2">
                                             @foreach($tags as $tag)
-                                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
                                                     {{ $tag }}
                                                 </span>
                                             @endforeach
@@ -278,7 +275,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
-</x-admin-layout>
+</x-super-admin-layout>
 
