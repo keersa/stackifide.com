@@ -304,4 +304,28 @@ class MenuController extends Controller
         return redirect()->route('admin.websites.menu.index', $website)
             ->with('success', 'Menu item deleted successfully.');
     }
+
+    /**
+     * Reorder menu items.
+     */
+    public function reorder(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $routeWebsite = $request->route('website');
+        $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
+        $this->checkWebsiteAccess($website);
+
+        $request->validate([
+            'items' => ['required', 'array'],
+            'items.*.id' => ['required', 'exists:menu_items,id'],
+            'items.*.sort_order' => ['required', 'integer'],
+        ]);
+
+        foreach ($request->items as $item) {
+            MenuItem::where('id', $item['id'])
+                ->where('website_id', $website->id)
+                ->update(['sort_order' => $item['sort_order']]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

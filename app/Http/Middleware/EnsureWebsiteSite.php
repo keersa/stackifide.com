@@ -15,8 +15,20 @@ class EnsureWebsiteSite
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!\App\Helpers\WebsiteHelper::isWebsiteSite()) {
-            abort(404);
+        $website = \App\Helpers\WebsiteHelper::current();
+        
+        if (!$website) {
+            // If we're on a subdomain that looks like a website but no website is found,
+            // return a more helpful error message
+            $host = $request->getHost();
+            $hostWithoutPort = preg_replace('/:\d+$/', '', $host);
+            
+            if (str_ends_with($hostWithoutPort, '.localhost') || str_ends_with($hostWithoutPort, '.127.0.0.1')) {
+                $subdomain = str_replace(['.localhost', '.127.0.0.1'], '', $hostWithoutPort);
+                abort(404, "Website not found for subdomain '{$subdomain}'. Make sure the website exists with slug or subdomain '{$subdomain}' and status is 'active'.");
+            }
+            
+            abort(404, 'Website not found. Make sure the website exists and is active.');
         }
 
         return $next($request);

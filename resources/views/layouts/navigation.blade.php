@@ -34,10 +34,6 @@
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
                         </a>
-                        <a href="{{ url('/websites') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
-                            Websites
-                        </a>
                         <a href="{{ url('/profile') }}"
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
                             Account

@@ -4,86 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Website Routes (Restaurant Owner Admin Panel)
+| Website Routes (Public-facing restaurant websites)
 |--------------------------------------------------------------------------
 |
 | These routes are only accessible when a website is identified.
-| Restaurant owners can manage their content here.
+| Routes are conditionally loaded based on host/subdomain detection.
 |
 */
 
-// Only register website routes if we're actually on a website site
-// Check the host to determine if this might be a website site
-// (Routes are loaded before middleware, so we need to check the host directly)
-$host = request()->getHost();
-$hostWithoutPort = preg_replace('/:\d+$/', '', $host);
-$shouldLoadWebsiteRoutes = false;
-
-// Check if this is a localhost subdomain (e.g., restaurant1.localhost)
-if (str_ends_with($hostWithoutPort, '.localhost') || str_ends_with($hostWithoutPort, '.127.0.0.1')) {
-    $subdomain = str_replace(['.localhost', '.127.0.0.1'], '', $hostWithoutPort);
-    
-    if ($subdomain && $subdomain !== $hostWithoutPort) {
-        // Try to find by subdomain or slug
-        $website = \App\Models\Website::where(function($query) use ($subdomain) {
-                $query->where('subdomain', $subdomain)
-                      ->orWhere('slug', $subdomain);
-            })
-            ->where('status', 'active')
-            ->first();
-        
-        $shouldLoadWebsiteRoutes = $website !== null;
-        
-        // Bind it early so middleware doesn't need to look it up again
-        if ($shouldLoadWebsiteRoutes) {
-            app()->instance('website', $website);
-        }
-    }
-}
-
-// Check for plain localhost with ?website= parameter (for testing)
-if (!$shouldLoadWebsiteRoutes && in_array($hostWithoutPort, ['localhost', '127.0.0.1']) && request()->has('website')) {
-    $websiteParam = request()->get('website');
-    $website = \App\Models\Website::where('slug', $websiteParam)
-        ->orWhere('domain', $websiteParam)
-        ->orWhere('subdomain', $websiteParam)
-        ->where('status', 'active')
-        ->first();
-    
-    $shouldLoadWebsiteRoutes = $website !== null;
-    
-    if ($shouldLoadWebsiteRoutes) {
-        app()->instance('website', $website);
-    }
-}
-
-// Check for production subdomains
-if (!$shouldLoadWebsiteRoutes) {
-    $mainDomain = parse_url(config('app.url'), PHP_URL_HOST);
-    
-    if ($host !== $mainDomain && str_ends_with($host, '.' . $mainDomain)) {
-        $subdomain = str_replace('.' . $mainDomain, '', $host);
-        
-        if ($subdomain && $subdomain !== $host) {
-            $website = \App\Models\Website::where(function($query) use ($subdomain) {
-                    $query->where('subdomain', $subdomain)
-                          ->orWhere('slug', $subdomain);
-                })
-                ->where('status', 'active')
-                ->first();
-            
-            $shouldLoadWebsiteRoutes = $website !== null;
-            
-            if ($shouldLoadWebsiteRoutes) {
-                app()->instance('website', $website);
-            }
-        }
-    }
-}
-
-if ($shouldLoadWebsiteRoutes) {
-    // Ensure we're on a website site
-    Route::middleware('website-site')->group(function () {
+// Always register website routes - middleware will handle access control
+// The IdentifyWebsite middleware (applied globally) will identify the website
+// The EnsureWebsiteSite middleware will ensure we're on a website site
+// Routes are loaded last in web.php so main site routes match first
+// Use where() constraint to only match on website subdomains
+Route::middleware('website-site')->group(function () {
         
     /*
     |--------------------------------------------------------------------------
@@ -96,11 +30,17 @@ if ($shouldLoadWebsiteRoutes) {
     */
     Route::get('/', function () {
         $website = \App\Helpers\WebsiteHelper::current();
+        if (!$website) {
+            abort(404);
+        }
         return view('website.home', compact('website'));
     })->name('website.home');
 
     Route::get('/menu', function () {
         $website = \App\Helpers\WebsiteHelper::current();
+        if (!$website) {
+            abort(404);
+        }
         $menuItems = \App\Models\MenuItem::where('website_id', $website->id)
             ->where('is_available', true)
             ->orderBy('category')
@@ -112,11 +52,37 @@ if ($shouldLoadWebsiteRoutes) {
 
     Route::get('/{slug}', function ($slug) {
         $website = \App\Helpers\WebsiteHelper::current();
+        
+        // This shouldn't happen if middleware is working correctly
+        // But if it does, provide a clear error
+        if (!$website) {
+            abort(404, 'Website not identified. The EnsureWebsiteSite middleware should have caught this.');
+        }
+        
+        // Skip if slug matches reserved routes (routes that have specific handlers)
+        $reservedRoutes = [
+            'menu',  // Has a specific route handler for menu display
+        ];
+        if (in_array($slug, $reservedRoutes)) {
+            abort(404);
+        }
+        
+        // Check if page exists (published or not, for better error messages)
         $page = \App\Models\Page::where('website_id', $website->id)
             ->where('slug', $slug)
-            ->where('is_published', true)
-            ->firstOrFail();
+            ->first();
+            
+        if (!$page) {
+            // Provide helpful error message with link to create the page
+            $adminUrl = route('admin.websites.pages.create', $website);
+            abort(404, "Page with slug '{$slug}' not found for website '{$website->name}'. <a href='{$adminUrl}'>Create the page in the admin panel</a>.");
+        }
+        
+        if (!$page->is_published) {
+            $editUrl = route('admin.websites.pages.edit', [$website, $page]);
+            abort(404, "Page '{$slug}' exists but is not published. <a href='{$editUrl}'>Publish it in the admin panel</a> to view it.");
+        }
+        
         return view('website.page', compact('website', 'page'));
     })->name('website.page');
-    }); // End website site check middleware
-} // End website check
+}); // End website site check middleware
