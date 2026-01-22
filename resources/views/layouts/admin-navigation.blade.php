@@ -44,8 +44,8 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('dashboard')">
-                            {{ __('User Dashboard') }}
+                        <x-dropdown-link :href="route('admin.dashboard')">
+                            {{ __('Admin Dashboard') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -95,8 +95,8 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('dashboard')" class="text-white">
-                    {{ __('User Dashboard') }}
+                <x-responsive-nav-link :href="route('admin.dashboard')" class="text-white">
+                    {{ __('Admin Dashboard') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

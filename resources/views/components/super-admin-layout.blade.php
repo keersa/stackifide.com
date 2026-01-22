@@ -97,11 +97,12 @@
                                         <x-dropdown-link :href="route('profile.edit')">
                                             {{ __('Profile') }}
                                         </x-dropdown-link>
-
-                                        <x-dropdown-link :href="route('dashboard')">
-                                            {{ __('User Dashboard') }}
+                                        <x-dropdown-link :href="route('admin.dashboard')">
+                                            {{ __('Admin Dashboard') }}
                                         </x-dropdown-link>
-
+                                        <x-dropdown-link :href="route('super-admin.dashboard')">
+                                            {{ __('Super Admin Dashboard') }}
+                                        </x-dropdown-link>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
                                             <x-dropdown-link :href="route('logout')"

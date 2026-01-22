@@ -106,7 +106,8 @@
                             </svg>
                         </button>
                         <ul x-show="openWebsiteId === {{ $website->id }}" 
-                            x-transition
+                            x-transition:enter="transition ease-out duration-400 transform"
+                            x-transition:leave="transition ease-in duration-400 transform"
                             class="ms-6 mt-2 space-y-1">
                             <li>
                                 <a href="{{ route('admin.websites.show', $website) }}" 

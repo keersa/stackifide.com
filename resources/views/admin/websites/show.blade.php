@@ -17,7 +17,7 @@
                         </div>
                         @if($website->domain || $website->subdomain)
                         <div class="">
-                            <a href="{{ $current_active_uri }}" target="_blank" class="inline-block border-2 border-gray-800 text-center text-gray-700 bg-lime-400 hover:bg-lime-300 border py-1 px-8 rounded-lg transition-all">
+                            <a href="{{ $current_active_uri }}" target="_blank" class="inline-block border-2 border-lime-500 dark:border-gray-800 text-gray-700 dark:text-black bg-lime-400 hover:bg-lime-300 border py-1 px-6 rounded-xl transition-all">
                                 <div class="text-md font-black leading-none">Current Active URL</div>
                                 <div class="text-sm">{{ $current_active_uri }}</div>
                             </a>

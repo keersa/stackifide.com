@@ -96,8 +96,8 @@
                                             {{ __('Profile') }}
                                         </x-dropdown-link>
 
-                                        <x-dropdown-link :href="route('dashboard')">
-                                            {{ __('User Dashboard') }}
+                                        <x-dropdown-link :href="route('super-admin.dashboard')">
+                                            {{ __('Super Admin Dashboard') }}
                                         </x-dropdown-link>
 
                                         <form method="POST" action="{{ route('logout') }}">
