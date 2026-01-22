@@ -55,10 +55,6 @@
                                     {{ $item->sort_order ?? 0 }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('admin.websites.menu.show', [$website, $item]) }}" 
-                                       class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
-                                        View
-                                    </a>
                                     <a href="{{ route('admin.websites.menu.edit', [$website, $item]) }}" 
                                        class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300 mr-3">
                                         Edit

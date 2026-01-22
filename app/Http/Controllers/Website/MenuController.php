@@ -131,13 +131,38 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, MenuItem $menu): View
+    public function show(Request $request, $menu): View
     {
         $routeWebsite = $request->route('website');
         $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
         $this->checkWebsiteAccess($website);
+
+        // Resolve menu item - handle both model instance and ID
+        $menuItem = null;
+        if ($menu instanceof MenuItem) {
+            $menuItem = $menu;
+        } elseif ($menu instanceof \App\Models\Website) {
+            // If Laravel incorrectly passed Website model, get menu ID from route
+            $segments = $request->segments();
+            $menuIndex = array_search('menu', $segments);
+            if ($menuIndex !== false && isset($segments[$menuIndex + 1])) {
+                $menuId = $segments[$menuIndex + 1];
+            } else {
+                abort(404);
+            }
+        } else {
+            $menuId = $menu;
+        }
+        
+        // If we have a menu ID, resolve it
+        if ($menuItem === null && isset($menuId)) {
+            $menuItem = MenuItem::where('id', $menuId)
+                ->where('website_id', $website->id)
+                ->firstOrFail();
+        }
+        
         return view('admin.websites.menu.show', [
-            'menuItem' => $menu,
+            'menuItem' => $menuItem,
             'website' => $website,
         ]);
     }
@@ -145,13 +170,38 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, MenuItem $menu): View
+    public function edit(Request $request, $menu): View
     {
         $routeWebsite = $request->route('website');
         $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
         $this->checkWebsiteAccess($website);
+
+        // Resolve menu item - handle both model instance and ID
+        $menuItem = null;
+        if ($menu instanceof MenuItem) {
+            $menuItem = $menu;
+        } elseif ($menu instanceof \App\Models\Website) {
+            // If Laravel incorrectly passed Website model, get menu ID from route
+            $segments = $request->segments();
+            $menuIndex = array_search('menu', $segments);
+            if ($menuIndex !== false && isset($segments[$menuIndex + 1])) {
+                $menuId = $segments[$menuIndex + 1];
+            } else {
+                abort(404);
+            }
+        } else {
+            $menuId = $menu;
+        }
+        
+        // If we have a menu ID, resolve it
+        if ($menuItem === null && isset($menuId)) {
+            $menuItem = MenuItem::where('id', $menuId)
+                ->where('website_id', $website->id)
+                ->firstOrFail();
+        }
+        
         return view('admin.websites.menu.edit', [
-            'menuItem' => $menu,
+            'menuItem' => $menuItem,
             'website' => $website,
         ]);
     }
@@ -159,11 +209,35 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MenuItem $menu): RedirectResponse
+    public function update(Request $request, $menu): RedirectResponse
     {
         $routeWebsite = $request->route('website');
         $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
         $this->checkWebsiteAccess($website);
+
+        // Resolve menu item - handle both model instance and ID
+        $menuItem = null;
+        if ($menu instanceof MenuItem) {
+            $menuItem = $menu;
+        } elseif ($menu instanceof \App\Models\Website) {
+            // If Laravel incorrectly passed Website model, get menu ID from route
+            $segments = $request->segments();
+            $menuIndex = array_search('menu', $segments);
+            if ($menuIndex !== false && isset($segments[$menuIndex + 1])) {
+                $menuId = $segments[$menuIndex + 1];
+            } else {
+                abort(404);
+            }
+        } else {
+            $menuId = $menu;
+        }
+        
+        // If we have a menu ID, resolve it
+        if ($menuItem === null && isset($menuId)) {
+            $menuItem = MenuItem::where('id', $menuId)
+                ->where('website_id', $website->id)
+                ->firstOrFail();
+        }
         
         $validated = $request->validate([
             'category' => ['nullable', 'string', 'max:255'],
@@ -184,7 +258,7 @@ class MenuController extends Controller
             $validated['dietary_info'] = [];
         }
 
-        $menu->update($validated);
+        $menuItem->update($validated);
 
         // Always redirect to admin route
         return redirect()->route('admin.websites.menu.index', $website)
@@ -194,13 +268,37 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, MenuItem $menu): RedirectResponse
+    public function destroy(Request $request, $menu): RedirectResponse
     {
         $routeWebsite = $request->route('website');
         $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
         $this->checkWebsiteAccess($website);
+
+        // Resolve menu item - handle both model instance and ID
+        $menuItem = null;
+        if ($menu instanceof MenuItem) {
+            $menuItem = $menu;
+        } elseif ($menu instanceof \App\Models\Website) {
+            // If Laravel incorrectly passed Website model, get menu ID from route
+            $segments = $request->segments();
+            $menuIndex = array_search('menu', $segments);
+            if ($menuIndex !== false && isset($segments[$menuIndex + 1])) {
+                $menuId = $segments[$menuIndex + 1];
+            } else {
+                abort(404);
+            }
+        } else {
+            $menuId = $menu;
+        }
         
-        $menu->delete();
+        // If we have a menu ID, resolve it
+        if ($menuItem === null && isset($menuId)) {
+            $menuItem = MenuItem::where('id', $menuId)
+                ->where('website_id', $website->id)
+                ->firstOrFail();
+        }
+        
+        $menuItem->delete();
 
         // Always redirect to admin route
         return redirect()->route('admin.websites.menu.index', $website)

@@ -131,7 +131,15 @@
                                         {{ $website->created_at->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="https://{{ $website->domain ?? $website->subdomain }}.{{ config('app.domain') }}" 
+                                        @php
+                                            $current_active_uri = '';
+                                            if(config('app.env') === 'production') {
+                                                $current_active_uri = 'https://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
+                                            } else {
+                                                $current_active_uri = 'http://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
+                                            }
+                                        @endphp
+                                        <a href="{{ $current_active_uri }}" 
                                             target="_blank" rel="noopener noreferrer"
                                            class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
                                             View Site

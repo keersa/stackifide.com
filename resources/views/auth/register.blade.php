@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" class="py-4">
         @csrf
 
         <!-- First Name -->
@@ -46,14 +46,15 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
+        <div class="mt-4">
+            <x-primary-button class="block w-full">
                 {{ __('Register') }}
             </x-primary-button>
+        </div>
+        <div class="mt-4">
+        <a class="block w-full text-sm text-center uppercase bg-gray-200 dark:bg-gray-300 px-4 py-2 font-semibold text-xs text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                {{ __('Already registered?') }}
+            </a>
         </div>
     </form>
 </x-guest-layout>

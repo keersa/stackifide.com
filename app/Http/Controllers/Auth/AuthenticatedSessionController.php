@@ -36,12 +36,12 @@ class AuthenticatedSessionController extends Controller
         
         // Redirect super admin users to super admin dashboard
         if ($user->isSuperAdmin()) {
-            return redirect()->intended(route('super-admin.dashboard', absolute: false));
+            return redirect()->route('super-admin.dashboard');
         }
         
         // Redirect admin users to admin dashboard
         if ($user->isAdmin()) {
-            return redirect()->intended(route('admin.dashboard', absolute: false));
+            return redirect()->route('admin.dashboard');
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

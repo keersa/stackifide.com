@@ -51,13 +51,13 @@
             <!-- Main Content Area -->
             <div class="flex-1 flex flex-col">
                 <!-- Top Navigation Bar -->
-                <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                <header class="bg-purple-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
                     <div class="px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-16">
                             <!-- Page Title -->
                             <div class="flex items-center">
                                 @if($header)
-                                    <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                                    <h1 class="text-xl font-semibold text-white">
                                         {{ $header }}
                                     </h1>
                                 @endif
@@ -77,7 +77,7 @@
                                     </svg>
                                 </button>
 
-                                <div class="text-sm text-gray-700 dark:text-gray-300">
+                                <div class="text-sm text-white">
                                     {{ Auth::user()->full_name }}
                                     <span class="text-gray-500 dark:text-gray-400">(Super Admin)</span>
                                 </div>

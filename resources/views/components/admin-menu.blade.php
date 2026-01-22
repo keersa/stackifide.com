@@ -51,7 +51,7 @@
         this.openWebsiteId = this.openWebsiteId === websiteId ? null : websiteId;
     }
 }" 
-       class="w-64 bg-gray-800 dark:bg-gray-900 min-h-screen" 
+       class="w-64 bg-gray-800 dark:bg-gray-800 min-h-screen" 
        aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto">
         <!-- Logo/Title -->
