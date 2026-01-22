@@ -77,6 +77,8 @@ if (!$isSubdomain) {
                         'update' => 'menu.update',
                         'destroy' => 'menu.destroy',
                     ]);
+                Route::post('menu/upload-image', [\App\Http\Controllers\Website\MenuController::class, 'uploadImage'])
+                    ->name('menu.upload-image');
                 Route::post('menu/reorder', [\App\Http\Controllers\Website\MenuController::class, 'reorder'])->name('menu.reorder');
                 Route::resource('pages', \App\Http\Controllers\Website\PageController::class)
                     ->parameters(['pages' => 'page'])

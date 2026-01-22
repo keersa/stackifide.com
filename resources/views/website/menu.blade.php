@@ -22,8 +22,20 @@
                         @foreach($items as $item)
                             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
                                 @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" 
-                                         alt="{{ $item->name }}" 
+                                    @php
+                                        $imageUrl = null;
+                                        if (is_string($item->image) && (str_starts_with($item->image, 'http://') || str_starts_with($item->image, 'https://'))) {
+                                            $imageUrl = $item->image;
+                                        } else {
+                                            try {
+                                                $imageUrl = \Illuminate\Support\Facades\Storage::disk('s3')->url($item->image);
+                                            } catch (\Throwable $e) {
+                                                $imageUrl = asset('storage/' . $item->image);
+                                            }
+                                        }
+                                    @endphp
+                                    <img src="{{ $imageUrl }}"
+                                         alt="{{ $item->name }}"
                                          class="w-full h-48 object-cover">
                                 @endif
                                 <div class="p-6">

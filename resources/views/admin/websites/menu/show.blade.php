@@ -21,8 +21,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         @if($menuItem->image)
-                            <img src="{{ asset('storage/' . $menuItem->image) }}" 
-                                 alt="{{ $menuItem->name }}" 
+                            @php
+                                $imageUrl = null;
+                                if (is_string($menuItem->image) && (str_starts_with($menuItem->image, 'http://') || str_starts_with($menuItem->image, 'https://'))) {
+                                    $imageUrl = $menuItem->image;
+                                } else {
+                                    try {
+                                        $imageUrl = \Illuminate\Support\Facades\Storage::disk('s3')->url($menuItem->image);
+                                    } catch (\Throwable $e) {
+                                        $imageUrl = asset('storage/' . $menuItem->image);
+                                    }
+                                }
+                            @endphp
+                            <img src="{{ $imageUrl }}"
+                                 alt="{{ $menuItem->name }}"
                                  class="w-full h-64 object-cover rounded-lg mb-4">
                         @endif
                     </div>

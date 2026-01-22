@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use App\Models\MenuItem;
 use App\Helpers\WebsiteHelper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class MenuController extends Controller
@@ -126,6 +129,119 @@ class MenuController extends Controller
         // Always redirect to admin route
         return redirect()->route('admin.websites.menu.index', $website)
             ->with('success', 'Menu item created successfully.');
+    }
+
+    /**
+     * Upload a (client-cropped) menu image to S3.
+     *
+     * Expects: multipart/form-data with `image` file.
+     * Returns: { path: string, url: string }
+     */
+    public function uploadImage(Request $request, $website): JsonResponse
+    {
+        $website = $this->resolveWebsite($website);
+        $this->checkWebsiteAccess($website);
+
+        // Force the S3 disk to throw exceptions for this request so we get actionable errors.
+        // By default your config has `throw => false`, which can make writes just return `false`.
+        config(['filesystems.disks.s3.throw' => true]);
+        if (method_exists(Storage::class, 'forgetDisk')) {
+            Storage::forgetDisk('s3');
+        }
+
+        $bucket = config('filesystems.disks.s3.bucket');
+        if (empty($bucket)) {
+            return response()->json([
+                'message' => 'S3 is not configured: missing AWS_BUCKET (filesystems.disks.s3.bucket). Set AWS_BUCKET in your .env and clear config cache.',
+            ], 500);
+        }
+
+        $validated = $request->validate([
+            'image' => ['required', 'file', 'image', 'max:5120'], // 5MB
+        ]);
+
+        /** @var \Illuminate\Http\UploadedFile $file */
+        $file = $validated['image'];
+
+        $extension = strtolower($file->getClientOriginalExtension() ?: 'jpg');
+        // Normalize common modern formats
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+            $extension = 'jpg';
+        }
+
+        $filename = (string) Str::uuid() . '.' . $extension;
+        $path = "websites/{$website->id}/menu/{$filename}";
+
+        try {
+            // Some buckets have ACLs disabled (Bucket owner enforced). In that case, a "public" visibility
+            // write can fail. We'll attempt a public write first, then retry without explicit visibility.
+            $stored = Storage::disk('s3')->putFileAs(
+                "websites/{$website->id}/menu",
+                $file,
+                $filename,
+                ['visibility' => 'public']
+            );
+
+            if ($stored === false) {
+                // With `throw` disabled, Flysystem can return false instead of throwing.
+                return response()->json([
+                    'message' => 'Upload failed (S3 write returned false). Check AWS credentials, region, bucket policy, and disk configuration.',
+                    'details' => app()->environment('local')
+                        ? 'S3 disk returned false even with throw enabled. Check AWS_* env values and bucket permissions.'
+                        : null,
+                    'bucket' => app()->environment('local') ? $bucket : null,
+                    'region' => app()->environment('local') ? config('filesystems.disks.s3.region') : null,
+                ], 500);
+            }
+        } catch (\Throwable $e) {
+            $msg = $e->getMessage();
+
+            // Common when bucket owner enforced / ACLs disabled:
+            // "AccessControlListNotSupported" or "The bucket does not allow ACLs"
+            if (str_contains($msg, 'AccessControlListNotSupported') || str_contains($msg, 'does not allow ACLs')) {
+                try {
+                    $stored = Storage::disk('s3')->putFileAs(
+                        "websites/{$website->id}/menu",
+                        $file,
+                        $filename
+                    );
+                    if ($stored === false) {
+                        return response()->json([
+                            'message' => 'Upload failed (S3 write returned false). Check AWS credentials, region, bucket policy, and disk configuration.',
+                            'details' => app()->environment('local') ? $msg : null,
+                        ], 500);
+                    }
+                } catch (\Throwable $e2) {
+                    return response()->json([
+                        'message' => 'Upload failed writing to S3.',
+                        'details' => app()->environment('local') ? $e2->getMessage() : null,
+                        'bucket' => app()->environment('local') ? $bucket : null,
+                        'region' => app()->environment('local') ? config('filesystems.disks.s3.region') : null,
+                    ], 500);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Upload failed writing to S3.',
+                    'details' => app()->environment('local') ? $msg : null,
+                    'bucket' => app()->environment('local') ? $bucket : null,
+                    'region' => app()->environment('local') ? config('filesystems.disks.s3.region') : null,
+                ], 500);
+            }
+        }
+
+        try {
+            return response()->json([
+                'path' => $path,
+                'url' => Storage::disk('s3')->url($path),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'path' => $path,
+                'url' => null,
+                'message' => 'Uploaded, but could not generate S3 URL.',
+                'details' => app()->environment('local') ? $e->getMessage() : null,
+            ]);
+        }
     }
 
     /**
