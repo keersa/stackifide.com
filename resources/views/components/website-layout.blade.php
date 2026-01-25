@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true) }" x-bind:class="{ 'dark': darkMode }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true) }"
+      x-init="$watch('darkMode', value => { localStorage.setItem('darkMode', value); document.documentElement.classList.toggle('dark', value); })"
+      x-bind:class="{ 'dark': darkMode }"
+      class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,6 +60,17 @@
                                    class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.home') ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
                                     Home
                                 </a>
+                                
+                                @php
+                                    $hoursHref = request()->routeIs('website.home')
+                                        ? '#hours'
+                                        : route('website.home') . '#hours';
+                                @endphp
+                                <a href="{{ $hoursHref }}"
+                                   class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                                    Hours
+                                </a>
+                                
                                 <a href="{{ route('website.menu') }}" 
                                    class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
                                     Menu
@@ -82,6 +97,21 @@
                                         </a>
                                     @endif
                                 @endauth
+
+                                <!-- Dark Mode Toggle -->
+                                <button
+                                    type="button"
+                                    @click="darkMode = !darkMode"
+                                    class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
+                                    aria-label="Toggle dark mode"
+                                >
+                                    <svg x-show="!darkMode" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                    <svg x-show="darkMode" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -92,6 +122,17 @@
             <main>
                 {{ $slot }}
             </main>
+            <footer id="footer" class="py-16 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="">
+                        <div class="block p-12 bg-gray-400 dark:bg-gray-600 rounded-lg bg-opacity-50 dark:bg-opacity-50">
+                            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                                &copy; {{ date('Y') }} {{ $website->name }}. All rights reserved.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

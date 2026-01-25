@@ -137,6 +137,15 @@
                                     Manage Pages
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.websites.hours.index', $website) }}"
+                                   class="flex items-center p-2 rounded-lg {{ request()->routeIs('admin.websites.hours.*') && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
+                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Store Hours
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endforeach

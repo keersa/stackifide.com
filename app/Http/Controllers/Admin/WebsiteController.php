@@ -85,6 +85,16 @@ class WebsiteController extends Controller
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'plan' => ['required', 'in:basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
+            'timezone' => [
+                'nullable',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if ($value && !in_array($value, \DateTimeZone::listIdentifiers(), true)) {
+                        $fail('The selected timezone is invalid.');
+                    }
+                },
+            ],
         ]);
 
         // Create the website and tie it to the current user (admin/super_admin)
@@ -97,6 +107,7 @@ class WebsiteController extends Controller
             'status' => $validated['status'],
             'plan' => $validated['plan'],
             'description' => $validated['description'] ?? null,
+            'timezone' => $validated['timezone'] ?? null,
         ]);
 
         return redirect()->route('admin.websites.index')
@@ -171,6 +182,16 @@ class WebsiteController extends Controller
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'plan' => ['required', 'in:basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
+            'timezone' => [
+                'nullable',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if ($value && !in_array($value, \DateTimeZone::listIdentifiers(), true)) {
+                        $fail('The selected timezone is invalid.');
+                    }
+                },
+            ],
         ]);
 
         $website->update($validated);

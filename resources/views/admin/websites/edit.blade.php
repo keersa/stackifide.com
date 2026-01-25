@@ -101,6 +101,37 @@
                                           rows="3"
                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('description', $website->description) }}</textarea>
                             </div>
+                            <div class="md:col-span-2">
+                                @php
+                                    $defaultTimezone = 'America/New_York';
+                                    $timezones = \DateTimeZone::listIdentifiers();
+                                    $selectedTimezone = old('timezone', $website->timezone ?? $defaultTimezone);
+                                    $formatOffset = function (int $seconds): string {
+                                        $sign = $seconds >= 0 ? '+' : '-';
+                                        $seconds = abs($seconds);
+                                        $hours = (int) floor($seconds / 3600);
+                                        $mins = (int) floor(($seconds % 3600) / 60);
+                                        return sprintf('UTC%s%02d:%02d', $sign, $hours, $mins);
+                                    };
+                                @endphp
+                                <label for="timezone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Timezone</label>
+                                <select name="timezone"
+                                        id="timezone"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @foreach($timezones as $tz)
+                                        @php
+                                            $offsetSeconds = (new \DateTime('now', new \DateTimeZone($tz)))->getOffset();
+                                            $offsetLabel = $formatOffset($offsetSeconds);
+                                        @endphp
+                                        <option value="{{ $tz }}" {{ $selectedTimezone === $tz ? 'selected' : '' }}>
+                                            {{ $tz }} ({{ $offsetLabel }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('timezone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div>
                                 <label for="trial_ends_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Trial Ends At</label>
                                 <input type="date" 

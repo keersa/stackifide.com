@@ -45,6 +45,12 @@
                             <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ ucfirst($website->plan) }}</p>
                         </div>
                         <div>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Timezone</label>
+                            <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                {{ $website->timezone ?: 'America/New_York' }}
+                            </p>
+                        </div>
+                        <div>
                             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Created</label>
                             <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->created_at->format('M d, Y') }}</p>
                         </div>

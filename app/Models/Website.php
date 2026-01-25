@@ -25,6 +25,7 @@ class Website extends Model
         'settings',
         'contact_info',
         'description',
+        'timezone',
         'trial_ends_at',
         'subscription_ends_at',
     ];

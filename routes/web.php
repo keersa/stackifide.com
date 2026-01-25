@@ -80,6 +80,14 @@ if (!$isSubdomain) {
                 Route::post('menu/upload-image', [\App\Http\Controllers\Website\MenuController::class, 'uploadImage'])
                     ->name('menu.upload-image');
                 Route::post('menu/reorder', [\App\Http\Controllers\Website\MenuController::class, 'reorder'])->name('menu.reorder');
+
+                // Store Hours (per-website weekly hours)
+                Route::get('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'index'])->name('hours.index');
+                Route::get('hours/create', [\App\Http\Controllers\Website\StoreHoursController::class, 'create'])->name('hours.create');
+                Route::post('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'store'])->name('hours.store');
+                Route::get('hours/edit', [\App\Http\Controllers\Website\StoreHoursController::class, 'edit'])->name('hours.edit');
+                Route::put('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'update'])->name('hours.update');
+
                 Route::resource('pages', \App\Http\Controllers\Website\PageController::class)
                     ->parameters(['pages' => 'page'])
                     ->names([

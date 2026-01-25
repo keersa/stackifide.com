@@ -59,6 +59,27 @@
             </div>
         @endif
 
+        <!-- Hours -->
+        @php
+            $websiteTimezone = $website->timezone ?: 'America/New_York';
+            $hours = \App\Models\StoreHour::where('website_id', $website->id)
+                ->orderBy('day_of_week')
+                ->get()
+                ->keyBy('day_of_week');
+
+            $days = \App\Models\StoreHour::daysSundayFirst();
+            $hasAnyHours = $hours->count() > 0;
+
+            $formatTimeLabel = function (?string $time): ?string {
+                if (!$time) return null;
+                $hhmm = substr((string) $time, 0, 5);
+                $dt = \DateTime::createFromFormat('H:i', $hhmm, new \DateTimeZone('UTC'));
+                return $dt ? $dt->format('g:i A') : $hhmm;
+            };
+        @endphp
+
+        
+
         <!-- Featured Menu Items (if any) -->
         @php
             $featuredItems = \App\Models\MenuItem::where('website_id', $website->id)
@@ -109,5 +130,54 @@
                 </div>
             </div>
         @endif
+
+        @if($hasAnyHours)
+            <div id="hours" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="p-6 sm:p-8">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Hours</h2>
+
+                            </div>
+                            <div class="shrink-0 text-purple-600 dark:text-purple-400">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 divide-y divide-gray-100 dark:divide-gray-700/60">
+                            @foreach($days as $dayIndex => $label)
+                                @php
+                                    $row = $hours->get($dayIndex);
+                                    $isClosed = $row ? (bool) $row->is_closed : false;
+                                    $opens = $row && $row->opens_at ? $formatTimeLabel((string) $row->opens_at) : null;
+                                    $closes = $row && $row->closes_at ? $formatTimeLabel((string) $row->closes_at) : null;
+                                @endphp
+
+                                <div class="flex items-center justify-between py-3">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $label }}
+                                    </div>
+                                    <div class="text-sm text-gray-700 dark:text-gray-300">
+                                        @if(!$row)
+                                            <span class="text-gray-400 dark:text-gray-500">Not set</span>
+                                        @elseif($isClosed)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                                Closed
+                                            </span>
+                                        @else
+                                            {{ $opens }} – {{ $closes }}
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
     </div>
 </x-website-layout>
