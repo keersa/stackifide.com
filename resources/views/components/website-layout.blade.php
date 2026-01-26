@@ -51,8 +51,22 @@
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-16">
                             <div class="flex items-center">
-                                <a href="{{ route('website.home') }}" class="text-xl font-bold text-gray-900 dark:text-white">
-                                    {{ $website->name }}
+                                <a href="{{ route('website.home') }}" class="flex items-center gap-2">
+                                    @php
+                                        $preferredLogoType = $website->settings['preferred_logo_type'] ?? 'rect';
+                                        $logoUrl = $preferredLogoType === 'rect' ? $website->logo_rect_url : $website->logo_url;
+                                    @endphp
+
+                                    @if($logoUrl)
+                                        <img src="{{ $logoUrl }}" 
+                                             alt="{{ $website->name }} Logo" 
+                                             class="{{ $preferredLogoType === 'rect' ? 'h-8 md:h-9' : 'h-10 md:h-11' }} w-auto object-contain"
+                                        >
+                                    @else
+                                        <span class="text-xl font-bold text-gray-900 dark:text-white">
+                                            {{ $website->name }}
+                                        </span>
+                                    @endif
                                 </a>
                             </div>
                             <div class="flex items-center space-x-4">

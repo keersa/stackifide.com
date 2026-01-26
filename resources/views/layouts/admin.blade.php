@@ -42,7 +42,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('styles')
     </head>
-    <body class="font-sans antialiased bg-gradient-to-r md:bg-gradient-to-br from-white via-gray-300 to-white md:dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-500 dark:to-gray-800">
+    <body class="font-sans antialiased bg-gradient-to-r md:bg-gradient-to-br from-white via-gray-300 to-white md:dark:bg-gradient-to-br dark:from-gray-600 dark:via-black dark:to-gray-800">
         <div class="flex min-h-screen">
             <!-- Sidebar Menu -->
             <x-admin-menu />

@@ -2,10 +2,18 @@
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                    </svg>
+                <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 overflow-hidden flex items-center justify-center">
+                    @php
+                        $preferredLogoType = $website->settings['preferred_logo_type'] ?? 'rect';
+                        $logoUrl = $preferredLogoType === 'rect' ? $website->logo_rect_url : $website->logo_url;
+                    @endphp
+                    @if($logoUrl)
+                        <img src="{{ $logoUrl }}" class="h-8 w-auto object-contain" alt="Website Logo">
+                    @else
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                    @endif
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-white dark:text-white">{{ $website->name }}</h1>
@@ -42,11 +50,11 @@
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Status</p>
                     <div class="flex items-center gap-2">
                         <span class="text-xl font-extrabold text-gray-900 dark:text-white capitalize">{{ $website->status }}</span>
-                        <div class="flex h-2 w-2 rounded-full {{ $website->status === 'active' ? 'bg-green-500' : ($website->status === 'trial' ? 'bg-blue-500' : 'bg-red-500') }}"></div>
+                        <div class="flex h-2 w-2 rounded-full {{ $website->status === 'active' ? 'bg-lime-400' : ($website->status === 'trial' ? 'bg-blue-500' : 'bg-red-500') }}"></div>
                     </div>
                 </div>
-                <div class="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 bg-gray-200 dark:bg-gray-900/50 rounded-lg">
+                    <svg class="w-6 h-6 text-lime-700 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
@@ -120,12 +128,14 @@
 
                 <!-- Shortcuts -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <a href="{{ route('admin.websites.menu.index', $website) }}" class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 group transition-all">
+                    <a href="{{ route('admin.websites.images.index', $website) }}" class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 group transition-all">
                         <div class="flex items-center gap-3">
-                            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg text-indigo-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
                             </div>
-                            <span class="font-bold text-gray-900 dark:text-white">Menu Editor</span>
+                            <span class="font-bold text-gray-900 dark:text-white">Website Images</span>
                         </div>
                         <svg class="w-4 h-4 text-gray-300 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </a>

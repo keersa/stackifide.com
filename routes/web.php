@@ -12,22 +12,15 @@ use Illuminate\Support\Facades\Route;
 // We use this to avoid registering main-site routes on website subdomains,
 // otherwise shared paths like `/about` will match the main-site route first
 // and never reach the website catch-all `/{slug}` route.
-$hostWithoutPort = null;
-if (isset($_SERVER['HTTP_HOST'])) {
-    $hostWithoutPort = explode(':', $_SERVER['HTTP_HOST'])[0];
-}
-
+$host = $_SERVER['HTTP_HOST'] ?? '';
 $isSubdomain = false;
-if ($hostWithoutPort === null) {
-    // CLI / tests
-    $isSubdomain = false;
-} elseif ($hostWithoutPort === 'localhost') {
-    $isSubdomain = false;
-} elseif (str_ends_with($hostWithoutPort, '.localhost')) {
+
+if (str_contains($host, '.localhost') || str_contains($host, '.127.0.0.1')) {
     $isSubdomain = true;
-} elseif (str_contains($hostWithoutPort, '.')) {
-    $parts = explode('.', $hostWithoutPort);
-    $isSubdomain = count($parts) >= 3 || (count($parts) === 2 && $parts[0] !== 'www' && $parts[0] !== 'localhost');
+} elseif (str_contains($host, '.')) {
+    $hostPart = explode(':', $host)[0];
+    $parts = explode('.', $hostPart);
+    $isSubdomain = count($parts) >= 3 || (count($parts) === 2 && !in_array($parts[0], ['www', 'localhost', '127']));
 }
 
 // Main site routes (only register when NOT on a website subdomain)
@@ -80,6 +73,12 @@ if (!$isSubdomain) {
                 Route::post('menu/upload-image', [\App\Http\Controllers\Website\MenuController::class, 'uploadImage'])
                     ->name('menu.upload-image');
                 Route::post('menu/reorder', [\App\Http\Controllers\Website\MenuController::class, 'reorder'])->name('menu.reorder');
+
+                // Website Images
+                Route::get('images', [\App\Http\Controllers\Website\WebsiteImageController::class, 'index'])->name('images.index');
+                Route::post('images/upload-logo', [\App\Http\Controllers\Website\WebsiteImageController::class, 'uploadLogo'])->name('images.upload-logo');
+                Route::post('images/set-preferred-logo', [\App\Http\Controllers\Website\WebsiteImageController::class, 'setPreferredType'])->name('images.set-preferred-logo');
+                Route::delete('images/remove-logo', [\App\Http\Controllers\Website\WebsiteImageController::class, 'removeLogo'])->name('images.remove-logo');
 
                 // Store Hours (per-website weekly hours)
                 Route::get('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'index'])->name('hours.index');

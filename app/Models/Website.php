@@ -17,6 +17,8 @@ class Website extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'logo',
+        'logo_rect',
         'slug',
         'domain',
         'subdomain',
@@ -76,5 +78,37 @@ class Website extends Model
         }
         
         return $this->slug . '.' . config('app.domain', 'stackifide.com');
+    }
+
+    /**
+     * Get the logo URL.
+     */
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (!$this->logo) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo, 'http')) {
+            return $this->logo;
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('s3')->url($this->logo);
+    }
+
+    /**
+     * Get the rectangular logo URL.
+     */
+    public function getLogoRectUrlAttribute(): ?string
+    {
+        if (!$this->logo_rect) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo_rect, 'http')) {
+            return $this->logo_rect;
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('s3')->url($this->logo_rect);
     }
 }
