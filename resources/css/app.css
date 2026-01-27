@@ -29,3 +29,9 @@ body {
 		transform: translateY(0);
 	}
 }
+
+
+.website-content p {
+	margin-bottom: 1em;
+}
+

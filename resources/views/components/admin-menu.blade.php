@@ -58,7 +58,7 @@
         <div class="mb-8 px-3">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
                 <x-application-logo class="block h-8 w-8 fill-current text-indigo-400" />
-                <span class="text-xl font-bold text-white">Admin Panel</span>
+                <span class="text-xl font-bold text-white">Administrator</span>
             </a>
         </div>
 
