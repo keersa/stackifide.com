@@ -379,6 +379,7 @@
 
     @push('styles')
         <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
+        <style>[x-cloak] { display: none !important; }</style>
     @endpush
 
     @push('scripts')

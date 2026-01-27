@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-admin-website-header :website="$website" title="Pages" />
+    <x-admin-website-header :website="$website" title="Manage Pages" />
 
     <div class="py-2">
         <div class="px-2 pb-4 flex items-center justify-between">

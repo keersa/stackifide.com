@@ -1,8 +1,7 @@
 @props(['website', 'title', 'subtitle' => 'Website Overview & Configuration', 'showStats' => false])
 
 @php
-    $preferredLogoType = $website->settings['preferred_logo_type'] ?? 'rect';
-    $logoUrl = $preferredLogoType === 'rect' ? $website->logo_rect_url : $website->logo_url;
+    $logoUrl = $website->logo_url;
     
     // Determine the current URL for the "Visit Site" button
     $current_active_uri = '#';
