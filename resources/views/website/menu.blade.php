@@ -15,9 +15,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             @forelse($menuItems as $category => $items)
                 <div class="mb-12">
+                    @if($category)
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 border-b-2 border-purple-600 dark:border-purple-400 pb-2">
                         {{ $category }}
                     </h2>
+                    @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach($items as $item)
                             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
