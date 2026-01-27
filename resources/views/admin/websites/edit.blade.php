@@ -1,11 +1,7 @@
 <x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <span>{{ __('Edit Website') }}: {{ $website->name }}</span>
-        </div>
-    </x-slot>
+    <x-admin-website-header :website="$website" title="Edit Website Settings" />
 
-    <div>
+    <div class="py-4">
             <form method="POST" action="{{ route('admin.websites.update', $website) }}" class="space-y-6">
                 @csrf
                 @method('PUT')

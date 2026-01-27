@@ -1,11 +1,7 @@
 <x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <span>{{ __('Pages') }} - {{ $website->name }}</span>
-        </div>
-    </x-slot>
+    <x-admin-website-header :website="$website" title="Pages" />
 
-    <div>
+    <div class="py-4">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

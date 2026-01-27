@@ -165,11 +165,7 @@ class WebsiteImageController extends Controller
         $column = $type === 'rect' ? 'logo_rect' : 'logo';
 
         if ($website->$column) {
-            try {
-                Storage::disk('s3')->delete($website->$column);
-            } catch (\Throwable $e) {
-                // Ignore deletion errors
-            }
+            // "Soft delete" by removing the database reference but keeping the file in S3 for safety/history
             $website->update([$column => null]);
         }
 

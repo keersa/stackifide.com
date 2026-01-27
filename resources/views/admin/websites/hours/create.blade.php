@@ -1,11 +1,7 @@
 <x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <span>{{ __('Set Store Hours') }} - {{ $website->name }}</span>
-        </div>
-    </x-slot>
+    <x-admin-website-header :website="$website" title="Set Store Hours" />
 
-    <div>
+    <div class="py-4">
         <form method="POST" action="{{ route('admin.websites.hours.store', $website) }}" class="space-y-6">
             @csrf
 
