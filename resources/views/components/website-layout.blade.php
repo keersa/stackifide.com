@@ -28,6 +28,7 @@
                 ->orderBy('sort_order')
                 ->orderBy('title')
                 ->get() : collect();
+            $hasHours = $website && \App\Models\StoreHour::where('website_id', $website->id)->exists();
         @endphp
 
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
@@ -75,16 +76,17 @@
                                     Home
                                 </a>
                                 
-                                @php
-                                    $hoursHref = request()->routeIs('website.home')
-                                        ? '#hours'
-                                        : route('website.home') . '#hours';
-                                @endphp
-                                <a href="{{ $hoursHref }}"
-                                   class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
-                                    Hours
-                                </a>
-                                
+                                @if($hasHours)
+                                    @php
+                                        $hoursHref = request()->routeIs('website.home')
+                                            ? '#hours'
+                                            : route('website.home') . '#hours';
+                                    @endphp
+                                    <a href="{{ $hoursHref }}"
+                                       class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                                        Hours
+                                    </a>
+                                @endif
                                 <a href="{{ route('website.menu') }}" 
                                    class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
                                     Menu
