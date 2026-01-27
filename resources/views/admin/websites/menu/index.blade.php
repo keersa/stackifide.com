@@ -1,7 +1,10 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Menu Items" />
 
-    <div class="py-4">
+    <div class="py-2">
+        <div class="px-2 pb-4 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Manage Menu') }}</h3>
+        </div>
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

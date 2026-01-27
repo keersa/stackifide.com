@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Website Images" />
 
-    <div class="py-6 space-y-6" x-data="{ 
+    <div class="py-2 space-y-6" x-data="{ 
         activeTab: localStorage.getItem('last_logo_tab_{{ $website->id }}') || @js($website->settings['preferred_logo_type'] ?? 'rect'),
         preferredType: @js($website->settings['preferred_logo_type'] ?? 'rect'),
         confirmModal: {
@@ -60,6 +60,10 @@
         }
     }"
     x-init="$watch('activeTab', val => localStorage.setItem('last_logo_tab_{{ $website->id }}', val))">
+
+        <div class="px-2 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Website Images') }}</h3>
+        </div>
         
         <!-- Tab Switcher -->
         <div class="flex justify-center">

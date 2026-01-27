@@ -1,14 +1,16 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Edit Store Hours" />
 
-    <div class="py-4">
-        <form method="POST" action="{{ route('admin.websites.hours.update', $website) }}" class="space-y-6">
+    <div class="py-2">
+        <div class="px-2 pb-4 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Weekly Store Hours') }}</h3>
+        </div>
+        <form method="POST" action="{{ route('admin.websites.hours.update', $website) }}">
             @csrf
             @method('PUT')
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Weekly Hours</h3>
 
                     @php
                         $websiteTimezone = $website->timezone ?: 'America/New_York';

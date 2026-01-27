@@ -1,8 +1,11 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Set Store Hours" />
 
-    <div class="py-4">
-        <form method="POST" action="{{ route('admin.websites.hours.store', $website) }}" class="space-y-6">
+    <div class="py-2">
+        <div class="px-2 pb-4 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Weekly Store Hours') }}</h3>
+        </div>
+        <form method="POST" action="{{ route('admin.websites.hours.store', $website) }}">
             @csrf
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

@@ -1,8 +1,11 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Edit Menu Item" />
 
-    <div class="py-4">
-        <form method="POST" action="{{ route('admin.websites.menu.update', [$website, $menuItem]) }}" class="space-y-6" enctype="multipart/form-data">
+    <div class="py-2">
+        <div class="px-2 pb-4 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Manage Menu') }}</h3>
+        </div>
+        <form method="POST" action="{{ route('admin.websites.menu.update', [$website, $menuItem]) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

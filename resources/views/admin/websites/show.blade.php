@@ -69,7 +69,7 @@
             <!-- Meta/Sidebar Column -->
             <div class="space-y-6">
                 <!-- Owner Section -->
-                <div class="bg-gray-300 dark:bg-gray-700 rounded-2xl shadow-xl p-8 text-white">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-white dark:text-gray-300">
                     <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-6">Website Owner</h3>
                     @if($website->user)
                         <div class="flex items-center gap-4 mb-6">

@@ -1,8 +1,11 @@
 <x-admin-layout>
     <x-admin-website-header :website="$website" title="Create Page" />
 
-    <div class="py-4">
-        <form method="POST" action="{{ route('admin.websites.pages.store', $website) }}" class="space-y-6">
+    <div class="py-2">
+        <div class="px-2 pb-4 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Manage Pages') }}</h3>
+        </div>
+        <form method="POST" action="{{ route('admin.websites.pages.store', $website) }}">
             @csrf
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
