@@ -85,20 +85,8 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="plan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Plan *</label>
-                                <select name="plan" 
-                                        id="plan"
-                                        required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    @foreach($plans as $plan)
-                                        <option value="{{ $plan }}" {{ old('plan') === $plan ? 'selected' : '' }}>
-                                            {{ ucfirst($plan) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('plan')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <p class="block text-sm font-medium text-gray-700 dark:text-gray-300">Plan</p>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">New sites start with no plan. Subscribe to Basic or Pro from the website dashboard after creation.</p>
                             </div>
                             <div class="md:col-span-2">
                                 <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>

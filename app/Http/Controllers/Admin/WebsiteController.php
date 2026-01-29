@@ -7,10 +7,11 @@ use App\Models\Website;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Stripe\Stripe;
+use Stripe\Subscription;
 
 class WebsiteController extends Controller
 {
@@ -51,7 +52,7 @@ class WebsiteController extends Controller
         return view('admin.websites.index', [
             'websites' => $websites,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'enterprise'],
         ]);
     }
 
@@ -62,7 +63,7 @@ class WebsiteController extends Controller
     {
         return view('admin.websites.create', [
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'enterprise'],
         ]);
     }
 
@@ -83,7 +84,6 @@ class WebsiteController extends Controller
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')],
             'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'timezone' => [
                 'nullable',
@@ -127,6 +127,26 @@ class WebsiteController extends Controller
         }
         
         $website->load('user');
+
+        // When subscription is Canceled but we don't have an expiration date, fetch from Stripe so the date can be shown
+        if ($website->hasCanceledSubscriptionStatus() && !$website->getSubscriptionExpirationDate() && $website->stripe_subscription_id && config('services.stripe.secret')) {
+            try {
+                Stripe::setApiKey(config('services.stripe.secret'));
+                $subscription = Subscription::retrieve($website->stripe_subscription_id);
+                $endTimestamp = $subscription->cancel_at ?? $subscription->current_period_end ?? null;
+                $periodEnd = $endTimestamp ? \Carbon\Carbon::createFromTimestamp($endTimestamp) : null;
+                if ($periodEnd) {
+                    $website->update([
+                        'stripe_ends_at' => $periodEnd,
+                        'subscription_ends_at' => $periodEnd,
+                    ]);
+                    $website->refresh();
+                }
+            } catch (\Exception $e) {
+                // Ignore Stripe errors; page will show Canceled without date
+            }
+        }
+
         $current_active_uri = '';
         if(config('app.env') === 'production') {
             $current_active_uri = 'https://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
@@ -152,7 +172,7 @@ class WebsiteController extends Controller
         return view('admin.websites.edit', [
             'website' => $website,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'enterprise'],
         ]);
     }
 
@@ -180,7 +200,7 @@ class WebsiteController extends Controller
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:basic,pro,enterprise'],
+            'plan' => ['required', 'in:none,basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'timezone' => [
                 'nullable',

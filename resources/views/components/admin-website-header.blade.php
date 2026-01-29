@@ -60,11 +60,23 @@
     <!-- Status Card -->
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
         <div>
-            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Status</p>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Subscription Status</p>
+            @php
+                $statusLabel = $website->isActive() ? 'Active' : ($website->isOnTrial() ? 'Trial' : ($website->hasCanceledSubscriptionStatus() ? 'Canceled' : 'Inactive'));
+                $statusColor = $website->isActive() ? 'lime' : ($website->isOnTrial() ? 'blue' : ($website->hasCanceledSubscriptionStatus() ? 'amber' : 'red'));
+                $subscriptionEndsAt = $website->hasCanceledSubscriptionStatus() ? $website->getSubscriptionExpirationDate() : null;
+            @endphp
             <div class="flex items-center gap-2">
-                <span class="text-xl font-extrabold text-gray-900 dark:text-white capitalize">{{ $website->status }}</span>
-                <div class="flex h-2 w-2 rounded-full {{ $website->status === 'active' ? 'bg-lime-400' : ($website->status === 'trial' ? 'bg-blue-500' : 'bg-red-500') }}"></div>
+                <span class="text-xl font-extrabold text-gray-900 dark:text-white capitalize">{{ $statusLabel }}</span>
+                <div class="flex h-2 w-2 rounded-full {{ $statusColor === 'lime' ? 'bg-lime-400' : ($statusColor === 'blue' ? 'bg-blue-500' : ($statusColor === 'amber' ? 'bg-amber-500' : 'bg-red-500')) }}"></div>
             </div>
+            @if($website->hasCanceledSubscriptionStatus())
+                @if($subscriptionEndsAt)
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Expires {{ $subscriptionEndsAt->format('M j, Y') }}</p>
+                @else
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Expiration date pending — refresh or sync to update</p>
+                @endif
+            @endif
         </div>
         <div class="p-3 bg-gray-200 dark:bg-gray-900/50 rounded-lg">
             <svg class="w-6 h-6 text-lime-700 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

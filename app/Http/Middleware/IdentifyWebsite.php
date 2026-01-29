@@ -34,11 +34,11 @@ class IdentifyWebsite
             
             if ($subdomain && $subdomain !== $hostWithoutPort) {
                 // Try to find by subdomain first, then by slug as fallback
+                // Resolve website regardless of subscription so inactive sites can display with a notice
                 $website = Website::where(function($query) use ($subdomain) {
                         $query->where('subdomain', $subdomain)
                               ->orWhere('slug', $subdomain);
                     })
-                    ->where('status', 'active')
                     ->first();
                 
                 if ($website) {
@@ -57,7 +57,6 @@ class IdentifyWebsite
                 $website = Website::where('slug', $websiteParam)
                     ->orWhere('domain', $websiteParam)
                     ->orWhere('subdomain', $websiteParam)
-                    ->where('status', 'active')
                     ->first();
                 
                 if ($website) {
@@ -88,7 +87,7 @@ class IdentifyWebsite
                         $query->where('subdomain', $subdomain)
                               ->orWhere('slug', $subdomain);
                     })
-                    ->where('status', 'active')
+                    ->active()
                     ->first();
                 
                 if ($website) {
@@ -103,7 +102,6 @@ class IdentifyWebsite
         
         // This is a custom domain, look up the website
         $website = Website::where('domain', $host)
-            ->where('status', 'active')
             ->first();
         
         if ($website) {

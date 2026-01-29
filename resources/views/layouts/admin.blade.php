@@ -132,6 +132,11 @@
                                 <span class="block sm:inline">{{ session('success') }}</span>
                             </div>
                         @endif
+                        @if (session('error'))
+                            <div class="mb-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded relative" role="alert">
+                                <span class="block sm:inline">{{ session('error') }}</span>
+                            </div>
+                        @endif
                         {{ $slot }}
                     </div>
                 </main>

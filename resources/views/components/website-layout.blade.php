@@ -29,6 +29,7 @@
                 ->orderBy('title')
                 ->get() : collect();
             $hasHours = $website && \App\Models\StoreHour::where('website_id', $website->id)->exists();
+            $isInactive = $website && !$website->isActive();
         @endphp
 
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
@@ -46,6 +47,13 @@
     </head>
     <body class="font-sans antialiased bg-white dark:bg-gray-900">
         <div class="min-h-screen">
+            @if($isInactive)
+            <!-- Inactive site banner -->
+            <div class="bg-amber-500 dark:bg-amber-600 text-amber-950 dark:text-amber-100 text-center py-2 px-4 text-lg font-bold">
+                Site Inactive
+            </div>
+            @endif
+
             <!-- Simple Navigation -->
             @if($website)
                 <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">

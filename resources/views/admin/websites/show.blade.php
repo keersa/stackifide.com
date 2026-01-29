@@ -90,49 +90,200 @@
                     @endif
                 </div>
 
-                <!-- Billing card -->
+                <!-- Subscription Management Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Cycle & Dates</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-3">
-                            <div class="mt-1 p-1 bg-gray-50 dark:bg-gray-900 rounded text-gray-400">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Subscription</h3>
+                    
+                    @if($website->hasCurrentSubscription())
+                        <!-- Has subscription (active or Canceled but still in period) -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Current Plan</p>
+                                    <p class="text-lg font-black text-gray-900 dark:text-white uppercase">{{ ucfirst($website->plan) }}</p>
+                                </div>
+                                @if($website->isSubscriptionCanceled())
+                                    @php
+                                        $activeUntil = $website->stripe_ends_at ?? $website->subscription_ends_at;
+                                    @endphp
+                                    <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 text-xs font-bold rounded-full uppercase">
+                                        Active until {{ $activeUntil?->format('M j, Y') ?? 'period end' }}
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full uppercase">
+                                        {{ ucfirst($website->stripe_status) }}
+                                    </span>
+                                @endif
                             </div>
-                            <div>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase">Registered</p>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $website->created_at->format('M d, Y') }}</p>
+
+                            @if($website->isSubscriptionCanceled())
+                            @php
+                                $subscriptionEndDate = $website->stripe_ends_at ?? $website->subscription_ends_at;
+                            @endphp
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        <div class="space-y-2">
+                                            <p class="text-sm font-bold text-amber-800 dark:text-amber-300">Subscription Canceled</p>
+                                            <p class="text-xs text-amber-700 dark:text-amber-400">
+                                                You've Canceled this subscription. It will not renew.
+                                            </p>
+                                            @if($subscriptionEndDate)
+                                            <div class="pt-2 border-t border-amber-200/50 dark:border-amber-700/50">
+                                                <p class="text-xs font-bold text-amber-800 dark:text-amber-300 uppercase mb-0.5">Site remains active until</p>
+                                                <p class="text-sm font-black text-amber-900 dark:text-amber-200">{{ $subscriptionEndDate->format('l, F j, Y') }}</p>
+                                                <p class="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                                                    Your site will stay live and fully accessible until this date. After that, it will become inactive until you subscribe again.
+                                                </p>
+                                            </div>
+                                            @else
+                                            <p class="text-xs text-amber-700 dark:text-amber-400">
+                                                Your site will remain active until the end of the current billing period.
+                                            </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="POST" action="{{ route('admin.websites.subscriptions.resume', $website) }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-4 rounded transition">
+                                        Resume Subscription
+                                    </button>
+                                </form>
                             </div>
+                            @else
+                            @if($website->subscription_ends_at)
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Next Billing Date</p>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-2">{{ $website->subscription_ends_at->format('M d, Y') }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    Your subscription will automatically renew on this date. You can cancel anytime before then.
+                                </p>
+                            </div>
+                            @endif
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
+                                <button type="button" onclick="openCancelModal()" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded transition">
+                                    Cancel Subscription
+                                </button>
+                            </div>
+                            @endif
                         </div>
-                        @if($website->trial_ends_at)
-                        <div class="flex items-start gap-3">
-                            <div class="mt-1 p-1 bg-blue-50 dark:bg-blue-900/20 rounded text-blue-400">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            </div>
+                    @else
+                        <!-- No Active Subscription -->
+                        <div class="space-y-4">
                             <div>
-                                <p class="text-[10px] font-bold text-blue-400 uppercase">Trial End</p>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-3">Select a Plan</p>
+                                <div class="space-y-2">
+                                    <a href="{{ route('admin.websites.subscriptions.create', [$website, 'plan' => 'basic']) }}" 
+                                       class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-4 rounded transition text-left flex items-center justify-between">
+                                        <span>Basic Plan</span>
+                                        <span class="font-normal">$99/month</span>
+                                    </a>
+                                    <a href="{{ route('admin.websites.subscriptions.create', [$website, 'plan' => 'pro']) }}" 
+                                       class="block w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-3 px-4 rounded transition text-left flex items-center justify-between">
+                                        <span>Pro Plan</span>
+                                        <span class="font-normal">$169/month</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            @if($website->trial_ends_at)
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] font-bold text-blue-400 uppercase mb-1">Trial End</p>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ $website->trial_ends_at->format('M d, Y') }}
                                     @if($website->trial_ends_at->isPast())
-                                        <span class="text-[8px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-black uppercase">Ended</span>
+                                        <span class="text-[8px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-black uppercase ml-2">Ended</span>
                                     @endif
                                 </p>
                             </div>
-                        </div>
-                        @endif
-                        @if($website->subscription_ends_at)
-                        <div class="flex items-start gap-3">
-                            <div class="mt-1 p-1 bg-green-50 dark:bg-green-900/20 rounded text-green-400">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-bold text-green-400 uppercase">Next Payment</p>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $website->subscription_ends_at->format('M d, Y') }}</p>
+                            @endif
+
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Registered</p>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $website->created_at->format('M d, Y') }}</p>
                             </div>
                         </div>
-                        @endif
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Cancel Subscription Modal -->
+    <div id="cancelModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">Cancel Subscription</h3>
+                <button onclick="closeCancelModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Are you sure you want to cancel your <strong class="text-gray-900 dark:text-white">{{ ucfirst($website->plan) }}</strong> subscription?
+                </p>
+                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <div>
+                            <p class="text-sm font-bold text-amber-800 dark:text-amber-300 mb-1">Important Information</p>
+                            <p class="text-xs text-amber-700 dark:text-amber-400">
+                                Your subscription will remain active until the end of the current billing period.
+                                @if($website->subscription_ends_at)
+                                    You'll continue to have access until <strong>{{ $website->subscription_ends_at->format('M d, Y') }}</strong>.
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ route('admin.websites.subscriptions.cancel', $website) }}" id="cancelForm">
+                @csrf
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeCancelModal()" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-bold py-3 px-4 rounded transition">
+                        Keep Subscription
+                    </button>
+                    <button type="submit" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-3 px-4 rounded transition">
+                        Cancel Subscription
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openCancelModal() {
+            document.getElementById('cancelModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('cancelModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCancelModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !document.getElementById('cancelModal').classList.contains('hidden')) {
+                closeCancelModal();
+            }
+        });
+    </script>
 </x-admin-layout>

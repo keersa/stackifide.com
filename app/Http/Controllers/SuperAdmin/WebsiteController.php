@@ -59,7 +59,7 @@ class WebsiteController extends Controller
         return view('super-admin.websites.index', [
             'websites' => $websites,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'enterprise'],
         ]);
     }
 
@@ -98,14 +98,13 @@ class WebsiteController extends Controller
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')],
             'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
             'trial_ends_at' => ['nullable', 'date'],
             'subscription_ends_at' => ['nullable', 'date'],
         ]);
 
-        // Create the website
+        // Create the website (new sites default to plan 'none' until they subscribe)
         $website = Website::create([
             'user_id' => $validated['user_id'],
             'name' => $validated['name'],
@@ -113,7 +112,7 @@ class WebsiteController extends Controller
             'domain' => $validated['domain'] ?? null,
             'subdomain' => $validated['subdomain'] ?? null,
             'status' => $validated['status'],
-            'plan' => $validated['plan'],
+            'plan' => 'none',
             'description' => $validated['description'] ?? null,
             'trial_ends_at' => $validated['trial_ends_at'] ?? null,
             'subscription_ends_at' => $validated['subscription_ends_at'] ?? null,
@@ -148,7 +147,7 @@ class WebsiteController extends Controller
         return view('super-admin.websites.edit', [
             'website' => $website,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'enterprise'],
             'users' => $users,
         ]);
     }
@@ -172,7 +171,7 @@ class WebsiteController extends Controller
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:basic,pro,enterprise'],
+            'plan' => ['required', 'in:none,basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
             'trial_ends_at' => ['nullable', 'date'],

@@ -25,10 +25,10 @@ class EnsureWebsiteSite
             
             if (str_ends_with($hostWithoutPort, '.localhost') || str_ends_with($hostWithoutPort, '.127.0.0.1')) {
                 $subdomain = str_replace(['.localhost', '.127.0.0.1'], '', $hostWithoutPort);
-                abort(404, "Website not found for subdomain '{$subdomain}'. Make sure the website exists with slug or subdomain '{$subdomain}' and status is 'active'.");
+                abort(404, "Website not found for subdomain '{$subdomain}'. Make sure the website exists with slug or subdomain '{$subdomain}' and has a current subscription.");
             }
             
-            abort(404, 'Website not found. Make sure the website exists and is active.');
+            abort(404, 'Website not found. Make sure the website exists and has a current subscription.');
         }
 
         return $next($request);

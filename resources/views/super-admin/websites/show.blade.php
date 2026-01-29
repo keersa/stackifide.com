@@ -40,17 +40,25 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Status</label>
                         <span class="mt-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full
-                            @if($website->status === 'active') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                            @elseif($website->status === 'trial') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                            @elseif($website->status === 'suspended') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+                            @if($website->isActive()) bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                            @elseif($website->isOnTrial()) bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
                             @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200
                             @endif">
-                            {{ ucfirst($website->status) }}
+                            {{ $website->isActive() ? 'Active' : ($website->isOnTrial() ? 'Trial' : 'Inactive') }}
                         </span>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Plan</label>
-                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ ucfirst($website->plan) }}</p>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400"> Subscription Plan</label>
+                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ ucfirst($website->plan) }} 
+                        @if($website->stripe_subscription_id)
+                            <form method="POST" action="{{ route('admin.websites.subscriptions.sync', $website) }}" class="inline">
+                                @csrf
+                                <button type="submit" class="inline bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded">
+                                    Sync Status
+                                </button>
+                            </form>
+                        @endif
+                        </p>
                     </div>
                     @if($website->description)
                     <div class="md:col-span-2">
@@ -58,6 +66,7 @@
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->description }}</p>
                     </div>
                     @endif
+                    
                     @if($website->trial_ends_at)
                     <div>
                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Trial Ends At</label>
