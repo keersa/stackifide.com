@@ -170,7 +170,7 @@
                                     Upgrade to Pro
                                 </button>
                                 @endif
-                                <button type="button" onclick="openCancelModal()" class="w-full border border-red-700 hover:text-red-600 text-white text-xs font-bold py-2 px-4 rounded transition">
+                                <button type="button" onclick="openCancelModal()" class="w-full border border-gray-300 dark:border-black text-gray-500 dark:text-gray-400 text-xs font-bold py-2 px-4 rounded transition">
                                     Cancel Subscription
                                 </button>
                             </div>
