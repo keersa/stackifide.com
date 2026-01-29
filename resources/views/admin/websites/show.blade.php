@@ -165,7 +165,12 @@
                             </div>
                             @endif
                             <div class="pt-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
-                                <button type="button" onclick="openCancelModal()" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded transition">
+                                @if(strtolower($website->plan) === 'basic')
+                                <button type="button" onclick="openUpgradeModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded transition mb-2">
+                                    Upgrade to Pro
+                                </button>
+                                @endif
+                                <button type="button" onclick="openCancelModal()" class="w-full border border-red-700 hover:text-red-600 text-white text-xs font-bold py-2 px-4 rounded transition">
                                     Cancel Subscription
                                 </button>
                             </div>
@@ -210,6 +215,54 @@
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Upgrade to Pro Modal -->
+    <div id="upgradeModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">Upgrade to Pro</h3>
+                <button type="button" onclick="closeUpgradeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    You're currently on the <strong class="text-gray-900 dark:text-white">Basic</strong> plan. Upgrading to <strong class="text-gray-900 dark:text-white">Pro</strong> will change your monthly rate:
+                </p>
+                <div class="bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-600 dark:text-gray-400">Basic (current)</span>
+                        <span class="font-bold text-gray-900 dark:text-white">$99/month</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Pro (new)</span>
+                        <span class="font-bold text-purple-600 dark:text-purple-400">$169/month</span>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                        You may be charged a prorated amount for the remainder of your current billing period.
+                    </p>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                    Do you want to upgrade to Pro?
+                </p>
+            </div>
+
+            <form method="POST" action="{{ route('admin.websites.subscriptions.upgrade', $website) }}" id="upgradeForm">
+                @csrf
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeUpgradeModal()" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-bold py-3 px-4 rounded transition">
+                        Keep Basic
+                    </button>
+                    <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold py-3 px-4 rounded transition">
+                        Confirm Upgrade
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -262,6 +315,20 @@
     </div>
 
     <script>
+        function openUpgradeModal() {
+            var el = document.getElementById('upgradeModal');
+            if (el) { el.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        }
+
+        function closeUpgradeModal() {
+            var el = document.getElementById('upgradeModal');
+            if (el) { el.classList.add('hidden'); document.body.style.overflow = ''; }
+        }
+
+        document.getElementById('upgradeModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeUpgradeModal();
+        });
+
         function openCancelModal() {
             document.getElementById('cancelModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -272,16 +339,17 @@
             document.body.style.overflow = '';
         }
 
-        // Close modal when clicking outside
         document.getElementById('cancelModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCancelModal();
-            }
+            if (e.target === this) closeCancelModal();
         });
 
-        // Close modal on Escape key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !document.getElementById('cancelModal').classList.contains('hidden')) {
+            if (e.key !== 'Escape') return;
+            var upgradeEl = document.getElementById('upgradeModal');
+            var cancelEl = document.getElementById('cancelModal');
+            if (upgradeEl && !upgradeEl.classList.contains('hidden')) {
+                closeUpgradeModal();
+            } else if (cancelEl && !cancelEl.classList.contains('hidden')) {
                 closeCancelModal();
             }
         });

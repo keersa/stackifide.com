@@ -588,6 +588,72 @@ class SubscriptionController extends Controller
         ]);
     }
 
+    /**
+     * Upgrade subscription from Basic to Pro in Stripe.
+     */
+    public function upgrade(Website $website): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if (!$user->isSuperAdmin() && $website->user_id !== $user->id) {
+            abort(403, 'You do not have permission to manage this subscription.');
+        }
+
+        if (!$website->stripe_subscription_id) {
+            return redirect()->route('admin.websites.show', $website)
+                ->with('error', 'No subscription found.');
+        }
+
+        if (strtolower($website->plan) !== 'basic') {
+            return redirect()->route('admin.websites.show', $website)
+                ->with('error', 'Only Basic plan can be upgraded to Pro.');
+        }
+
+        $priceIds = Website::getStripePriceIds();
+        $proPriceId = $priceIds['pro'] ?? null;
+        if (!$proPriceId) {
+            return redirect()->route('admin.websites.show', $website)
+                ->with('error', 'Pro plan is not configured.');
+        }
+
+        try {
+            $subscription = Subscription::retrieve($website->stripe_subscription_id);
+            $subscriptionItemId = $subscription->items->data[0]->id ?? null;
+            if (!$subscriptionItemId) {
+                return redirect()->route('admin.websites.show', $website)
+                    ->with('error', 'Could not find subscription item.');
+            }
+
+            $subscription = Subscription::update($website->stripe_subscription_id, [
+                'items' => [
+                    [
+                        'id' => $subscriptionItemId,
+                        'price' => $proPriceId,
+                    ],
+                ],
+                'proration_behavior' => 'create_prorations',
+            ]);
+
+            $website->update([
+                'plan' => 'pro',
+                'stripe_price_id' => $subscription->items->data[0]->price->id,
+                'subscription_ends_at' => $subscription->current_period_end
+                    ? \Carbon\Carbon::createFromTimestamp($subscription->current_period_end)
+                    : $website->subscription_ends_at,
+            ]);
+
+            return redirect()->route('admin.websites.show', $website)
+                ->with('success', 'Your subscription has been upgraded to Pro. You may be charged a prorated amount for the remainder of the billing period.');
+        } catch (ApiErrorException $e) {
+            Log::error('Stripe subscription upgrade failed', [
+                'website_id' => $website->id,
+                'subscription_id' => $website->stripe_subscription_id,
+                'error' => $e->getMessage(),
+            ]);
+            return redirect()->route('admin.websites.show', $website)
+                ->with('error', 'Upgrade failed: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Cancel the current subscription.

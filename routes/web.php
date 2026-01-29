@@ -105,6 +105,7 @@ if (!$isSubdomain) {
                     Route::get('create', [\App\Http\Controllers\Admin\SubscriptionController::class, 'create'])->name('create');
                     Route::post('store', [\App\Http\Controllers\Admin\SubscriptionController::class, 'store'])->name('store');
                     Route::post('confirm', [\App\Http\Controllers\Admin\SubscriptionController::class, 'confirm'])->name('confirm');
+                    Route::post('upgrade', [\App\Http\Controllers\Admin\SubscriptionController::class, 'upgrade'])->name('upgrade');
                     Route::post('cancel', [\App\Http\Controllers\Admin\SubscriptionController::class, 'cancel'])->name('cancel');
                     Route::post('resume', [\App\Http\Controllers\Admin\SubscriptionController::class, 'resume'])->name('resume');
                     Route::post('sync', [\App\Http\Controllers\Admin\SubscriptionController::class, 'sync'])->name('sync');
