@@ -56,15 +56,6 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sort Order</label>
-                            <input type="number" 
-                                   name="sort_order" 
-                                   id="sort_order"
-                                   value="{{ old('sort_order', $menuItem->sort_order) }}"
-                                   min="0"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        </div>
-                        <div>
                             @php
                                 $initialPath = old('image', $menuItem->image ?? '');
                                 $initialUrl = '';
@@ -127,10 +118,11 @@
                                     </div>
                                 </div>
 
-                                <!-- Crop modal -->
+                                <!-- Crop modal (hidden until Alpine + open; prevents flash before load) -->
                                 <div
                                     x-show="open"
                                     x-cloak
+                                    style="display: none !important;"
                                     class="fixed inset-0 z-50 flex items-center justify-center"
                                 >
                                     <div class="absolute inset-0 bg-black/60" @click="closeModal()"></div>
@@ -197,7 +189,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-end space-x-4">
+            <div class="flex justify-end space-x-4 py-4">
                 <a href="{{ route('admin.websites.menu.index', $website) }}" 
                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                     Cancel
@@ -211,6 +203,7 @@
     </div>
 
     @push('styles')
+        <style>[x-cloak] { display: none !important; }</style>
         <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
     @endpush
 

@@ -363,7 +363,6 @@ class MenuController extends Controller
             'image' => ['nullable', 'string', 'max:255'],
             'is_available' => ['sometimes', 'boolean'],
             'dietary_info' => ['nullable', 'array'],
-            'sort_order' => ['nullable', 'integer'],
         ]);
 
         // Handle checkbox - if not present, set to false
