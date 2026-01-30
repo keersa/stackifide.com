@@ -171,8 +171,7 @@ class WebsiteController extends Controller
         $website->load('user');
         return view('admin.websites.edit', [
             'website' => $website,
-            'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['none', 'basic', 'pro', 'enterprise'],
+            'countries' => config('countries.list', ['United States']),
         ]);
     }
 
@@ -199,8 +198,6 @@ class WebsiteController extends Controller
             'slug' => ['required', 'string', 'max:255', Rule::unique('websites', 'slug')->ignore($website->id)],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
-            'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:none,basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'timezone' => [
                 'nullable',
@@ -212,9 +209,20 @@ class WebsiteController extends Controller
                     }
                 },
             ],
+            'contact_info' => ['nullable', 'array'],
+            'contact_info.phone' => ['nullable', 'string', 'max:50'],
+            'contact_info.email' => ['nullable', 'string', 'email', 'max:255'],
+            'contact_info.street_address' => ['nullable', 'string', 'max:255'],
+            'contact_info.suite' => ['nullable', 'string', 'max:100'],
+            'contact_info.city' => ['nullable', 'string', 'max:100'],
+            'contact_info.state' => ['nullable', 'string', 'max:100'],
+            'contact_info.zipcode' => ['nullable', 'string', 'max:20'],
+            'contact_info.country' => ['nullable', 'string', 'max:100'],
         ]);
 
-        $website->update($validated);
+        $main = collect($validated)->except('contact_info')->all();
+        $contactInfo = array_merge($website->contact_info ?? [], $validated['contact_info'] ?? []);
+        $website->update($main + ['contact_info' => $contactInfo]);
 
         return redirect()->route('admin.websites.show', $website)
             ->with('success', 'Website updated successfully.');

@@ -58,38 +58,6 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status *</label>
-                                <select name="status" 
-                                        id="status"
-                                        required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    @foreach($statuses as $status)
-                                        <option value="{{ $status }}" {{ old('status', $website->status) === $status ? 'selected' : '' }}>
-                                            {{ ucfirst($status) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="plan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Plan *</label>
-                                <select name="plan" 
-                                        id="plan"
-                                        required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    @foreach($plans as $plan)
-                                        <option value="{{ $plan }}" {{ old('plan', $website->plan) === $plan ? 'selected' : '' }}>
-                                            {{ ucfirst($plan) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('plan')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
                             <div class="md:col-span-2">
                                 <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                                 <textarea name="description" 
@@ -97,7 +65,116 @@
                                           rows="3"
                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('description', $website->description) }}</textarea>
                             </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact & Address -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contact & Address</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="contact_info_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
+                                <input type="text"
+                                       name="contact_info[phone]"
+                                       id="contact_info_phone"
+                                       value="{{ old('contact_info.phone', $website->contact_info['phone'] ?? '') }}"
+                                       placeholder="(555) 123-4567"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.phone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                                <input type="email"
+                                       name="contact_info[email]"
+                                       id="contact_info_email"
+                                       value="{{ old('contact_info.email', $website->contact_info['email'] ?? '') }}"
+                                       placeholder="contact@example.com"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.email')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="md:col-span-2">
+                                <label for="contact_info_street_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Street Address</label>
+                                <input type="text"
+                                       name="contact_info[street_address]"
+                                       id="contact_info_street_address"
+                                       value="{{ old('contact_info.street_address', $website->contact_info['street_address'] ?? '') }}"
+                                       placeholder="123 Main St"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.street_address')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_suite" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Suite #</label>
+                                <input type="text"
+                                       name="contact_info[suite]"
+                                       id="contact_info_suite"
+                                       value="{{ old('contact_info.suite', $website->contact_info['suite'] ?? '') }}"
+                                       placeholder="Suite 100"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.suite')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
+                                <input type="text"
+                                       name="contact_info[city]"
+                                       id="contact_info_city"
+                                       value="{{ old('contact_info.city', $website->contact_info['city'] ?? '') }}"
+                                       placeholder="New York"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.city')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_state" class="block text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
+                                <input type="text"
+                                       name="contact_info[state]"
+                                       id="contact_info_state"
+                                       value="{{ old('contact_info.state', $website->contact_info['state'] ?? '') }}"
+                                       placeholder="NY"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.state')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_zipcode" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Zipcode</label>
+                                <input type="text"
+                                       name="contact_info[zipcode]"
+                                       id="contact_info_zipcode"
+                                       value="{{ old('contact_info.zipcode', $website->contact_info['zipcode'] ?? '') }}"
+                                       placeholder="10001"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('contact_info.zipcode')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="contact_info_country" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
+                                <select name="contact_info[country]"
+                                        id="contact_info_country"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @foreach($countries ?? [] as $country)
+                                        <option value="{{ $country }}" {{ old('contact_info.country', $website->contact_info['country'] ?? 'United States') === $country ? 'selected' : '' }}>
+                                            {{ $country }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('contact_info.country')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
                                 @php
                                     $defaultTimezone = 'America/New_York';
                                     $timezones = \DateTimeZone::listIdentifiers();
@@ -127,22 +204,6 @@
                                 @error('timezone')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                            </div>
-                            <div>
-                                <label for="trial_ends_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Trial Ends At</label>
-                                <input type="date" 
-                                       name="trial_ends_at" 
-                                       id="trial_ends_at"
-                                       value="{{ old('trial_ends_at', $website->trial_ends_at?->format('Y-m-d')) }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="subscription_ends_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subscription Ends At</label>
-                                <input type="date" 
-                                       name="subscription_ends_at" 
-                                       id="subscription_ends_at"
-                                       value="{{ old('subscription_ends_at', $website->subscription_ends_at?->format('Y-m-d')) }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             </div>
                         </div>
                     </div>
