@@ -33,17 +33,17 @@
         </div>
 
         <div class="mt-4">
-            <x-primary-button class="block w-full">
+            <x-primary-button class="block w-full !text-lg">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
         <div class="grid grid-cols-2 gap-2 items-center justify-end mt-4">
             @if (Route::has('password.request'))
-            <a class="text-sm text-center uppercase bg-gray-200 dark:bg-gray-300 px-4 py-2 font-semibold text-xs text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+            <a class="text-sm text-center uppercase bg-gray-200 dark:bg-gray-900 px-4 py-2 font-semibold text-xs text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                 {{ __('Forgot your password?') }}
             </a>
             @endif
-            <a class="text-sm text-center uppercase bg-gray-200 dark:bg-gray-300 px-4 py-2 font-semibold text-xs text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
+            <a class="text-sm text-center uppercase bg-gray-200 dark:bg-gray-900 px-4 py-2 font-semibold text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
                 {{ __('Register') }}
             </a>
         </div>

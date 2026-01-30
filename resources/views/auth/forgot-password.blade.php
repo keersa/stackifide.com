@@ -17,7 +17,7 @@
         </div>
 
         <div class="mt-4">
-            <x-primary-button class="block w-full">
+            <x-primary-button class="block w-full !text-lg">
                 {{ __('Email Password Reset Link') }}
             </x-primary-button>
         </div>

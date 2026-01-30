@@ -47,7 +47,7 @@
         </div>
 
         <div class="mt-4">
-            <x-primary-button class="block w-full">
+            <x-primary-button class="block w-full !text-lg">
                 {{ __('Register') }}
             </x-primary-button>
         </div>
