@@ -30,6 +30,14 @@ body {
 	}
 }
 
+/* Smooth fade-in for #pricing section boxes */
+#pricing > div {
+	animation: fadeIn 0.7s ease-out both;
+}
+#pricing > div:nth-child(1) { animation-delay: 0s; }
+#pricing > div:nth-child(2) { animation-delay: 0.15s; }
+#pricing > div:nth-child(3) { animation-delay: 0.3s; }
+
 
 .website-content p {
 	margin-bottom: 1em;

@@ -11,7 +11,7 @@
                 We manage your restuarant's online presence so you never have to think about it
                 </p>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0 mx-auto max-w-7xl text-center">
+            <div id="pricing" class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0 mx-auto max-w-7xl text-center">
                 <div class="relative bg-gray-100 dark:bg-gray-800 pt-8 pb-24 lg:pb-8 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                     <h2 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">Basic</h2>
                     <h3 class="mb-4 font-bold text-3xl text-black dark:text-lime-300 mb-4"><span class="line-through text-gray-500 dark:text-gray-500">$149</span> $99/month</h3>
