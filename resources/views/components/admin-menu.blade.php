@@ -2,10 +2,6 @@
 
 @php
     $user = auth()->user();
-    // Only show websites created by the current user
-    $websites = \App\Models\Website::where('user_id', $user->id)
-        ->orderBy('name')
-        ->get();
     
     // Get current website from route if available
     $currentWebsite = null;
@@ -24,35 +20,21 @@
         }
     } 
     // Fallback: extract from URL segments for website-related routes
-    elseif (request()->routeIs('admin.websites.show') || 
-            request()->routeIs('admin.websites.menu.*') || 
-            request()->routeIs('admin.websites.pages.*')) {
+    elseif (request()->routeIs('admin.websites.*')) {
         $segments = request()->segments();
         $websiteIndex = array_search('websites', $segments);
         if ($websiteIndex !== false && isset($segments[$websiteIndex + 1])) {
             $websiteIdOrSlug = $segments[$websiteIndex + 1];
-            // Try to find by ID first, then by slug
-            $currentWebsite = \App\Models\Website::where('id', $websiteIdOrSlug)
-                ->orWhere('slug', $websiteIdOrSlug)
-                ->first();
+            if (is_numeric($websiteIdOrSlug) || !in_array($websiteIdOrSlug, ['create', 'index'])) {
+                $currentWebsite = \App\Models\Website::where('id', $websiteIdOrSlug)
+                    ->orWhere('slug', $websiteIdOrSlug)
+                    ->first();
+            }
         }
-    }
-    
-    // Determine which website menu should be open based on current route
-    $openWebsiteId = null;
-    if ($currentWebsite) {
-        $openWebsiteId = $currentWebsite->id;
     }
 @endphp
 
-<aside x-data="{ 
-    openWebsiteId: {{ $openWebsiteId ? $openWebsiteId : 'null' }},
-    toggleWebsite(websiteId) {
-        this.openWebsiteId = this.openWebsiteId === websiteId ? null : websiteId;
-    }
-}" 
-       class="w-64 bg-gray-800 dark:bg-gray-800 min-h-screen" 
-       aria-label="Sidebar">
+<aside class="w-64 bg-gray-800 dark:bg-gray-800 min-h-screen" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto">
         <!-- Logo/Title -->
         <div class="mb-8 px-3">
@@ -82,82 +64,66 @@
                     <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
-                    All Websites
+                    Websites
                 </a>
             </li>
 
-            <!-- Individual Websites -->
-            @if($websites->count() > 0)
-                @foreach($websites as $website)
+            <!-- Current Website Links (only when viewing a specific website) -->
+            @if($currentWebsite)
+            <div class="text-md font-semibold text-white bg-gray-900 dark:bg-gray-700 rounded-lg ">
+                <div class="px-4 py-2 text-lg">{{ $currentWebsite->name }}</div>
+                <ul class="bg-gray-500 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
                     <li>
-                        <button type="button" 
-                                class="flex items-center w-full p-2 rounded-lg {{ $currentWebsite && $currentWebsite->id === $website->id ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition"
-                                @click="toggleWebsite({{ $website->id }})">
+                        <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
+                        class="flex items-center p-2 {{ (request()->routeIs('admin.websites.show') || request()->routeIs('admin.websites.edit')) && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-gray-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition">
                             <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span class="truncate flex-1 text-left">{{ $website->name }}</span>
-                            <svg class="w-3 h-3 ms-auto transition-transform" 
-                                 :class="{ 'rotate-180': openWebsiteId === {{ $website->id }} }"
-                                 fill="none" 
-                                 stroke="currentColor" 
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <ul x-show="openWebsiteId === {{ $website->id }}" 
-                            x-transition:enter="transition ease-out duration-400 transform"
-                            x-transition:leave="transition ease-in duration-400 transform"
-                            class="ms-6 mt-2 space-y-1">
-                            <li>
-                                <a href="{{ route('admin.websites.show', $website) }}" 
-                                   class="flex items-center p-2 rounded-lg {{ (request()->routeIs('admin.websites.show') || request()->routeIs('admin.websites.edit')) && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    Website Configuration
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.websites.images.index', $website) }}"
-                                   class="flex items-center p-2 rounded-lg {{ request()->routeIs('admin.websites.images.*') && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    Website Images
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.websites.menu.index', $website) }}" 
-                                   class="flex items-center p-2 rounded-lg {{ request()->routeIs('admin.websites.menu.*') && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                    </svg>
-                                    Manage Menu
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.websites.pages.index', $website) }}" 
-                                   class="flex items-center p-2 rounded-lg {{ request()->routeIs('admin.websites.pages.*') && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    Manage Pages
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.websites.hours.index', $website) }}"
-                                   class="flex items-center p-2 rounded-lg {{ request()->routeIs('admin.websites.hours.*') && optional(request()->route('website'))->id === $website->id ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition text-sm">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Store Hours
-                                </a>
-                            </li>
-                        </ul>
+                            Website Configuration
+                        </a>
                     </li>
-                @endforeach
+                    <li>
+                        <a href="{{ route('admin.websites.images.index', $currentWebsite) }}"
+                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.images.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition">
+                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Website Images
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.websites.menu.index', $currentWebsite) }}" 
+                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.menu.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition">
+                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Manage Menu
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.websites.pages.index', $currentWebsite) }}" 
+                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.pages.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition">
+                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Manage Pages
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.websites.hours.index', $currentWebsite) }}"
+                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.hours.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} transition">
+                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Store Hours
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+                
             @endif
 
             <!-- Divider -->
