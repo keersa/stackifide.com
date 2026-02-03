@@ -64,14 +64,18 @@
                     <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
-                    Websites
+                    All Websites
                 </a>
             </li>
 
             <!-- Current Website Links (only when viewing a specific website) -->
             @if($currentWebsite)
             <div class="text-md font-semibold text-white bg-gray-900 dark:bg-gray-700 rounded-lg ">
-                <div class="px-4 py-2 text-lg bg-gray-200 dark:bg-black text-gray-800 dark:text-gray-200">{{ $currentWebsite->name }}</div>
+                <div class="px-4 py-2 text-lg bg-gray-200 dark:bg-black text-gray-800 dark:text-gray-200">
+                    <a href="{{ route('admin.websites.show', $currentWebsite) }}" class="text-gray-800 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100">
+                        {{ $currentWebsite->name }}
+                    </a>
+                </div>
                 <ul class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
                     <li>
                         <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
