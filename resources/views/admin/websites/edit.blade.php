@@ -217,4 +217,30 @@
                 </div>
             </form>
     </div>
+
+    @push('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('contact_info_phone');
+        if (!phoneInput) return;
+
+        function formatPhone(value) {
+            const digits = value.replace(/\D/g, '').slice(0, 10);
+            if (digits.length === 0) return '';
+            if (digits.length <= 3) return '(' + digits;
+            if (digits.length <= 6) return '(' + digits.slice(0, 3) + ') ' + digits.slice(3);
+            return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+        }
+
+        phoneInput.addEventListener('input', function(e) {
+            e.target.value = formatPhone(e.target.value);
+        });
+
+        // Format initial value on load (handles existing data in various formats)
+        if (phoneInput.value) {
+            phoneInput.value = formatPhone(phoneInput.value);
+        }
+    });
+    </script>
+    @endpush
 </x-admin-layout>
