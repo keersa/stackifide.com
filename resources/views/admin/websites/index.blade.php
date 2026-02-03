@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <span>{{ __('Websites Management') }}</span>
+            <span>{{ __('Manage Websites') }}</span>
         </div>
     </x-slot>
 
