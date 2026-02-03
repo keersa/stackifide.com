@@ -2,8 +2,8 @@
     <x-admin-website-header :website="$website" title="Store Hours" />
 
     <div class="py-2">
-        <div class="px-2 pb-4 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between">
-            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Weekly Store Hours') }}</h3>
+        <div class="px-2 pb-4 flex items-center justify-between">
+            <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Store Hours') }}</h3>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
             

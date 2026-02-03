@@ -124,8 +124,8 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            @if($website->logo_rect_url ?? $website->logo_url)
-                                <img src="{{ $website->logo_rect_url ?? $website->logo_url }}" alt="{{ $website->name }}" class="h-12 w-12 rounded-lg object-cover">
+                            @if($website->logo_url)
+                                <img src="{{ $website->logo_url }}" alt="{{ $website->name }}" class="h-12 w-12 rounded-lg object-cover">
                             @else
                                 <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
                                     <svg class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

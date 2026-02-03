@@ -1,13 +1,16 @@
 <x-admin-layout>
-    <x-admin-website-header :website="$website" title="Edit Website Settings" />
+    <x-admin-website-header :website="$website" title="Website Settings" />
 
-    <div class="py-4">
-            <form method="POST" action="{{ route('admin.websites.update', $website) }}" class="space-y-6">
+        <div class="py-2">
+            <div class="px-2 pb-4 flex items-center justify-between">
+                <h3 class="font-black text-gray-900 dark:text-white text-2xl tracking-tighter">{{ __('Website Configuration') }}</h3>
+            </div>
+            <form method="POST" action="{{ route('admin.websites.update', $website) }}">
                 @csrf
                 @method('PUT')
 
                 <!-- Website Information -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Website Information</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -71,7 +74,7 @@
                 </div>
 
                 <!-- Contact & Address -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contact & Address</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-admin-website-header :website="$website" title="Menu Items" />
+    <x-admin-website-header :website="$website" title="Manage Menu" />
 
     <div class="py-2">
         <div class="px-2 pb-4 flex items-center justify-between">

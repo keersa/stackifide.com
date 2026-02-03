@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-admin-website-header :website="$website" title="Website Config" :showStats="true" />
+    <x-admin-website-header :website="$website" title="Website Dashboard" :showStats="true" />
 
     <div class="py-4 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
