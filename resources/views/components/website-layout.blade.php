@@ -22,7 +22,7 @@
 
         @php
             $website = \App\Helpers\WebsiteHelper::current();
-            // Get published pages for the current website to display in navigation
+            $theme = $website && in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
             $pages = $website ? \App\Models\Page::where('website_id', $website->id)
                 ->where('is_published', true)
                 ->orderBy('sort_order')
@@ -30,6 +30,8 @@
                 ->get() : collect();
             $hasHours = $website && \App\Models\StoreHour::where('website_id', $website->id)->exists();
             $isInactive = $website && !$website->isActive();
+            $accentHover = $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400';
+            $accentActive = $theme === 'advanced' ? 'text-amber-600 dark:text-amber-400' : 'text-purple-600 dark:text-purple-400';
         @endphp
 
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
@@ -41,6 +43,9 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        @if($website && ($website->theme ?? 'default') === 'advanced')
+        <link href="https://fonts.bunny.net/css?family=playfair-display:400,500,600,700&display=swap" rel="stylesheet" />
+        @endif
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -80,7 +85,7 @@
                             </div>
                             <div class="flex items-center space-x-4">
                                 <a href="{{ route('website.home') }}" 
-                                   class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.home') ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
+                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.home') ? $accentActive . ' font-semibold' : '' }}">
                                     Home
                                 </a>
                                 
@@ -91,17 +96,17 @@
                                             : route('website.home') . '#hours';
                                     @endphp
                                     <a href="{{ $hoursHref }}"
-                                       class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition">
                                         Hours
                                     </a>
                                 @endif
                                 <a href="{{ route('website.menu') }}" 
-                                   class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
+                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold' : '' }}">
                                     Menu
                                 </a>
                                 @foreach($pages as $page)
                                     <a href="{{ route('website.page', $page->slug) }}" 
-                                       class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.page') && request()->route('slug') == $page->slug ? 'text-purple-600 dark:text-purple-400 font-semibold' : '' }}">
+                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.page') && request()->route('slug') == $page->slug ? $accentActive . ' font-semibold' : '' }}">
                                         {{ $page->title }}
                                     </a>
                                 @endforeach
@@ -111,12 +116,12 @@
                                     @endphp
                                     @if($currentWebsite)
                                         <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
-                                           class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                                           class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition">
                                             Admin
                                         </a>
                                     @else
                                         <a href="{{ route('admin.dashboard') }}" 
-                                           class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                                           class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition">
                                             Admin
                                         </a>
                                     @endif

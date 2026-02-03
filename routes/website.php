@@ -80,7 +80,8 @@ Route::middleware('website-site')->group(function () {
         if (!$website) {
             abort(404);
         }
-        return view('website.home', compact('website'));
+        $theme = in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
+        return view("website.{$theme}.home", compact('website'));
     })->name('website.home');
 
     Route::get('/menu', function () {
@@ -88,13 +89,14 @@ Route::middleware('website-site')->group(function () {
         if (!$website) {
             abort(404);
         }
+        $theme = in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
         $menuItems = \App\Models\MenuItem::where('website_id', $website->id)
             ->where('is_available', true)
             ->orderBy('category')
             ->orderBy('sort_order')
             ->get()
             ->groupBy('category');
-        return view('website.menu', compact('website', 'menuItems'));
+        return view("website.{$theme}.menu", compact('website', 'menuItems'));
     })->name('website.menu');
 
     Route::get('/{slug}', function ($slug) {
@@ -130,6 +132,7 @@ Route::middleware('website-site')->group(function () {
             abort(404, "Page '{$slug}' exists but is not published. <a href='{$editUrl}'>Publish it in the admin panel</a> to view it.");
         }
         
-        return view('website.page', compact('website', 'page'));
+        $theme = in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
+        return view("website.{$theme}.page", compact('website', 'page'));
     })->name('website.page');
 }); // End website site check middleware

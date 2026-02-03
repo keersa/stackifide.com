@@ -43,3 +43,39 @@ body {
 	margin-bottom: 1em;
 }
 
+/* Advanced theme - card hover & animations */
+.website-card-hover {
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.website-card-hover:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+.dark .website-card-hover:hover {
+	box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+}
+
+.advanced-fade-in {
+	animation: fadeIn 0.6s ease-out forwards;
+}
+.advanced-fade-in-up {
+	animation: fadeInUp 0.7s ease-out forwards;
+}
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.advanced-stagger-1 { animation-delay: 0.05s; }
+.advanced-stagger-2 { animation-delay: 0.1s; }
+.advanced-stagger-3 { animation-delay: 0.15s; }
+.advanced-stagger-4 { animation-delay: 0.2s; }
+.advanced-stagger-5 { animation-delay: 0.25s; }
+.advanced-stagger-6 { animation-delay: 0.3s; }
+

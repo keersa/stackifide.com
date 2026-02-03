@@ -100,6 +100,7 @@ class WebsiteController extends Controller
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
+            'theme' => ['nullable', 'string', 'in:default,advanced'],
             'trial_ends_at' => ['nullable', 'date'],
             'subscription_ends_at' => ['nullable', 'date'],
         ]);
@@ -113,6 +114,7 @@ class WebsiteController extends Controller
             'subdomain' => $validated['subdomain'] ?? null,
             'status' => $validated['status'],
             'plan' => 'none',
+            'theme' => $validated['theme'] ?? 'default',
             'description' => $validated['description'] ?? null,
             'trial_ends_at' => $validated['trial_ends_at'] ?? null,
             'subscription_ends_at' => $validated['subscription_ends_at'] ?? null,
@@ -174,6 +176,7 @@ class WebsiteController extends Controller
             'plan' => ['required', 'in:none,basic,pro,enterprise'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
+            'theme' => ['nullable', 'string', 'in:default,advanced'],
             'trial_ends_at' => ['nullable', 'date'],
             'subscription_ends_at' => ['nullable', 'date'],
         ]);

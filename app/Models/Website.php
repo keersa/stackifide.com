@@ -25,6 +25,7 @@ class Website extends Model
         'status',
         'plan',
         'settings',
+        'theme',
         'contact_info',
         'description',
         'timezone',

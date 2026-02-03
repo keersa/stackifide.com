@@ -98,6 +98,19 @@
                             @enderror
                         </div>
                         <div>
+                            <label for="theme" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Theme</label>
+                            <select name="theme" 
+                                    id="theme"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <option value="default" {{ old('theme', $website->theme ?? 'default') === 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="advanced" {{ old('theme', $website->theme ?? 'default') === 'advanced' ? 'selected' : '' }}>Advanced</option>
+                            </select>
+                            <p class="mt-1 text-sm text-gray-500">Visual theme for the public website.</p>
+                            @error('theme')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
                             <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Owner (User) *</label>
                             <select name="user_id" 
                                     id="user_id"
