@@ -30,8 +30,8 @@
                 ->get() : collect();
             $hasHours = $website && \App\Models\StoreHour::where('website_id', $website->id)->exists();
             $isInactive = $website && !$website->isActive();
-            $accentHover = $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400';
-            $accentActive = $theme === 'advanced' ? 'text-amber-600 dark:text-amber-400' : 'text-purple-600 dark:text-purple-400';
+            $accentHover = $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400';
+            $accentActive = $theme === 'advanced' ? 'text-amber-600 dark:text-amber-400' : 'text-cyan-600 dark:text-cyan-400';
         @endphp
 
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
@@ -256,10 +256,10 @@
                             </div>
                         @endif
                         <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm">
-                            <a href="{{ route('website.home') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Home</a>
-                            <a href="{{ route('website.menu') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Menu</a>
+                            <a href="{{ route('website.home') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Home</a>
+                            <a href="{{ route('website.menu') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Menu</a>
                             @if($hasHours)
-                                <a href="{{ route('website.home') }}#hours" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Hours</a>
+                                <a href="{{ route('website.home') }}#hours" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Hours</a>
                             @endif
                         </div>
                         <p class="text-center text-sm text-gray-500 dark:text-gray-400">
