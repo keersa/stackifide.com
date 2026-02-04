@@ -65,12 +65,12 @@
             </div>
             @endif
 
-            <!-- Simple Navigation -->
+            <!-- Responsive Navigation -->
             @if($website)
-                <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700" x-data="{ mobileMenuOpen: false }">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-16">
-                            <div class="flex items-center">
+                            <div class="flex items-center shrink-0">
                                 <a href="{{ route('website.home') }}" class="flex items-center gap-2">
                                     @php
                                         $preferredLogoType = $website->settings['preferred_logo_type'] ?? 'rect';
@@ -83,18 +83,21 @@
                                              class="{{ $preferredLogoType === 'rect' ? 'h-8 md:h-9' : 'h-10 md:h-11' }} w-auto object-contain"
                                         >
                                     @else
-                                        <span class="text-xl font-bold text-gray-900 dark:text-white">
+                                        <span class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate max-w-[140px] sm:max-w-none">
                                             {{ $website->name }}
                                         </span>
                                     @endif
                                 </a>
                             </div>
-                            <div class="flex items-center space-x-4">
-                                <a href="{{ route('website.home') }}" 
+
+                            <!-- Right side: desktop nav links + dark mode + mobile menu -->
+                            <div class="flex items-center gap-1 lg:gap-2">
+                                <!-- Desktop nav links -->
+                                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                                    <a href="{{ route('website.home') }}" 
                                    class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.home') ? $accentActive . ' font-semibold' : '' }}">
                                     Home
                                 </a>
-                                
                                 @if($hasHours)
                                     @php
                                         $hoursHref = request()->routeIs('website.home')
@@ -132,8 +135,10 @@
                                         </a>
                                     @endif
                                 @endauth
+                                </div>
 
-                                <!-- Dark Mode Toggle -->
+                                <!-- Dark mode + mobile menu button -->
+                                <div class="flex items-center gap-1">
                                 <button
                                     type="button"
                                     @click="darkMode = !darkMode"
@@ -147,6 +152,76 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
                                 </button>
+                                <button
+                                    type="button"
+                                    @click="mobileMenuOpen = !mobileMenuOpen"
+                                    class="md:hidden p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
+                                    aria-label="Toggle menu"
+                                    aria-expanded="false"
+                                    x-bind:aria-expanded="mobileMenuOpen"
+                                >
+                                    <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                    <svg x-show="mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile menu dropdown -->
+                        <div x-show="mobileMenuOpen"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 -translate-y-2"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 -translate-y-2"
+                             @click.away="mobileMenuOpen = false"
+                             class="md:hidden border-t border-gray-200 dark:border-gray-700 py-3"
+                             style="display: none;">
+                            <div class="flex flex-col gap-1">
+                                <a href="{{ route('website.home') }}" 
+                                   @click="mobileMenuOpen = false"
+                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.home') ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
+                                    Home
+                                </a>
+                                @if($hasHours)
+                                    <a href="{{ $hoursHref }}"
+                                       @click="mobileMenuOpen = false"
+                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition">
+                                        Hours
+                                    </a>
+                                @endif
+                                <a href="{{ route('website.menu') }}" 
+                                   @click="mobileMenuOpen = false"
+                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
+                                    Menu
+                                </a>
+                                @foreach($pages as $page)
+                                    <a href="{{ route('website.page', $page->slug) }}" 
+                                       @click="mobileMenuOpen = false"
+                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.page') && request()->route('slug') == $page->slug ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
+                                        {{ $page->title }}
+                                    </a>
+                                @endforeach
+                                @auth
+                                    @if($currentWebsite ?? null)
+                                        <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
+                                           @click="mobileMenuOpen = false"
+                                           class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition">
+                                            Admin
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.dashboard') }}" 
+                                           @click="mobileMenuOpen = false"
+                                           class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition">
+                                            Admin
+                                        </a>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
