@@ -213,5 +213,24 @@
                 @endif
             </div>
         </div>
+
+        <!-- Google Map -->
+        @if($fullAddress && config('services.google.maps_api_key'))
+            <div class="w-full">
+                <div class="relative h-[400px] sm:h-[450px] lg:h-[500px] w-full">
+                    <iframe
+                        src="https://www.google.com/maps/embed/v1/place?key={{ config('services.google.maps_api_key') }}&q={{ urlencode($fullAddress) }}"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Map showing {{ $fullAddress }}">
+                    </iframe>
+                    <div class="absolute inset-0 hidden dark:block bg-gray-900/35 pointer-events-none" aria-hidden="true"></div>
+                </div>
+            </div>
+        @endif
     </div>
 </x-website-layout>

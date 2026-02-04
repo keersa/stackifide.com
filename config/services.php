@@ -42,4 +42,8 @@ return [
         'price_pro' => env('STRIPE_PRICE_PRO', 'price_pro_monthly'),
     ],
 
+    'google' => [
+        'maps_api_key' => env('GOOGLE_MAPS_API_KEY'),
+    ],
+
 ];
