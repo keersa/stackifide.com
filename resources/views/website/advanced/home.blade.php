@@ -215,7 +215,7 @@
         </div>
 
         <!-- Google Map -->
-        @if($fullAddress && config('services.google.maps_api_key'))
+       @if($fullAddress && $street && config('services.google.maps_api_key'))
             <div class="w-full">
                 <div class="relative h-[400px] sm:h-[450px] lg:h-[500px] w-full">
                     <iframe

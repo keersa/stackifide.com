@@ -139,33 +139,7 @@
             </div>
         @endif
 
-        <!-- Google Map -->
-        @php
-            $street = $website->contact_info['street_address'] ?? null;
-            $suite = $website->contact_info['suite'] ?? null;
-            $city = $website->contact_info['city'] ?? null;
-            $state = $website->contact_info['state'] ?? null;
-            $zip = $website->contact_info['zipcode'] ?? null;
-            $country = $website->contact_info['country'] ?? null;
-            $cityStateZip = trim(implode(' ', array_filter([$city, $state, $zip])));
-            $mapAddress = implode(', ', array_filter([$street, $suite, $cityStateZip, $country]));
-        @endphp
-        @if($mapAddress && config('services.google.maps_api_key'))
-            <div class="w-full">
-                <div class="h-[400px] sm:h-[450px] lg:h-[500px] w-full">
-                    <iframe
-                        src="https://www.google.com/maps/embed/v1/place?key={{ config('services.google.maps_api_key') }}&q={{ urlencode($mapAddress) }}"
-                        width="100%"
-                        height="100%"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="Map showing {{ $mapAddress }}">
-                    </iframe>
-                </div>
-            </div>
-        @endif
+        
 
         @if($hasAnyHours)
             <div id="hours" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -209,7 +183,7 @@
         @endif
 
        <!-- Google Map -->
-       @if($fullAddress && config('services.google.maps_api_key'))
+       @if($fullAddress && $street && config('services.google.maps_api_key'))
             <div class="w-full">
                 <div class="relative h-[400px] sm:h-[450px] lg:h-[500px] w-full">
                     <iframe
