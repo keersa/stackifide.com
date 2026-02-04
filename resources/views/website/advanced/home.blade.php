@@ -13,9 +13,9 @@
                     <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1">
                         {{ $website->name }}
                     </h1>
-                    @if($website->description)
+                    @if($website->tagline)
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/95 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2 advanced-fade-in advanced-stagger-2">
-                            {{ $website->description }}
+                            {{ $website->tagline }}
                         </p>
                     @endif
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center advanced-fade-in advanced-stagger-3">

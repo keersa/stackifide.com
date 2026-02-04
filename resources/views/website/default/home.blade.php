@@ -5,8 +5,8 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
                 <div class="text-center">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ $website->name }}</h1>
-                    @if($website->description)
-                        <p class="text-xl md:text-2xl mb-8">{{ $website->description }}</p>
+                    @if($website->tagline)
+                        <p class="text-xl md:text-2xl mb-8">{{ $website->tagline }}</p>
                     @endif
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="{{ route('website.menu') }}" 

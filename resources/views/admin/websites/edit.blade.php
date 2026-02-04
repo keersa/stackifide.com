@@ -27,6 +27,20 @@
                                 @enderror
                             </div>
                             <div>
+                                <label for="tagline" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tagline</label>
+                                <input type="text"
+                                       name="tagline"
+                                       id="tagline"
+                                       value="{{ old('tagline', $website->tagline) }}"
+                                       placeholder="A short, catchy phrase that describes your restaurant"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('tagline')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
                                 <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
                                 <input type="text" 
                                        name="slug" 
@@ -34,18 +48,6 @@
                                        value="{{ old('slug', $website->slug) }}"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 @error('slug')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Domain</label>
-                                <input type="text" 
-                                       name="domain" 
-                                       id="domain"
-                                       value="{{ old('domain', $website->domain) }}"
-                                       placeholder="restaurant.com"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                @error('domain')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -61,14 +63,26 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="md:col-span-2">
-                                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                                <textarea name="description" 
-                                          id="description"
-                                          rows="3"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('description', $website->description) }}</textarea>
+                            <div>
+                                <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Domain</label>
+                                <input type="text" 
+                                       name="domain" 
+                                       id="domain"
+                                       value="{{ old('domain', $website->domain) }}"
+                                       placeholder="restaurant.com"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('domain')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
-                            
+                        </div>
+                    
+                        <div class="md:col-span-2 mt-4">
+                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                            <textarea name="description" 
+                                        id="description"
+                                        rows="3"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('description', $website->description) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -208,6 +222,30 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media & Links -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Social Media & Links</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Add links to your social profiles and review sites. These can be displayed on your public website.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach(config('social_links.links', []) as $key => $config)
+                                <div>
+                                    <label for="social_links_{{ $key }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $config['label'] }}</label>
+                                    <input type="url"
+                                           name="social_links[{{ $key }}]"
+                                           id="social_links_{{ $key }}"
+                                           value="{{ old("social_links.{$key}", $website->social_links[$key] ?? '') }}"
+                                           placeholder="{{ $config['placeholder'] ?? '' }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @error("social_links.{$key}")
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

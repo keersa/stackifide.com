@@ -37,8 +37,14 @@
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('images/stackifide-logo.png') }}">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('images/stackifide-logo.png') }}">
+        @if($website->logo_url)
+            <link rel="icon" type="image/png" href="{{ $website->logo_url }}">
+            <link rel="shortcut icon" type="image/png" href="{{ $website->logo_url }}">
+        @else
+            <link rel="icon" type="image/png" href="{{ asset('images/stackifide-logo.png') }}">
+            <link rel="shortcut icon" type="image/png" href="{{ asset('images/stackifide-logo.png') }}">
+        @endif
+        
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -151,17 +157,43 @@
             <main>
                 {{ $slot }}
             </main>
-            <footer id="footer" class="py-16 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+            @if($website)
+            <footer id="footer" class="py-12 sm:py-16 bg-white dark:bg-gray-800 shadow-sm border-t border-gray-200 dark:border-gray-700">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="">
-                        <div class="block p-12 bg-gray-400 dark:bg-gray-600 rounded-lg bg-opacity-50 dark:bg-opacity-50">
-                            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
-                                &copy; {{ date('Y') }} {{ $website->name }}. All rights reserved.
-                            </p>
+                    <div class="flex flex-col items-center gap-6">
+                        @php
+                            $socialLinks = $website->social_links ?? [];
+                            $hasSocialLinks = !empty(array_filter($socialLinks));
+                        @endphp
+                        @if($hasSocialLinks)
+                            <div class="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+                                @foreach(config('social_links.links', []) as $key => $config)
+                                    @if(!empty(trim($socialLinks[$key] ?? '')))
+                                        <a href="{{ $socialLinks[$key] }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="p-2 rounded-lg text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                           aria-label="{{ $config['label'] }}">
+                                            @include('components.icons.social.' . $key)
+                                        </a>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm">
+                            <a href="{{ route('website.home') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Home</a>
+                            <a href="{{ route('website.menu') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Menu</a>
+                            @if($hasHours)
+                                <a href="{{ route('website.home') }}#hours" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-purple-600 dark:hover:text-purple-400' }} transition-colors">Hours</a>
+                            @endif
                         </div>
+                        <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                            &copy; {{ date('Y') }} {{ $website->name }}. All rights reserved.
+                        </p>
                     </div>
                 </div>
             </footer>
+            @endif
         </div>
     </body>
 </html>

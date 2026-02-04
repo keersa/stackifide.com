@@ -27,7 +27,9 @@ class Website extends Model
         'settings',
         'theme',
         'contact_info',
+        'social_links',
         'description',
+        'tagline',
         'timezone',
         'trial_ends_at',
         'subscription_ends_at',
@@ -42,6 +44,7 @@ class Website extends Model
     protected $casts = [
         'settings' => 'array',
         'contact_info' => 'array',
+        'social_links' => 'array',
         'trial_ends_at' => 'datetime',
         'subscription_ends_at' => 'datetime',
         'stripe_trial_ends_at' => 'datetime',

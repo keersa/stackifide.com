@@ -188,9 +188,13 @@ class WebsiteController extends Controller
         }
         
         // Convert empty strings to null for nullable fields
+        $socialLinksInput = collect($request->input('social_links', []))->map(function ($value) {
+            return is_string($value) && trim($value) === '' ? null : $value;
+        })->all();
         $request->merge([
             'domain' => $request->input('domain') ?: null,
             'subdomain' => $request->input('subdomain') ?: null,
+            'social_links' => $socialLinksInput,
         ]);
 
         $validated = $request->validate([
@@ -199,6 +203,7 @@ class WebsiteController extends Controller
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'description' => ['nullable', 'string'],
+            'tagline' => ['nullable', 'string', 'max:255'],
             'timezone' => [
                 'nullable',
                 'string',
@@ -218,11 +223,29 @@ class WebsiteController extends Controller
             'contact_info.state' => ['nullable', 'string', 'max:100'],
             'contact_info.zipcode' => ['nullable', 'string', 'max:20'],
             'contact_info.country' => ['nullable', 'string', 'max:100'],
+            'social_links' => ['nullable', 'array'],
+            'social_links.facebook' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.instagram' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.twitter' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.youtube' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.tiktok' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.linkedin' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.yelp' => ['nullable', 'string', 'max:500', 'url'],
+            'social_links.tripadvisor' => ['nullable', 'string', 'max:500', 'url'],
         ]);
 
-        $main = collect($validated)->except('contact_info')->all();
+        $main = collect($validated)->except(['contact_info', 'social_links'])->all();
         $contactInfo = array_merge($website->contact_info ?? [], $validated['contact_info'] ?? []);
-        $website->update($main + ['contact_info' => $contactInfo]);
+        $socialLinks = $website->social_links ?? [];
+        foreach ($validated['social_links'] ?? [] as $key => $value) {
+            $value = is_string($value) ? trim($value) : $value;
+            if ($value === '') {
+                unset($socialLinks[$key]);
+            } else {
+                $socialLinks[$key] = $value;
+            }
+        }
+        $website->update($main + ['contact_info' => $contactInfo, 'social_links' => $socialLinks]);
 
         return redirect()->route('admin.websites.show', $website)
             ->with('success', 'Website updated successfully.');
