@@ -69,7 +69,7 @@
             @if($website)
                 <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700" x-data="{ mobileMenuOpen: false }">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between items-center h-16">
+                        <div class="flex justify-between items-center h-24">
                             <div class="flex items-center shrink-0">
                                 <a href="{{ route('website.home') }}" class="flex items-center gap-2">
                                     @php
@@ -80,7 +80,7 @@
                                     @if($logoUrl)
                                         <img src="{{ $logoUrl }}" 
                                              alt="{{ $website->name }} Logo" 
-                                             class="{{ $preferredLogoType === 'rect' ? 'h-8 md:h-9' : 'h-10 md:h-11' }} w-auto object-contain"
+                                             class="{{ $preferredLogoType === 'rect' ? 'h-24 md:h-100' : 'h-24 md:h-100' }} py-2 w-auto object-contain"
                                         >
                                     @else
                                         <span class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate max-w-[140px] sm:max-w-none">
