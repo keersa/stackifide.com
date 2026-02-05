@@ -1,5 +1,9 @@
 <x-website-layout>
-    <div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+    @php
+        $cs = $website->color_settings ?? [];
+        $bodyBgEnabled = !empty(($cs['website_body'] ?? [])['enabled'] ?? false);
+    @endphp
+    <div class="min-h-screen {{ !$bodyBgEnabled ? 'bg-slate-50 dark:bg-slate-950' : 'website-body-override' }}">
         <!-- Header -->
         <div class="relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-cyan-950 dark:from-slate-900 dark:via-slate-950 dark:to-cyan-950 text-white">
             <div class="absolute inset-0 opacity-[0.08]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 32px 32px;" aria-hidden="true"></div>

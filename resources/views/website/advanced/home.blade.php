@@ -1,8 +1,15 @@
 <x-website-layout>
-    <div class="min-h-screen bg-amber-50/50 dark:bg-gray-950 overflow-x-hidden">
+    @php
+        $colorSettings = $website->color_settings ?? [];
+        $heroBgEnabled = !empty($colorSettings['hero_background']['enabled']);
+        $heroHeadingEnabled = !empty($colorSettings['hero_heading']['enabled']);
+        $heroTextEnabled = !empty($colorSettings['hero_text']['enabled']);
+        $bodyBgEnabled = !empty($colorSettings['website_body']['enabled']);
+    @endphp
+    <div class="min-h-screen overflow-x-hidden {{ !$bodyBgEnabled ? 'bg-amber-50/50 dark:bg-gray-950' : 'website-body-override' }}">
         <!-- Hero Section - Bold & Layered -->
         <div class="relative overflow-hidden min-h-[70vh] sm:min-h-[75vh] lg:min-h-[85vh] flex flex-col justify-center">
-            <div class="absolute inset-0 bg-gradient-to-br from-amber-600 via-amber-700 to-orange-800 dark:from-amber-900 dark:via-amber-950 dark:to-gray-900"></div>
+            <div class="absolute inset-0 {{ !$heroBgEnabled ? 'bg-gradient-to-br from-amber-600 via-amber-700 to-orange-800 dark:from-amber-900 dark:via-amber-950 dark:to-gray-900' : 'website-hero-bg-override' }}"></div>
             <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
             <!-- Decorative floating shapes -->
             <div class="absolute top-10 right-10 w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white/5 blur-2xl advanced-fade-in advanced-stagger-3"></div>
@@ -15,16 +22,16 @@
                         $logoUrl = $website->logo_rect_url;
                         $showLogo = $showLogoInHero && $logoUrl;
                     @endphp
-                    <p class="text-amber-200 dark:text-amber-300/80 text-xs sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium mb-3 sm:mb-4 advanced-fade-in">Welcome to</p>
+                    <p class="text-amber-200 dark:text-amber-300/80 text-xs sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium mb-3 sm:mb-4 advanced-fade-in {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">Welcome to</p>
                     @if($showLogo)
                         <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
                     @else
-                        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1">
+                        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1 {{ $heroHeadingEnabled ? 'website-hero-heading-override' : '' }}">
                             {{ $website->name }}
                         </h1>
                     @endif
                     @if($website->tagline)
-                        <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/95 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2 advanced-fade-in advanced-stagger-2">
+                        <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/95 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2 advanced-fade-in advanced-stagger-2 {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">
                             {{ $website->tagline }}
                         </p>
                     @endif

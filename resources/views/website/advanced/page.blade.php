@@ -1,5 +1,9 @@
 <x-website-layout>
-    <div class="min-h-screen bg-amber-50/50 dark:bg-gray-950 overflow-x-hidden">
+    @php
+        $cs = $website->color_settings ?? [];
+        $bodyBgEnabled = !empty(($cs['website_body'] ?? [])['enabled'] ?? false);
+    @endphp
+    <div class="min-h-screen overflow-x-hidden {{ !$bodyBgEnabled ? 'bg-amber-50/50 dark:bg-gray-950' : 'website-body-override' }}">
         <!-- Header -->
         <div class="relative overflow-hidden min-h-[35vh] sm:min-h-[40vh] flex flex-col justify-center">
             <div class="absolute inset-0 bg-gradient-to-br from-amber-600 via-amber-700 to-orange-800 dark:from-amber-900 dark:via-amber-950 dark:to-gray-900"></div>

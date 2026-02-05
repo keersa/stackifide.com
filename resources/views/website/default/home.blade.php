@@ -1,5 +1,10 @@
 <x-website-layout>
     @php
+        $colorSettings = $website->color_settings ?? [];
+        $heroBgEnabled = !empty($colorSettings['hero_background']['enabled']);
+        $heroHeadingEnabled = !empty($colorSettings['hero_heading']['enabled']);
+        $heroTextEnabled = !empty($colorSettings['hero_text']['enabled']);
+        $bodyBgEnabled = !empty($colorSettings['website_body']['enabled']);
         $contactInfo = $website->contact_info ?? [];
         $street = $contactInfo['street_address'] ?? null;
         $suite = $contactInfo['suite'] ?? null;
@@ -10,9 +15,9 @@
         $cityStateZip = trim(implode(' ', array_filter([$city, $state, $zip])));
         $fullAddress = implode(', ', array_filter([$street, $suite, $cityStateZip, $country]));
     @endphp
-    <div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div class="min-h-screen {{ !$bodyBgEnabled ? 'bg-slate-50 dark:bg-slate-950' : 'website-body-override' }}">
         <!-- Hero Section -->
-        <div class="relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-cyan-950 dark:from-slate-900 dark:via-slate-950 dark:to-cyan-950 text-white">
+        <div class="relative overflow-hidden text-white {{ !$heroBgEnabled ? 'bg-gradient-to-br from-slate-800 via-slate-900 to-cyan-950 dark:from-slate-900 dark:via-slate-950 dark:to-cyan-950' : 'website-hero-bg-override' }}">
             <!-- Subtle dot pattern overlay -->
             <div class="absolute inset-0 opacity-[0.08]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 32px 32px;" aria-hidden="true"></div>
             <!-- Soft glow accent -->
@@ -29,13 +34,13 @@
                     @if($showLogo)
                         <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
                     @else
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5">{{ $website->name }}</h1>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5 {{ $heroHeadingEnabled ? 'website-hero-heading-override' : '' }}">{{ $website->name }}</h1>
                     @endif
                     
                     @if($website->hero_title) 
-                        <h3 class="text-2xl pb-8">{{ $website->hero_title }}</h3>
+                        <h3 class="text-2xl pb-8 {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">{{ $website->hero_title }}</h3>
                     @elseif($website->tagline)
-                        <h3 class="text-2xl pb-8">{{ $website->tagline }}</h3>
+                        <h3 class="text-2xl pb-8 {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">{{ $website->tagline }}</h3>
                     @endif
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">

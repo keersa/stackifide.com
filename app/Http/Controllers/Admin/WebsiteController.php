@@ -234,10 +234,56 @@ class WebsiteController extends Controller
             'social_links.linkedin' => ['nullable', 'string', 'max:500', 'url'],
             'social_links.yelp' => ['nullable', 'string', 'max:500', 'url'],
             'social_links.tripadvisor' => ['nullable', 'string', 'max:500', 'url'],
+            'color_settings' => ['nullable', 'array'],
+            'color_settings.header_background' => ['nullable', 'array'],
+            'color_settings.header_background.enabled' => ['nullable', 'boolean'],
+            'color_settings.header_background.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.header_background.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_background' => ['nullable', 'array'],
+            'color_settings.hero_background.enabled' => ['nullable', 'boolean'],
+            'color_settings.hero_background.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_background.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_heading' => ['nullable', 'array'],
+            'color_settings.hero_heading.enabled' => ['nullable', 'boolean'],
+            'color_settings.hero_heading.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_heading.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_text' => ['nullable', 'array'],
+            'color_settings.hero_text.enabled' => ['nullable', 'boolean'],
+            'color_settings.hero_text.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.hero_text.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.navigation_menu' => ['nullable', 'array'],
+            'color_settings.navigation_menu.enabled' => ['nullable', 'boolean'],
+            'color_settings.navigation_menu.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.navigation_menu.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.footer_background' => ['nullable', 'array'],
+            'color_settings.footer_background.enabled' => ['nullable', 'boolean'],
+            'color_settings.footer_background.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.footer_background.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.website_body' => ['nullable', 'array'],
+            'color_settings.website_body.enabled' => ['nullable', 'boolean'],
+            'color_settings.website_body.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color_settings.website_body.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
-        $main = collect($validated)->except(['contact_info', 'social_links'])->all();
+        $main = collect($validated)->except(['contact_info', 'social_links', 'color_settings'])->all();
         $main['show_logo_in_hero'] = $request->boolean('show_logo_in_hero');
+
+        $colorSettings = [];
+        $defaultLight = '#ffffff';
+        $defaultDark = '#1e293b';
+        foreach (['header_background', 'hero_background', 'hero_heading', 'hero_text', 'navigation_menu', 'footer_background', 'website_body'] as $key) {
+            $raw = $request->input("color_settings.{$key}", []);
+            $enabled = !empty($raw['enabled']);
+            $light = $raw['light'] ?? $raw['color'] ?? $defaultLight;
+            $dark = $raw['dark'] ?? $raw['color'] ?? $defaultDark;
+            $colorSettings[$key] = [
+                'enabled' => $enabled,
+                'light' => preg_match('/^#[0-9A-Fa-f]{6}$/', $light) ? $light : $defaultLight,
+                'dark' => preg_match('/^#[0-9A-Fa-f]{6}$/', $dark) ? $dark : $defaultDark,
+            ];
+        }
+        $main['color_settings'] = $colorSettings;
+
         $contactInfo = array_merge($website->contact_info ?? [], $validated['contact_info'] ?? []);
         $socialLinks = $website->social_links ?? [];
         foreach ($validated['social_links'] ?? [] as $key => $value) {
@@ -250,7 +296,7 @@ class WebsiteController extends Controller
         }
         $website->update($main + ['contact_info' => $contactInfo, 'social_links' => $socialLinks]);
 
-        return redirect()->route('admin.websites.show', $website)
+        return redirect()->route('admin.websites.edit', $website)
             ->with('success', 'Website updated successfully.');
     }
 

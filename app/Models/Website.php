@@ -26,6 +26,7 @@ class Website extends Model
         'plan',
         'settings',
         'theme',
+        'color_settings',
         'contact_info',
         'social_links',
         'description',
@@ -46,6 +47,7 @@ class Website extends Model
     protected $casts = [
         'show_logo_in_hero' => 'boolean',
         'settings' => 'array',
+        'color_settings' => 'array',
         'contact_info' => 'array',
         'social_links' => 'array',
         'trial_ends_at' => 'datetime',

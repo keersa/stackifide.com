@@ -128,6 +128,89 @@
                     </div>
                 </div>
 
+                <!-- Colors -->
+                @php
+                    $colorSettings = old('color_settings', $website->color_settings ?? []);
+                    $colorKeys = [
+                        'header_background' => 'Header Background',
+                        'hero_background' => 'Hero Background',
+                        'hero_heading' => 'Hero Heading',
+                        'hero_text' => 'Hero Text',
+                        'navigation_menu' => 'Navigation Menu',
+                        'footer_background' => 'Footer Background',
+                        'website_body' => 'Website Body',
+                    ];
+                    $defaultLight = '#ffffff';
+                    $defaultDark = '#1e293b';
+                @endphp
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Color Overrides</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Override default theme colors. Enable each setting and choose colors for Light Mode and Dark Mode.</p>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="text-left py-3 pr-4 text-sm font-medium text-gray-700 dark:text-gray-300 w-20"></th>
+                                        <th class="text-left py-3 pr-4 text-sm font-medium text-gray-700 dark:text-gray-300">Setting</th>
+                                        <th class="text-left py-3 pr-4 text-sm font-medium text-gray-700 dark:text-gray-300">Light Mode</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-700 dark:text-gray-300">Dark Mode</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach($colorKeys as $key => $label)
+                                        @php
+                                            $setting = $colorSettings[$key] ?? [];
+                                            $enabled = old("color_settings.{$key}.enabled", $setting['enabled'] ?? false);
+                                            $light = old("color_settings.{$key}.light", $setting['light'] ?? $setting['color'] ?? $defaultLight);
+                                            $dark = old("color_settings.{$key}.dark", $setting['dark'] ?? $setting['color'] ?? $defaultDark);
+                                        @endphp
+                                        <tr>
+                                            <td class="py-3 px-2 align-top">
+                                                <label class="relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-1 border-transparent transition-colors focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 dark:focus-within:ring-offset-gray-800 {{ $enabled ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-600' }}">
+                                                    <input type="hidden" name="color_settings[{{ $key }}][enabled]" value="0">
+                                                    <input type="checkbox"
+                                                           name="color_settings[{{ $key }}][enabled]"
+                                                           value="1"
+                                                           {{ $enabled ? 'checked' : '' }}
+                                                           data-color-key="{{ $key }}"
+                                                           class="color-enable-toggle sr-only peer">
+                                                    <span class="pointer-events-none absolute left-1 top-1 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition-transform peer-checked:translate-x-5"></span>
+                                                </label>
+                                            </td>
+                                            <td class="py-3 pr-4 align-top">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $label }}</span>
+                                            </td>
+                                            <td class="py-3 pr-4 align-top">
+                                                <div class="flex items-center gap-2">
+                                                    <input type="color"
+                                                           name="color_settings[{{ $key }}][light]"
+                                                           value="{{ $light }}"
+                                                           class="color-picker-light h-10 w-14 cursor-pointer rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                           {{ $enabled ? '' : 'disabled' }}
+                                                           data-color-key="{{ $key }}">
+                                                    <span class="text-sm text-gray-500 dark:text-gray-400 font-mono color-hex-light" data-color-key="{{ $key }}">{{ $light }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 align-top">
+                                                <div class="flex items-center gap-2">
+                                                    <input type="color"
+                                                           name="color_settings[{{ $key }}][dark]"
+                                                           value="{{ $dark }}"
+                                                           class="color-picker-dark h-10 w-14 cursor-pointer rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                           {{ $enabled ? '' : 'disabled' }}
+                                                           data-color-key="{{ $key }}">
+                                                    <span class="text-sm text-gray-500 dark:text-gray-400 font-mono color-hex-dark" data-color-key="{{ $key }}">{{ $dark }}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Contact & Address -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
                     <div class="p-6">
@@ -313,6 +396,39 @@
                 showLogoLabel.classList.toggle('dark:bg-gray-600', !this.checked);
             });
         }
+
+        // Color settings: toggle enable/disable and update label + color pickers (light & dark)
+        document.querySelectorAll('.color-enable-toggle').forEach(function(checkbox) {
+            const key = checkbox.dataset.colorKey;
+            const label = checkbox.closest('label');
+            const pickersLight = document.querySelectorAll('.color-picker-light[data-color-key="' + key + '"]');
+            const pickersDark = document.querySelectorAll('.color-picker-dark[data-color-key="' + key + '"]');
+
+            function updateState() {
+                const enabled = checkbox.checked;
+                if (label) {
+                    label.classList.toggle('bg-indigo-600', enabled);
+                    label.classList.toggle('bg-gray-200', !enabled);
+                    label.classList.toggle('dark:bg-gray-600', !enabled);
+                }
+                pickersLight.forEach(p => p.disabled = !enabled);
+                pickersDark.forEach(p => p.disabled = !enabled);
+            }
+
+            checkbox.addEventListener('change', updateState);
+            updateState();
+        });
+
+        document.querySelectorAll('.color-picker-light').forEach(function(input) {
+            const key = input.dataset.colorKey;
+            const hexSpan = document.querySelector('.color-hex-light[data-color-key="' + key + '"]');
+            if (hexSpan) input.addEventListener('input', function() { hexSpan.textContent = this.value; });
+        });
+        document.querySelectorAll('.color-picker-dark').forEach(function(input) {
+            const key = input.dataset.colorKey;
+            const hexSpan = document.querySelector('.color-hex-dark[data-color-key="' + key + '"]');
+            if (hexSpan) input.addEventListener('input', function() { hexSpan.textContent = this.value; });
+        });
 
         const phoneInput = document.getElementById('contact_info_phone');
         if (!phoneInput) return;

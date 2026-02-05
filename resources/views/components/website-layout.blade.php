@@ -32,6 +32,21 @@
             $isInactive = $website && !$website->isActive();
             $accentHover = $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400';
             $accentActive = $theme === 'advanced' ? 'text-amber-600 dark:text-amber-400' : 'text-cyan-600 dark:text-cyan-400';
+            $colorSettings = $website ? ($website->color_settings ?? []) : [];
+            $c = function($key) use ($colorSettings) {
+                $s = $colorSettings[$key] ?? [];
+                if (empty($s['enabled'])) return [null, null];
+                $fallback = $s['color'] ?? null;
+                return [$s['light'] ?? $fallback, $s['dark'] ?? $fallback];
+            };
+            [$headerBgL, $headerBgD] = $c('header_background');
+            [$navColorL, $navColorD] = $c('navigation_menu');
+            [$footerBgL, $footerBgD] = $c('footer_background');
+            [$heroBgL, $heroBgD] = $c('hero_background');
+            [$heroHeadingL, $heroHeadingD] = $c('hero_heading');
+            [$heroTextL, $heroTextD] = $c('hero_text');
+            [$bodyBgL, $bodyBgD] = $c('website_body');
+            $hasColorOverrides = $headerBgL || $headerBgD || $navColorL || $navColorD || $footerBgL || $footerBgD || $heroBgL || $heroBgD || $heroHeadingL || $heroHeadingD || $heroTextL || $heroTextD || $bodyBgL || $bodyBgD;
         @endphp
 
         <title>{{ $website ? $website->name . ' - ' : '' }}{{ $website->tagline ? $website->tagline : '' }}</title>
@@ -55,6 +70,25 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @if($website && $hasColorOverrides)
+        <style>
+            @if($headerBgL).website-header-override { background-color: {{ $headerBgL }} !important; }@endif
+            @if($headerBgD).dark .website-header-override { background-color: {{ $headerBgD }} !important; }@endif
+            @if($navColorL)nav.website-nav-override a { color: {{ $navColorL }} !important; }@endif
+            @if($navColorD).dark nav.website-nav-override a { color: {{ $navColorD }} !important; }@endif
+            @if($footerBgL).website-footer-override { background-color: {{ $footerBgL }} !important; }@endif
+            @if($footerBgD).dark .website-footer-override { background-color: {{ $footerBgD }} !important; }@endif
+            @if($heroBgL).website-hero-bg-override { background: {{ $heroBgL }} !important; }@endif
+            @if($heroBgD).dark .website-hero-bg-override { background: {{ $heroBgD }} !important; }@endif
+            @if($heroHeadingL).website-hero-heading-override { color: {{ $heroHeadingL }} !important; }@endif
+            @if($heroHeadingD).dark .website-hero-heading-override { color: {{ $heroHeadingD }} !important; }@endif
+            @if($heroTextL).website-hero-text-override { color: {{ $heroTextL }} !important; }@endif
+            @if($heroTextD).dark .website-hero-text-override { color: {{ $heroTextD }} !important; }@endif
+            @if($bodyBgL).website-body-override { background-color: {{ $bodyBgL }} !important; }@endif
+            @if($bodyBgD).dark .website-body-override { background-color: {{ $bodyBgD }} !important; }@endif
+        </style>
+        @endif
     </head>
     <body class="font-sans antialiased bg-white dark:bg-gray-900">
         <div class="min-h-screen">
@@ -67,7 +101,7 @@
 
             <!-- Responsive Navigation -->
             @if($website)
-                <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700" x-data="{ mobileMenuOpen: false }">
+                <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 {{ ($headerBgL || $headerBgD) ? 'website-header-override' : '' }} {{ ($navColorL || $navColorD) ? 'website-nav-override' : '' }}" x-data="{ mobileMenuOpen: false }">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-24">
                             <div class="flex items-center shrink-0">
@@ -230,7 +264,7 @@
                 {{ $slot }}
             </main>
             @if($website)
-            <footer id="footer" class="py-12 sm:py-16 bg-white dark:bg-gray-800 shadow-sm border-t border-gray-200 dark:border-gray-700">
+            <footer id="footer" class="py-12 sm:py-16 bg-white dark:bg-gray-800 shadow-sm border-t border-gray-200 dark:border-gray-700 {{ ($footerBgL || $footerBgD) ? 'website-footer-override' : '' }}">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col items-center gap-6">
                         @php
