@@ -1,4 +1,5 @@
 <x-admin-layout>
+    <style>[x-cloak] { display: none !important; }</style>
     <x-admin-website-header :website="$website" title="Edit Page" />
 
     <div class="py-2">
@@ -13,27 +14,30 @@
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Page Information</h3>
                     <div class="space-y-4">
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title *</label>
-                            <input type="text" 
-                                   name="title" 
-                                   id="title"
-                                   value="{{ old('title', $page->title) }}"
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            @error('title')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
-                            <input type="text" 
-                                   name="slug" 
-                                   id="slug"
-                                   value="{{ old('slug', $page->slug) }}"
-                                   placeholder="Auto-generated from title if left empty"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <p class="mt-1 text-sm text-gray-500">Leave empty to auto-generate from title</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title *</label>
+                                <input type="text" 
+                                    name="title" 
+                                    id="title"
+                                    value="{{ old('title', $page->title) }}"
+                                    required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <p class="mt-1 text-sm text-gray-500">The main title of the page. This will be displayed in the browser tab and in the page title.</p>
+                                @error('title')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
+                                <input type="text" 
+                                    name="slug" 
+                                    id="slug"
+                                    value="{{ old('slug', $page->slug) }}"
+                                    placeholder="Auto-generated from title if left empty"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <p class="mt-1 text-sm text-gray-500">Leave empty to auto-generate from title</p>
+                            </div>
                         </div>
                         <div>
                             <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Content</label>
@@ -42,32 +46,43 @@
                                       rows="10"
                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('content', $page->content) }}</textarea>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Title</label>
-                                <input type="text" 
-                                       name="meta_title" 
-                                       id="meta_title"
-                                       value="{{ old('meta_title', $page->meta_title) }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sort Order</label>
-                                <input type="number" 
-                                       name="sort_order" 
-                                       id="sort_order"
-                                       value="{{ old('sort_order', $page->sort_order ?? 0) }}"
-                                       min="0"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+
+                        <div x-data="{ metaOpen: false }" class="space-y-4">
+                            <button type="button"
+                                    @click="metaOpen = !metaOpen"
+                                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                                <span>Meta Data</span>
+                                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': metaOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="metaOpen"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0"
+                                 x-transition:enter-end="opacity-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 x-cloak
+                                 class="space-y-4">
+                                <div>
+                                    <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Title</label>
+                                    <input type="text" 
+                                           name="meta_title" 
+                                           id="meta_title"
+                                           value="{{ old('meta_title', $page->meta_title) }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
+                                    <textarea name="meta_description" 
+                                              id="meta_description"
+                                              rows="3"
+                                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('meta_description', $page->meta_description) }}</textarea>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
-                            <textarea name="meta_description" 
-                                      id="meta_description"
-                                      rows="3"
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('meta_description', $page->meta_description) }}</textarea>
-                        </div>
+
                         <div class="flex items-center">
                             <input type="checkbox" 
                                    name="is_published" 
