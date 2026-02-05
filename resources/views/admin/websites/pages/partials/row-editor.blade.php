@@ -11,13 +11,18 @@
             flex-wrap: wrap;
             gap: 0.25rem;
             justify-content: flex-start !important;
+            background: #efefef!important;
+            margin-bottom:0!important;
+            padding:.25em;
+            padding-top:.5em;
+            border-radius: 0.25rem!important;
         }
         trix-toolbar .trix-button-group-spacer { display: none !important; }
         trix-toolbar .trix-button-group {
             border: none !important;
             margin-left: 0 !important;
         }
-        trix-toolbar .trix-button-group:not(:first-child) {
+        trix-toolbar .trix-button-group {
             border-left: 1px solid rgb(209 213 219) !important;
             margin-left: 0.25rem !important;
         }
@@ -42,10 +47,12 @@
         trix-toolbar .trix-button--icon-code-block-very-high { display: none !important; }
         trix-toolbar .trix-button--icon-code-block-very-low { display: none !important; }
 
+        .dark trix-toolbar .trix-button-row { background: #222!important; }
         .dark trix-editor, .dark trix-toolbar { border: none !important; background: rgb(55 65 81); color: rgb(243 244 246); }
         .dark trix-toolbar .trix-button-group, .dark trix-toolbar .trix-button-group:not(:first-child) { border: none !important; }
         .dark trix-toolbar .trix-button { border: none !important; color: rgb(243 244 246); }
         .dark trix-toolbar .trix-button--icon::before { filter: invert(1); opacity: 0.9; }
+        .dark trix-toolbar .trix-button--icon.trix-active { background: black !important; }
         .dark trix-toolbar .trix-button--icon.trix-active::before { opacity: 1; }
         .dark trix-toolbar .trix-button--icon:disabled::before { opacity: 0.3; }
     </style>
