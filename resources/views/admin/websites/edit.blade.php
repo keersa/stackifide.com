@@ -87,6 +87,47 @@
                     </div>
                 </div>
 
+                <!-- Homepage Settings -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Homepage Settings</h3>
+                        <div class="space-y-6">
+                            @php
+                                $showLogoInHero = old('show_logo_in_hero', $website->show_logo_in_hero ?? true);
+                            @endphp
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <label for="show_logo_in_hero" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Show Logo in Hero Section</label>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Display your logo in the hero section of the homepage.</p>
+                                </div>
+                                <label id="show_logo_in_hero_label" class="relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-1 border-transparent transition-colors focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 dark:focus-within:ring-offset-gray-800 {{ $showLogoInHero ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-600' }}">
+                                    <input type="hidden" name="show_logo_in_hero" value="0">
+                                    <input type="checkbox"
+                                           name="show_logo_in_hero"
+                                           id="show_logo_in_hero"
+                                           value="1"
+                                           {{ $showLogoInHero ? 'checked' : '' }}
+                                           class="sr-only peer">
+                                    <span class="pointer-events-none absolute left-1 top-1 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition-transform peer-checked:translate-x-5"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="hero_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hero Title</label>
+                                <input type="text"
+                                       name="hero_title"
+                                       id="hero_title"
+                                       value="{{ old('hero_title', $website->hero_title) }}"
+                                       placeholder="{{ $website->name }}"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Leave blank to use the restaurant name as the hero title.</p>
+                                @error('hero_title')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Contact & Address -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
                     <div class="p-6">
@@ -262,6 +303,17 @@
     @push('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Switch toggle visual state for Show Logo in Hero
+        const showLogoCheckbox = document.getElementById('show_logo_in_hero');
+        const showLogoLabel = document.getElementById('show_logo_in_hero_label');
+        if (showLogoCheckbox && showLogoLabel) {
+            showLogoCheckbox.addEventListener('change', function() {
+                showLogoLabel.classList.toggle('bg-indigo-600', this.checked);
+                showLogoLabel.classList.toggle('bg-gray-200', !this.checked);
+                showLogoLabel.classList.toggle('dark:bg-gray-600', !this.checked);
+            });
+        }
+
         const phoneInput = document.getElementById('contact_info_phone');
         if (!phoneInput) return;
 

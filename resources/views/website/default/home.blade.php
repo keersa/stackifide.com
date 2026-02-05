@@ -20,11 +20,24 @@
             <div class="absolute -bottom-12 -left-12 w-72 h-72 bg-slate-400/10 rounded-full blur-3xl" aria-hidden="true"></div>
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 sm:py-32">
                 <div class="text-center">
-                    <p class="text-cyan-400/90 text-sm font-medium tracking-widest uppercase mb-4">Welcome</p>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5">{{ $website->name }}</h1>
-                    @if($website->tagline)
-                        <p class="text-xl sm:text-2xl text-slate-300 max-w-2xl mx-auto mb-10">{{ $website->tagline }}</p>
+                    @php
+                        $showLogoInHero = $website->show_logo_in_hero ?? true;
+                        $heroTitle = $website->hero_title ?: $website->name;
+                        $logoUrl = $website->logo_rect_url;
+                        $showLogo = $showLogoInHero && $logoUrl;
+                    @endphp
+                    @if($showLogo)
+                        <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
+                    @else
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5">{{ $website->name }}</h1>
                     @endif
+                    
+                    @if($website->hero_title) 
+                        <h3 class="text-2xl pb-8">{{ $website->hero_title }}</h3>
+                    @elseif($website->tagline)
+                        <h3 class="text-2xl pb-8">{{ $website->tagline }}</h3>
+                    @endif
+
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="{{ route('website.menu') }}" 
                            class="inline-flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-8 py-3.5 rounded-lg font-semibold transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5">
@@ -37,6 +50,7 @@
                             </a>
                         @endif
                     </div>
+                    
                 </div>
             </div>
         </div>

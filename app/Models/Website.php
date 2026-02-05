@@ -30,6 +30,8 @@ class Website extends Model
         'social_links',
         'description',
         'tagline',
+        'show_logo_in_hero',
+        'hero_title',
         'timezone',
         'trial_ends_at',
         'subscription_ends_at',
@@ -42,6 +44,7 @@ class Website extends Model
     ];
 
     protected $casts = [
+        'show_logo_in_hero' => 'boolean',
         'settings' => 'array',
         'contact_info' => 'array',
         'social_links' => 'array',

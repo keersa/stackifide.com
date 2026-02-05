@@ -9,10 +9,20 @@
             <div class="absolute bottom-20 left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-amber-300/10 blur-xl advanced-fade-in advanced-stagger-4"></div>
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
                 <div class="text-center">
+                    @php
+                        $showLogoInHero = $website->show_logo_in_hero ?? true;
+                        $heroTitle = $website->hero_title ?: $website->name;
+                        $logoUrl = $website->logo_rect_url;
+                        $showLogo = $showLogoInHero && $logoUrl;
+                    @endphp
                     <p class="text-amber-200 dark:text-amber-300/80 text-xs sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium mb-3 sm:mb-4 advanced-fade-in">Welcome to</p>
-                    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1">
-                        {{ $website->name }}
-                    </h1>
+                    @if($showLogo)
+                        <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
+                    @else
+                        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1">
+                            {{ $website->name }}
+                        </h1>
+                    @endif
                     @if($website->tagline)
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/95 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2 advanced-fade-in advanced-stagger-2">
                             {{ $website->tagline }}

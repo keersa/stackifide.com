@@ -204,6 +204,8 @@ class WebsiteController extends Controller
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'description' => ['nullable', 'string'],
             'tagline' => ['nullable', 'string', 'max:255'],
+            'show_logo_in_hero' => ['nullable', 'boolean'],
+            'hero_title' => ['nullable', 'string', 'max:255'],
             'timezone' => [
                 'nullable',
                 'string',
@@ -235,6 +237,7 @@ class WebsiteController extends Controller
         ]);
 
         $main = collect($validated)->except(['contact_info', 'social_links'])->all();
+        $main['show_logo_in_hero'] = $request->boolean('show_logo_in_hero');
         $contactInfo = array_merge($website->contact_info ?? [], $validated['contact_info'] ?? []);
         $socialLinks = $website->social_links ?? [];
         foreach ($validated['social_links'] ?? [] as $key => $value) {

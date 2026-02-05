@@ -72,15 +72,12 @@
                         <div class="flex justify-between items-center h-24">
                             <div class="flex items-center shrink-0">
                                 <a href="{{ route('website.home') }}" class="flex items-center gap-2">
-                                    @php
-                                        $preferredLogoType = $website->settings['preferred_logo_type'] ?? 'rect';
-                                        $logoUrl = $preferredLogoType === 'rect' ? $website->logo_rect_url : $website->logo_url;
-                                    @endphp
+                            
 
-                                    @if($logoUrl)
-                                        <img src="{{ $logoUrl }}" 
+                                    @if($website->logo_rect_url)
+                                        <img src="{{ $website->logo_rect_url }}" 
                                              alt="{{ $website->name }} Logo" 
-                                             class="{{ $preferredLogoType === 'rect' ? 'h-24 md:h-100' : 'h-24 md:h-100' }} py-2 w-auto object-contain"
+                                             class="max-h-[100px] py-2 w-auto object-contain"
                                         >
                                     @else
                                         <span class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate max-w-[140px] sm:max-w-none">

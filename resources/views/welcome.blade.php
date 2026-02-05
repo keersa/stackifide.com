@@ -22,38 +22,38 @@
                         </svg>
                         <span>One-time Setup Fee: $99</span>
                     </div>
-                    <ul class="space-y-3 text-left mb-24">
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                    <ul class="space-y-1.5 text-left mb-24">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Custom Website</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Hosting</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Analytics</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Search Engine Optimization</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Social Media Integration</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
@@ -79,53 +79,54 @@
                         </svg>
                         <span>One-time Setup Fee: $149</span>
                     </div>
-                    <ul class="space-y-3 text-left mb-24">
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300"><li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg"><svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <ul class="space-y-1.5 text-left mb-24">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                            <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Custom Website</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Hosting</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Analytics</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Search Engine Optimization</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Social Media Integration</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
                             <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span>Menu Management</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
-                            <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                            <svg class="w-5 h-5 text-lime-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"></path>
                             </svg>
-                            <span class="text-green-500 dark:text-green-400 font-bold">Online Ordering</span>
+                            <span class="text-lime-500 dark:text-green-400 font-bold">Online Ordering</span>
                         </li>
-                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
-                            <svg class="w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <li class="flex items-start gap-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                            <svg class="w-5 h-5 text-lime-500 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"></path>
                             </svg>
-                            <span class="text-green-500 dark:text-green-400 font-bold">Premium Support</span>
+                            <span class="text-lime-500 dark:text-green-400 font-black">Premium Support</span>
                         </li>
                     </ul>
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8 px-4">

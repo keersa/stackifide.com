@@ -2,8 +2,7 @@
     <x-admin-website-header :website="$website" title="Manage Images" />
 
     <div class="py-2 space-y-6" x-data="{ 
-        activeTab: localStorage.getItem('last_logo_tab_{{ $website->id }}') || @js($website->settings['preferred_logo_type'] ?? 'rect'),
-        preferredType: @js($website->settings['preferred_logo_type'] ?? 'rect'),
+        activeTab: localStorage.getItem('last_logo_tab_{{ $website->id }}') || 'rect',
         confirmModal: {
             show: false,
             type: '',
@@ -11,27 +10,9 @@
             message: '',
             loading: false
         },
-        async setPreferred(type) {
-            try {
-                const res = await fetch(@js(route('admin.websites.images.set-preferred-logo', $website)), {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': @js(csrf_token()),
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({ type })
-                });
-                if (res.ok) {
-                    this.preferredType = type;
-                }
-            } catch (err) {
-                alert('Failed to set preferred logo');
-            }
-        },
         openDeleteModal(type) {
             this.confirmModal.type = type;
-            this.confirmModal.title = type === 'rect' ? 'Remove Rectangular Logo' : 'Remove Square Logo';
+            this.confirmModal.title = type === 'rect' ? 'Remove Website Logo' : 'Remove Website Icon';
             this.confirmModal.message = 'Are you sure you want to remove this logo? This will clear the logo from your website immediately.';
             this.confirmModal.show = true;
         },
@@ -73,46 +54,31 @@
                     :class="activeTab === 'rect' ? 'bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'"
                     class="px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all"
                 >
-                    Rectangular Logo (3:1)
+                    Website Logo
                 </button>
                 <button 
                     @click="activeTab = 'square'"
                     :class="activeTab === 'square' ? 'bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'"
                     class="px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all"
                 >
-                    Square Logo (1:1)
+                    Website Icon
                 </button>
             </div>
         </div>
 
-        <!-- Rectangular Logo Management Card -->
+        <!-- Website Logo Management Card -->
         <div x-show="activeTab === 'rect'" x-cloak class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div class="px-8 py-5 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between">
-                <h3 class="font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('Rectangular Website Logo') }}</h3>
-                <div class="flex items-center gap-3">
-                    <template x-if="preferredType === 'rect'">
-                        <span class="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-black uppercase rounded-full border border-green-200 dark:border-green-800 flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                            Active
-                        </span>
-                    </template>
-                    <button 
-                        x-show="preferredType !== 'rect'"
-                        @click="setPreferred('rect')"
-                        class="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-[10px] font-black uppercase rounded-full transition-all"
-                    >
-                        Set as Active
-                    </button>
-                </div>
+            <div class="px-8 py-5 border-b border-gray-50 dark:border-gray-700">
+                <h3 class="font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('Website Logo') }}</h3>
             </div>
             <div class="p-8">
                 <div 
                     x-data="menuImageUploader({
                         uploadUrl: @js(route('admin.websites.images.upload-logo', ['website' => $website, 'type' => 'rect'])),
                         csrf: @js(csrf_token()),
-                        aspectRatio: 3 / 1,
-                        outputWidth: 1200,
-                        outputHeight: 400,
+                        aspectRatio: 0,
+                        outputMaxWidth: 1200,
+                        outputMaxHeight: 600,
                         outputType: 'image/png',
                         initialPath: @js($website->logo_rect ?? ''),
                         initialUrl: @js($website->logo_rect_url ?? ''),
@@ -123,9 +89,9 @@
                     <div class="flex flex-col md:flex-row gap-8 items-start">
                         <!-- Preview Area -->
                         <div class="w-full md:w-96 shrink-0">
-                            <div class="aspect-[3/1] bg-gray-50 dark:bg-gray-900/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex items-center justify-center overflow-hidden relative group">
+                            <div class="min-h-24 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex items-center justify-center overflow-hidden relative group p-4">
                                 <template x-if="imageUrl">
-                                    <img :src="imageUrl" class="w-full h-full object-contain p-4" alt="Website Rectangular Logo">
+                                    <img :src="imageUrl" class="max-h-64 w-auto object-contain" alt="Website Rectangular Logo">
                                 </template>
                                 <template x-if="!imageUrl">
                                     <div class="text-center p-6">
@@ -147,8 +113,8 @@
                         <!-- Upload Area -->
                         <div class="flex-1 space-y-4">
                             <div>
-                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Upload Rectangular Logo</h4>
-                                <p class="text-sm text-gray-500">Recommended: 3:1 ratio PNG with transparent background. Minimum 1200x400px.</p>
+                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Upload and Crop Website Logo</h4>
+                                <p class="text-sm text-gray-500">Recommended: 2:1 ratio PNG with transparent background. Minimum 800x400px.</p>
                             </div>
 
                             <div class="relative">
@@ -166,7 +132,7 @@
                                 </label>
                             </div>
 
-                            <div x-show="imagePath" class="pt-4 border-t border-gray-50 dark:border-gray-700">
+                            <div x-show="imagePath" class="hidden pt-4 border-t border-gray-50 dark:border-gray-700">
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current S3 Path</p>
                                 <p class="text-xs font-mono text-gray-500 break-all" x-text="imagePath"></p>
                             </div>
@@ -179,8 +145,8 @@
                         <div class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-100 dark:border-gray-700">
                             <div class="px-8 py-6 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-900/50">
                                 <div>
-                                    <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Crop Rectangular Logo</h3>
-                                    <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Adjust to fit the 3:1 frame</p>
+                                    <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Crop Website Logo</h3>
+                                    <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Crop at any aspect ratio</p>
                                 </div>
                                 <button type="button" @click="closeModal()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -216,25 +182,10 @@
             </div>
         </div>
 
-        <!-- Square Logo Management Card -->
+        <!-- Website Icon Management Card -->
         <div x-show="activeTab === 'square'" x-cloak class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div class="px-8 py-5 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between">
-                <h3 class="font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('Square Website Logo') }}</h3>
-                <div class="flex items-center gap-3">
-                    <template x-if="preferredType === 'square'">
-                        <span class="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-black uppercase rounded-full border border-green-200 dark:border-green-800 flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                            Active
-                        </span>
-                    </template>
-                    <button 
-                        x-show="preferredType !== 'square'"
-                        @click="setPreferred('square')"
-                        class="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-[10px] font-black uppercase rounded-full transition-all"
-                    >
-                        Set as Active
-                    </button>
-                </div>
+            <div class="px-8 py-5 border-b border-gray-50 dark:border-gray-700">
+                <h3 class="font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('Website Icon') }}</h3>
             </div>
             <div class="p-8">
                 <div 
@@ -278,7 +229,7 @@
                         <!-- Upload Area -->
                         <div class="flex-1 space-y-4">
                             <div>
-                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Upload Square Logo</h4>
+                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Upload and Crop Square Website Icon</h4>
                                 <p class="text-sm text-gray-500">Recommended: Square PNG with transparent background. Minimum 512x512px.</p>
                             </div>
 
@@ -297,7 +248,7 @@
                                 </label>
                             </div>
 
-                            <div x-show="imagePath" class="pt-4 border-t border-gray-50 dark:border-gray-700">
+                            <div x-show="imagePath" class="hidden pt-4 border-t border-gray-50 dark:border-gray-700">
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current S3 Path</p>
                                 <p class="text-xs font-mono text-gray-500 break-all" x-text="imagePath"></p>
                             </div>
@@ -310,7 +261,7 @@
                         <div class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-100 dark:border-gray-700">
                             <div class="px-8 py-6 border-b border-gray-50 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-900/50">
                                 <div>
-                                    <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Crop Square Logo</h3>
+                                    <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Crop Website Icon</h3>
                                     <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Adjust to fit the square frame</p>
                                 </div>
                                 <button type="button" @click="closeModal()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">

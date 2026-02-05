@@ -12,11 +12,11 @@ document.addEventListener('alpine:init', () => {
         outputWidth: options.outputWidth ?? 1200,
         outputHeight: options.outputHeight ?? 900,
         outputType: options.outputType ?? 'image/jpeg',
-        outputQuality: options.outputQuality ?? 0.88,
-
+        // PNG is lossless: use 1.0 for no compression. JPEG/WebP: 0.92+ for high quality.
+        outputQuality: options.outputQuality ?? (options.outputType === 'image/png' ? 1 : 0.92),
+        fillColor: options.fillColor ?? 'transparent',
         cropper: null,
         uploading: false,
-
         imageUrl: options.initialUrl ?? '',
         imagePath: options.initialPath ?? '',
         open: false,
@@ -57,12 +57,25 @@ document.addEventListener('alpine:init', () => {
 
             this.uploading = true;
             try {
-                const canvas = this.cropper.getCroppedCanvas({
-                    width: this.outputWidth,
-                    height: this.outputHeight,
+                const canvasOptions = {
                     imageSmoothingEnabled: true,
                     imageSmoothingQuality: 'high',
-                });
+                    minWidth: 0,
+                    minHeight: 0,
+                };
+                if (this.fillColor && this.fillColor !== 'transparent') {
+                    canvasOptions.fillColor = this.fillColor;
+                } else {
+                    canvasOptions.fillColor = 'rgba(0, 0, 0, 0)';
+                }
+                if (this.outputMaxWidth || this.outputMaxHeight) {
+                    if (this.outputMaxWidth) canvasOptions.maxWidth = this.outputMaxWidth;
+                    if (this.outputMaxHeight) canvasOptions.maxHeight = this.outputMaxHeight;
+                } else {
+                    canvasOptions.width = this.outputWidth;
+                    canvasOptions.height = this.outputHeight;
+                }
+                const canvas = this.cropper.getCroppedCanvas(canvasOptions);
 
                 const blob = await new Promise((resolve) =>
                     canvas.toBlob(resolve, this.outputType, this.outputQuality)

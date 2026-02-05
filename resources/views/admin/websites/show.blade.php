@@ -164,7 +164,7 @@
                                 </p>
                             </div>
                             @endif
-                            <div class="pt-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
+                            <div class="pt-4 space-y-2">
                                 @if(strtolower($website->plan) === 'basic')
                                 <button type="button" onclick="openUpgradeModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded transition mb-2">
                                     Upgrade to Pro
