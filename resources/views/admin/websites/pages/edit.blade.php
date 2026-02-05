@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-end space-x-4">
+            <div class="flex justify-end space-x-4 py-4">
                 <a href="{{ route('admin.websites.pages.index', $website) }}" 
                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                     Cancel
