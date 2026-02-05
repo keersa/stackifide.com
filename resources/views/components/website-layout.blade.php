@@ -34,7 +34,7 @@
             $accentActive = $theme === 'advanced' ? 'text-amber-600 dark:text-amber-400' : 'text-cyan-600 dark:text-cyan-400';
         @endphp
 
-        <title>{{ $website ? $website->name . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $website ? $website->name . ' - ' : '' }}{{ $website->tagline ? $website->tagline : '' }}</title>
 
         <!-- Favicon -->
         @if($website->logo_url)
