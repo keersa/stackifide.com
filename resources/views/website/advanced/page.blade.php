@@ -17,10 +17,8 @@
         </div>
 
         <!-- Page Content -->
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
             <article class="relative">
-                <div class="absolute -left-2 sm:-left-4 top-0 w-0.5 sm:w-1 h-full bg-gradient-to-b from-amber-400 to-amber-600 dark:from-amber-600 dark:to-amber-800 rounded-full hidden md:block"></div>
-                <div class="bg-white dark:bg-gray-800/90 rounded-2xl sm:rounded-3xl shadow-xl border border-amber-100/50 dark:border-gray-700/50 overflow-hidden">
                     <div class="p-5 sm:p-6 lg:p-12">
                         <div class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none
                             prose-headings:font-display prose-headings:text-gray-900 dark:prose-headings:text-white
@@ -33,7 +31,7 @@
                             prose-blockquote:border-amber-500 prose-blockquote:bg-amber-50/50 dark:prose-blockquote:bg-amber-900/10 dark:prose-blockquote:border-amber-600
                             prose-img:rounded-xl prose-img:w-full prose-img:h-auto
                             prose-pre:overflow-x-auto prose-pre:text-sm">
-                            {!! $page->content !!}
+                            @include('website.partials.page-content', ['page' => $page])
                         </div>
                     </div>
                 </div>

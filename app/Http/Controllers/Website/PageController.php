@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Helpers\WebsiteHelper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -108,7 +110,7 @@ class PageController extends Controller
             // Ensure uniqueness within website
             $counter = 1;
             $originalSlug = $validated['slug'];
-            while (Page::where('slug', $validated['slug'])->exists()) {
+            while (Page::where('slug', $validated['slug'])->where('website_id', $website->id)->exists()) {
                 $validated['slug'] = $originalSlug . '-' . $counter;
                 $counter++;
             }
@@ -255,7 +257,7 @@ class PageController extends Controller
             // Ensure uniqueness within website
             $counter = 1;
             $originalSlug = $validated['slug'];
-            while (Page::where('slug', $validated['slug'])->where('id', '!=', $page->id)->exists()) {
+            while (Page::where('slug', $validated['slug'])->where('website_id', $website->id)->where('id', '!=', $pageModel->id)->exists()) {
                 $validated['slug'] = $originalSlug . '-' . $counter;
                 $counter++;
             }
@@ -264,7 +266,7 @@ class PageController extends Controller
         $pageModel->update($validated);
 
         // Always redirect to admin route
-        return redirect()->route('admin.websites.pages.index', $website)
+        return redirect()->route('admin.websites.pages.edit', [$website, $pageModel->id])
             ->with('success', 'Page updated successfully.');
     }
 
@@ -330,5 +332,74 @@ class PageController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Upload a page content image to S3.
+     * Expects: multipart/form-data with `image` file (can be client-cropped).
+     * Returns: { path: string, url: string }
+     */
+    public function uploadImage(Request $request, $website): JsonResponse
+    {
+        $routeWebsite = $request->route('website');
+        $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
+        $this->checkWebsiteAccess($website);
+
+        config(['filesystems.disks.s3.throw' => true]);
+        if (method_exists(Storage::class, 'forgetDisk')) {
+            Storage::forgetDisk('s3');
+        }
+
+        $bucket = config('filesystems.disks.s3.bucket');
+        if (empty($bucket)) {
+            return response()->json([
+                'message' => 'S3 is not configured: missing AWS_BUCKET.',
+            ], 500);
+        }
+
+        $validated = $request->validate([
+            'image' => ['required', 'file', 'image', 'max:5120'],
+        ]);
+
+        /** @var \Illuminate\Http\UploadedFile $file */
+        $file = $validated['image'];
+        $extension = strtolower($file->getClientOriginalExtension() ?: 'png');
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+            $extension = 'png';
+        }
+
+        $filename = 'page-content-' . (string) Str::uuid() . '.' . $extension;
+        $path = "websites/{$website->id}/images/{$filename}";
+
+        try {
+            try {
+                Storage::disk('s3')->putFileAs(
+                    "websites/{$website->id}/images",
+                    $file,
+                    $filename,
+                    ['visibility' => 'public']
+                );
+            } catch (\Throwable $e) {
+                if (str_contains($e->getMessage(), 'AccessControlListNotSupported') || str_contains($e->getMessage(), 'does not allow ACLs') || str_contains($e->getMessage(), '400 Bad Request')) {
+                    Storage::disk('s3')->putFileAs(
+                        "websites/{$website->id}/images",
+                        $file,
+                        $filename
+                    );
+                } else {
+                    throw $e;
+                }
+            }
+
+            return response()->json([
+                'path' => $path,
+                'url' => Storage::disk('s3')->url($path),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Upload failed: ' . $e->getMessage(),
+                'details' => app()->environment('local') ? $e->getTraceAsString() : null,
+            ], 500);
+        }
     }
 }

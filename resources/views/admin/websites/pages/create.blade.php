@@ -1,4 +1,22 @@
+@php
+    $createInitialRows = [];
+    $createContentSource = old('content');
+    if ($createContentSource) {
+        $decoded = json_decode($createContentSource, true);
+        if (is_array($decoded) && isset($decoded['rows']) && is_array($decoded['rows'])) {
+            $createInitialRows = $decoded['rows'];
+        }
+    }
+@endphp
+
 <x-admin-layout>
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
+    @endpush
+    @push('scripts')
+        <script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"></script>
+    @endpush
+    <style>[x-cloak] { display: none !important; }</style>
     <x-admin-website-header :website="$website" title="Create Page" />
 
     <div class="py-2">
@@ -34,38 +52,56 @@
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <p class="mt-1 text-sm text-gray-500">Leave empty to auto-generate from title</p>
                         </div>
-                        <div>
-                            <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Content</label>
-                            <textarea name="content" 
-                                      id="content"
-                                      rows="10"
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('content') }}</textarea>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Title</label>
-                                <input type="text" 
-                                       name="meta_title" 
-                                       id="meta_title"
-                                       value="{{ old('meta_title') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        @include('admin.websites.pages.partials.row-editor', [
+                            'initialRows' => $createInitialRows,
+                            'uploadUrl' => route('admin.websites.pages.upload-image', $website),
+                            'csrf' => csrf_token(),
+                        ])
+                        <div x-data="{ metaOpen: false }" class="space-y-4">
+                            <button type="button"
+                                    @click="metaOpen = !metaOpen"
+                                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                                <span>Meta Data</span>
+                                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': metaOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="metaOpen"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0"
+                                 x-transition:enter-end="opacity-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 x-cloak
+                                 class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Title</label>
+                                        <input type="text" 
+                                               name="meta_title" 
+                                               id="meta_title"
+                                               value="{{ old('meta_title') }}"
+                                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sort Order</label>
+                                        <input type="number" 
+                                               name="sort_order" 
+                                               id="sort_order"
+                                               value="{{ old('sort_order', 0) }}"
+                                               min="0"
+                                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
+                                    <textarea name="meta_description" 
+                                              id="meta_description"
+                                              rows="3"
+                                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('meta_description') }}</textarea>
+                                </div>
                             </div>
-                            <div>
-                                <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sort Order</label>
-                                <input type="number" 
-                                       name="sort_order" 
-                                       id="sort_order"
-                                       value="{{ old('sort_order', 0) }}"
-                                       min="0"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
-                            <textarea name="meta_description" 
-                                      id="meta_description"
-                                      rows="3"
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('meta_description') }}</textarea>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" 

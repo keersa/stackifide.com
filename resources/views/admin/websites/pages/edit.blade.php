@@ -1,4 +1,31 @@
+@php
+    $initialRows = [];
+    $contentSource = old('content', $page->content);
+    if ($contentSource) {
+        $decoded = json_decode($contentSource, true);
+        if (is_array($decoded) && isset($decoded['rows']) && is_array($decoded['rows'])) {
+            $initialRows = $decoded['rows'];
+        } else {
+            $initialRows = [
+                [
+                    'id' => \Illuminate\Support\Str::uuid(),
+                    'type' => '1-col',
+                    'columns' => [
+                        ['id' => \Illuminate\Support\Str::uuid(), 'type' => 'text', 'content' => $contentSource, 'path' => null, 'url' => null],
+                    ],
+                ],
+            ];
+        }
+    }
+@endphp
+
 <x-admin-layout>
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
+    @endpush
+    @push('scripts')
+        <script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"></script>
+    @endpush
     <style>[x-cloak] { display: none !important; }</style>
     <x-admin-website-header :website="$website" title="Edit Page" />
 
@@ -39,13 +66,12 @@
                                 <p class="mt-1 text-sm text-gray-500">Leave empty to auto-generate from title</p>
                             </div>
                         </div>
-                        <div>
-                            <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Content</label>
-                            <textarea name="content" 
-                                      id="content"
-                                      rows="10"
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('content', $page->content) }}</textarea>
-                        </div>
+
+                        @include('admin.websites.pages.partials.row-editor', [
+                            'initialRows' => $initialRows,
+                            'uploadUrl' => route('admin.websites.pages.upload-image', $website),
+                            'csrf' => csrf_token(),
+                        ])
 
                         <div x-data="{ metaOpen: false }" class="space-y-4">
                             <button type="button"

@@ -1,7 +1,9 @@
 import './bootstrap';
 
 import Alpine from 'alpinejs';
+import Sort from '@alpinejs/sort';
 
+Alpine.plugin(Sort);
 window.Alpine = Alpine;
 
 document.addEventListener('alpine:init', () => {
@@ -9,6 +11,8 @@ document.addEventListener('alpine:init', () => {
         aspectRatio: options.aspectRatio ?? (4 / 3),
         uploadUrl: options.uploadUrl ?? null,
         csrf: options.csrf ?? null,
+        rowIndex: options.rowIndex ?? null,
+        colIndex: options.colIndex ?? null,
         outputWidth: options.outputWidth ?? 1200,
         outputHeight: options.outputHeight ?? 900,
         outputType: options.outputType ?? 'image/jpeg',
@@ -121,6 +125,12 @@ document.addEventListener('alpine:init', () => {
                 this.imagePath = data.path;
                 this.imageUrl = data?.url || '';
                 if (this.$refs.imageInput) this.$refs.imageInput.value = this.imagePath;
+                this.$dispatch('image-uploaded', {
+                    path: data.path,
+                    url: data?.url || '',
+                    rowIndex: this.rowIndex,
+                    colIndex: this.colIndex,
+                });
                 this.closeModal();
             } catch (err) {
                 alert(err?.message || 'Upload failed');
@@ -134,6 +144,7 @@ document.addEventListener('alpine:init', () => {
             this.imageUrl = '';
             if (this.$refs.imageInput) this.$refs.imageInput.value = '';
             if (this.$refs.fileInput) this.$refs.fileInput.value = '';
+            this.$dispatch('image-removed', { rowIndex: this.rowIndex, colIndex: this.colIndex, path: null, url: null });
         },
 
         closeModal() {
@@ -141,6 +152,89 @@ document.addEventListener('alpine:init', () => {
             if (this.cropper) {
                 this.cropper.destroy();
                 this.cropper = null;
+            }
+        },
+    }));
+
+    Alpine.data('pageRowEditor', (initialRows = [], uploadUrl = '', csrf = '') => ({
+        rows: JSON.parse(JSON.stringify(initialRows)),
+        uploadUrl,
+        csrf,
+
+        init() {
+            if (!this.rows.length) {
+                this.addRow('1-col');
+            }
+            this.syncToInput();
+            this.$watch('rows', () => this.syncToInput(), { deep: true });
+        },
+
+        onSort(itemId, newPosition) {
+            const oldIndex = this.rows.findIndex((r) => r.id === itemId);
+            if (oldIndex === -1 || oldIndex === newPosition) return;
+            const [removed] = this.rows.splice(oldIndex, 1);
+            this.rows.splice(newPosition, 0, removed);
+        },
+
+        uuid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+                const r = (Math.random() * 16) | 0;
+                const v = c === 'x' ? r : (r & 0x3) | 0x8;
+                return v.toString(16);
+            });
+        },
+
+        addRow(type = '1-col') {
+            const colCount = type === '1-col' ? 1 : type === '2-col' ? 2 : 3;
+            const columns = Array.from({ length: colCount }, () => ({
+                id: this.uuid(),
+                type: 'text',
+                content: '',
+                path: null,
+                url: null,
+            }));
+            this.rows.push({
+                id: this.uuid(),
+                type,
+                columns,
+            });
+        },
+
+        removeRow(index) {
+            this.rows.splice(index, 1);
+        },
+
+        moveRow(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= this.rows.length) return;
+            [this.rows[index], this.rows[newIndex]] = [this.rows[newIndex], this.rows[index]];
+        },
+
+        setColumnType(rowIndex, colIndex, type) {
+            const col = this.rows[rowIndex].columns[colIndex];
+            col.type = type;
+            if (type === 'image') {
+                col.content = '';
+                col.path = null;
+                col.url = null;
+            } else {
+                col.path = null;
+                col.url = null;
+            }
+        },
+
+        setColumnImage(rowIndex, colIndex, path, url) {
+            const col = this.rows[rowIndex].columns[colIndex];
+            col.type = 'image';
+            col.path = path;
+            col.url = url;
+            col.content = '';
+        },
+
+        syncToInput() {
+            const input = this.$refs.contentInput;
+            if (input) {
+                input.value = JSON.stringify({ rows: this.rows });
             }
         },
     }));

@@ -18,8 +18,8 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
             <div class="relative bg-white dark:bg-slate-900 rounded-2xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none ring-1 ring-slate-200/60 dark:ring-slate-700/50 overflow-hidden">
                 <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-cyan-600 rounded-l-2xl" aria-hidden="true"></div>
-                <div class="prose dark:prose-invert max-w-none pl-4 sm:pl-6 prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-a:text-cyan-600 dark:prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline">
-                    {!! $page->content !!}
+                <div class="pl-4 sm:pl-6 prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-a:text-cyan-600 dark:prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline">
+                    @include('website.partials.page-content', ['page' => $page])
                 </div>
             </div>
         </div>

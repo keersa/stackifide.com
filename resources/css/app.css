@@ -43,6 +43,39 @@ body {
 	margin-bottom: 1em;
 }
 
+/* Trix content display on website (lists, links, etc.) */
+.trix-content ul {
+	list-style-type: disc;
+	margin-left: 1em;
+	padding-left: 1.5em;
+	margin-bottom: 1em;
+}
+.trix-content ol {
+	list-style-type: decimal;
+	margin-left: 1em;
+	padding-left: 1.5em;
+	margin-bottom: 1em;
+}
+.trix-content li {
+	margin-bottom: 0.25em;
+}
+.trix-content a {
+	color: inherit;
+	text-decoration: underline;
+}
+.trix-content a:hover {
+	text-decoration: none;
+}
+.trix-content strong {
+	font-weight: 600;
+}
+.trix-content blockquote {
+	border-left: 4px solid currentColor;
+	margin-left: 0;
+	padding-left: 1em;
+	opacity: 0.8;
+}
+
 /* Advanced theme - card hover & animations */
 .website-card-hover {
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
