@@ -37,7 +37,7 @@ class PublicPagesController extends Controller
 
     public function pricing(): View
     {
-        $title = 'Pricing';
+        $title = 'Stackifide Pricing';
         return view('pricing', compact('title'));
     }
 
