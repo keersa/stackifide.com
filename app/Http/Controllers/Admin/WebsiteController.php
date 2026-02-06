@@ -204,8 +204,6 @@ class WebsiteController extends Controller
             'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'description' => ['nullable', 'string'],
             'tagline' => ['nullable', 'string', 'max:255'],
-            'show_logo_in_hero' => ['nullable', 'boolean'],
-            'hero_title' => ['nullable', 'string', 'max:255'],
             'timezone' => [
                 'nullable',
                 'string',
@@ -239,18 +237,6 @@ class WebsiteController extends Controller
             'color_settings.header_background.enabled' => ['nullable', 'boolean'],
             'color_settings.header_background.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'color_settings.header_background.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_background' => ['nullable', 'array'],
-            'color_settings.hero_background.enabled' => ['nullable', 'boolean'],
-            'color_settings.hero_background.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_background.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_heading' => ['nullable', 'array'],
-            'color_settings.hero_heading.enabled' => ['nullable', 'boolean'],
-            'color_settings.hero_heading.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_heading.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_text' => ['nullable', 'array'],
-            'color_settings.hero_text.enabled' => ['nullable', 'boolean'],
-            'color_settings.hero_text.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'color_settings.hero_text.dark' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'color_settings.navigation_menu' => ['nullable', 'array'],
             'color_settings.navigation_menu.enabled' => ['nullable', 'boolean'],
             'color_settings.navigation_menu.light' => ['nullable', 'string', 'max:20', 'regex:/^#[0-9A-Fa-f]{6}$/'],
@@ -266,16 +252,15 @@ class WebsiteController extends Controller
         ]);
 
         $main = collect($validated)->except(['contact_info', 'social_links', 'color_settings'])->all();
-        $main['show_logo_in_hero'] = $request->boolean('show_logo_in_hero');
 
-        $colorSettings = [];
+        $colorSettings = $website->color_settings ?? [];
         $defaultLight = '#ffffff';
         $defaultDark = '#1e293b';
-        foreach (['header_background', 'hero_background', 'hero_heading', 'hero_text', 'navigation_menu', 'footer_background', 'website_body'] as $key) {
+        foreach (['header_background', 'navigation_menu', 'footer_background', 'website_body'] as $key) {
             $raw = $request->input("color_settings.{$key}", []);
             $enabled = !empty($raw['enabled']);
-            $light = $raw['light'] ?? $raw['color'] ?? $defaultLight;
-            $dark = $raw['dark'] ?? $raw['color'] ?? $defaultDark;
+            $light = $raw['light'] ?? $raw['color'] ?? ($colorSettings[$key]['light'] ?? $defaultLight);
+            $dark = $raw['dark'] ?? $raw['color'] ?? ($colorSettings[$key]['dark'] ?? $defaultDark);
             $colorSettings[$key] = [
                 'enabled' => $enabled,
                 'light' => preg_match('/^#[0-9A-Fa-f]{6}$/', $light) ? $light : $defaultLight,

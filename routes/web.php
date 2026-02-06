@@ -85,6 +85,8 @@ if (!$isSubdomain) {
 
                 // Store Hours (per-website weekly hours)
                 Route::get('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'index'])->name('hours.index');
+                Route::get('homepage', [\App\Http\Controllers\Website\HomepageController::class, 'edit'])->name('homepage.edit');
+                Route::put('homepage', [\App\Http\Controllers\Website\HomepageController::class, 'update'])->name('homepage.update');
                 Route::get('hours/create', [\App\Http\Controllers\Website\StoreHoursController::class, 'create'])->name('hours.create');
                 Route::post('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'store'])->name('hours.store');
                 Route::get('hours/edit', [\App\Http\Controllers\Website\StoreHoursController::class, 'edit'])->name('hours.edit');
