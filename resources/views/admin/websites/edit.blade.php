@@ -1,4 +1,16 @@
 <x-admin-layout>
+    @push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css">
+    <style>
+        /* Fix Coloris: compact layout, preview doesn't overlap, dark mode text */
+        .clr-field { display: flex; align-items: center; gap: 0.25rem; }
+        .clr-field .clr-preview { flex-shrink: 0; }
+        .clr-field input { min-width: 4ch; flex: 1; }
+        .dark .clr-field input { color: #e5e7eb; }
+        .clr-field button:after { border:1px solid #ccc!important; }
+        .dark .clr-field button:after { border:1px solid #000!important; }
+    </style>
+    @endpush
     <x-admin-website-header :website="$website" title="Website Settings" />
 
         <div class="py-2">
@@ -182,26 +194,22 @@
                                                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $label }}</span>
                                             </td>
                                             <td class="py-3 pr-4 align-top">
-                                                <div class="flex items-center gap-2">
-                                                    <input type="color"
-                                                           name="color_settings[{{ $key }}][light]"
-                                                           value="{{ $light }}"
-                                                           class="color-picker-light h-10 w-14 cursor-pointer rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                           {{ $enabled ? '' : 'disabled' }}
-                                                           data-color-key="{{ $key }}">
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400 font-mono color-hex-light" data-color-key="{{ $key }}">{{ $light }}</span>
-                                                </div>
+                                                <input type="text"
+                                                       name="color_settings[{{ $key }}][light]"
+                                                       value="{{ $light }}"
+                                                       data-coloris
+                                                       class="color-picker-light w-24 rounded border border-gray-300 dark:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed px-1.5 py-1.5 text-sm font-mono"
+                                                       {{ $enabled ? '' : 'disabled' }}
+                                                       data-color-key="{{ $key }}">
                                             </td>
                                             <td class="py-3 align-top">
-                                                <div class="flex items-center gap-2">
-                                                    <input type="color"
-                                                           name="color_settings[{{ $key }}][dark]"
-                                                           value="{{ $dark }}"
-                                                           class="color-picker-dark h-10 w-14 cursor-pointer rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                           {{ $enabled ? '' : 'disabled' }}
-                                                           data-color-key="{{ $key }}">
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400 font-mono color-hex-dark" data-color-key="{{ $key }}">{{ $dark }}</span>
-                                                </div>
+                                                <input type="text"
+                                                       name="color_settings[{{ $key }}][dark]"
+                                                       value="{{ $dark }}"
+                                                       data-coloris
+                                                       class="color-picker-dark w-24 rounded border border-gray-300 dark:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed px-1.5 py-1.5 text-sm font-mono"
+                                                       {{ $enabled ? '' : 'disabled' }}
+                                                       data-color-key="{{ $key }}">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -384,8 +392,16 @@
     </div>
 
     @push('scripts')
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Coloris with hex format only (no format toggle)
+        if (typeof Coloris !== 'undefined') {
+            Coloris({
+                format: 'hex',
+                formatToggle: false
+            });
+        }
         // Switch toggle visual state for Show Logo in Hero
         const showLogoCheckbox = document.getElementById('show_logo_in_hero');
         const showLogoLabel = document.getElementById('show_logo_in_hero_label');
@@ -419,16 +435,6 @@
             updateState();
         });
 
-        document.querySelectorAll('.color-picker-light').forEach(function(input) {
-            const key = input.dataset.colorKey;
-            const hexSpan = document.querySelector('.color-hex-light[data-color-key="' + key + '"]');
-            if (hexSpan) input.addEventListener('input', function() { hexSpan.textContent = this.value; });
-        });
-        document.querySelectorAll('.color-picker-dark').forEach(function(input) {
-            const key = input.dataset.colorKey;
-            const hexSpan = document.querySelector('.color-hex-dark[data-color-key="' + key + '"]');
-            if (hexSpan) input.addEventListener('input', function() { hexSpan.textContent = this.value; });
-        });
 
         const phoneInput = document.getElementById('contact_info_phone');
         if (!phoneInput) return;
