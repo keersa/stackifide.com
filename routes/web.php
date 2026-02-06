@@ -55,6 +55,9 @@ if (!$isSubdomain) {
         // Admin routes
         Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
             Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('dashboard');
+            Route::get('/account', [\App\Http\Controllers\Admin\AccountController::class, 'edit'])->name('account');
+            Route::patch('/account', [\App\Http\Controllers\Admin\AccountController::class, 'update'])->name('account.update');
+            Route::delete('/account', [\App\Http\Controllers\Admin\AccountController::class, 'destroy'])->name('account.destroy');
             Route::resource('websites', \App\Http\Controllers\Admin\WebsiteController::class);
 
             // Admin can manage any website's content by specifying website

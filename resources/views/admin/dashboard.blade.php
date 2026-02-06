@@ -79,75 +79,44 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Quick Actions</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <a href="{{ route('admin.websites.index') }}" class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        <svg class="h-6 w-6 text-purple-600 dark:text-purple-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">Websites</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Manage restaurant websites and domains</p>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">Admin Dashboard</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">View standard user dashboard</p>
-                        </div>
-                    </a>
-                    <a href="{{ route('profile.edit') }}" class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">Edit Profile</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Update your profile information</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
+       
 
 
         <!-- Website Tiles -->
         @if(($websites ?? collect())->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
-            @foreach($websites ?? [] as $website)
-            <a href="{{ route('admin.websites.show', $website) }}" class="block bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500">
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            @if($website->logo_url)
-                                <img src="{{ $website->logo_url }}" alt="{{ $website->name }}" class="h-12 w-12 rounded-lg object-cover">
-                            @else
-                                <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                                    <svg class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                                    </svg>
-                                </div>
-                            @endif
+        <div class="px-4 bg-gray-100 dark:bg-black bg-opacity-30 dark:bg-opacity-20 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Active Websites</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+                @foreach($websites ?? [] as $website)
+                <a href="{{ route('admin.websites.show', $website) }}" class="block bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500">
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                @if($website->logo_url)
+                                    <img src="{{ $website->logo_url }}" alt="{{ $website->name }}" class="h-12 w-12 rounded-lg object-cover">
+                                @else
+                                    <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                                        <svg class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="ml-4 flex-1 min-w-0">
+                                <p class="font-semibold text-gray-900 dark:text-gray-100 truncate">{{ $website->name }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $website->slug }}</p>
+                                <span class="inline-flex mt-1 px-2 py-0.5 text-xs font-medium rounded-full {{ $website->isActive() ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
+                                    {{ $website->isActive() ? 'Active' : ($website->hasCanceledSubscriptionStatus() ? 'Cancelled' : 'Inactive') }}
+                                </span>
+                            </div>
+                            <svg class="h-5 w-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
                         </div>
-                        <div class="ml-4 flex-1 min-w-0">
-                            <p class="font-semibold text-gray-900 dark:text-gray-100 truncate">{{ $website->name }}</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $website->slug }}</p>
-                            <span class="inline-flex mt-1 px-2 py-0.5 text-xs font-medium rounded-full {{ $website->isActive() ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
-                                {{ $website->isActive() ? 'Active' : ($website->hasCanceledSubscriptionStatus() ? 'Cancelled' : 'Inactive') }}
-                            </span>
-                        </div>
-                        <svg class="h-5 w-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
                     </div>
-                </div>
-            </a>
-            @endforeach
+                </a>
+                @endforeach
+            </div>
         </div>
         @endif
 
