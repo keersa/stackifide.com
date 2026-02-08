@@ -6,9 +6,10 @@
             <div class="text-center mb-16">
                 <x-application-logo class="block !h-[140px] !w-auto fill-current text-gray-800 dark:text-gray-200 mx-auto animate-[fadeInScale_1s_ease-out] hover:scale-105 transition-transform duration-300" />
                 <h1 class="px-4 text-4xl font-bold text-gray-800 dark:text-white mt-4 animate-[fadeIn_1.2s_ease-out]">
-                    More Than a Restaurant Website</h1>
+                    Restaurant Websites for the Modern World
+                </h1>
                 <p class="px-4 text-lg text-gray-600 dark:text-white mt-2 animate-[fadeIn_1.4s_ease-out]">
-                We manage your restaurant's online presence so you never have to think about it
+                    We're serving up <strong>restaurant websites</strong> with a side of <strong>ROI</strong> that will make your head spin.
                 </p>
             </div>
             <div id="pricing" class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0 mx-auto max-w-7xl text-center">
@@ -142,17 +143,17 @@
                 <div class="relative bg-gradient-to-b from-purple-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 pt-8 pb-24 lg:pb-8 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-200/60 dark:border-purple-800/40 overflow-hidden">
                     <!-- Corner banner -->
                     <div class="absolute top-9 right-9">
-                        <span class="block bg-blue-700 dark:bg-blue-400 text-white dark:text-black text-sm font-bold py-2 px-12 text-center shadow-md transform rotate-45 translate-x-1/2 -translate-y-1/2 origin-center">
+                        <span class="block bg-blue-700 dark:bg-blue-300 text-white dark:text-black text-sm font-bold py-2 px-12 text-center shadow-md transform rotate-45 translate-x-1/2 -translate-y-1/2 origin-center">
                             Built for You
                         </span>
                     </div>
                     <h2 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-1">Custom</h2>
-                    <h3 class="mb-4 font-bold text-3xl text-blue-700 dark:text-blue-400 mb-4">When You Need Custom</h3>
+                    <h3 class="mb-4 font-bold text-3xl text-blue-700 dark:text-blue-300 mb-4">When You Need Custom</h3>
                     <p class="text-md text-gray-600 dark:text-gray-400 leading-relaxed mb-6">For most restaurants, our basic and pro plans are enough. But if you need something more, we're here to help.</p>
                     <p class="text-md text-gray-600 dark:text-gray-400 leading-relaxed mb-6">Our team of experienced designers and engineers are ready to build custom web and mobile applications to suit your needs—whether that's a unique workflow, a specific integration, or a fully bespoke solution.</p>
                     <blockquote class="relative mb-6 pl-6 pr-4 py-4 bg-white/90 dark:bg-gray-800/90 rounded-r-xl italic text-gray-700 dark:text-gray-300">"Our engineers have built custom applications across industries. When your project calls for something tailored, we have the capability to build it."</blockquote>
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 gap-4 mt-8 px-4">
-                        <a href="{{ route('partner.get-started') }}" class="bg-blue-700 hover:bg-gray-700 dark:bg-blue-400 dark:hover:bg-blue-500 p-3 text-xl font-black text-center rounded-xl text-white dark:text-black border-2 border-blue-700 dark:border-blue-600 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] duration-200">
+                        <a href="{{ route('partner.get-started') }}" class="bg-blue-700 hover:bg-gray-700 dark:bg-blue-300 dark:hover:bg-blue-500 p-3 text-xl font-black text-center rounded-xl text-white dark:text-black border-2 border-blue-700 dark:border-blue-600 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] duration-200">
                             Let's Build Something Great
                         </a>
                     </div>
