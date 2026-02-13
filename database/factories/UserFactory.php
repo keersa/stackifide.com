@@ -55,16 +55,6 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user is an editor.
-     */
-    public function editor(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'editor',
-        ]);
-    }
-
-    /**
      * Indicate that the user is a customer.
      */
     public function customer(): static

@@ -56,7 +56,7 @@ class LeadController extends Controller
     public function create(): View
     {
         return view('super-admin.leads.create', [
-            'users' => User::whereIn('role', ['admin', 'super_admin', 'editor'])->get(),
+            'users' => User::whereIn('role', ['admin', 'super_admin'])->get(),
         ]);
     }
 
@@ -154,7 +154,7 @@ class LeadController extends Controller
     {
         return view('super-admin.leads.edit', [
             'lead' => $lead,
-            'users' => User::whereIn('role', ['admin', 'super_admin', 'editor'])->get(),
+            'users' => User::whereIn('role', ['admin', 'super_admin'])->get(),
         ]);
     }
 

@@ -77,7 +77,6 @@
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                         @if($user->role === 'super_admin') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
                                         @elseif($user->role === 'admin') bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200
-                                        @elseif($user->role === 'editor') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
                                         @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200
                                         @endif">
                                         {{ ucfirst(str_replace('_', ' ', $user->role)) }}

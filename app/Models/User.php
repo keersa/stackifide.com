@@ -18,7 +18,6 @@ class User extends Authenticatable
     public const ROLE_SUPER_ADMIN = 'super_admin';
     public const ROLE_ADMIN = 'admin';
     public const ROLE_CUSTOMER = 'customer';
-    public const ROLE_EDITOR = 'editor';
     public const ROLE_PUBLIC = 'public';
 
     /**
@@ -99,16 +98,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an editor.
-     *
-     * @return bool
-     */
-    public function isEditor(): bool
-    {
-        return $this->hasRole(self::ROLE_EDITOR);
-    }
-
-    /**
      * Check if the user is a super admin.
      *
      * @return bool
@@ -129,7 +118,6 @@ class User extends Authenticatable
             self::ROLE_SUPER_ADMIN,
             self::ROLE_ADMIN,
             self::ROLE_CUSTOMER,
-            self::ROLE_EDITOR,
             self::ROLE_PUBLIC,
         ];
     }
