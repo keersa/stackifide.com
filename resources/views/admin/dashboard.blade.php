@@ -104,7 +104,6 @@
                             </div>
                             <div class="ml-4 flex-1 min-w-0">
                                 <p class="font-semibold text-gray-900 dark:text-gray-100 truncate">{{ $website->name }}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $website->slug }}</p>
                                 <span class="inline-flex mt-1 px-2 py-0.5 text-xs font-medium rounded-full {{ $website->isActive() ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
                                     {{ $website->isActive() ? 'Active' : ($website->hasCanceledSubscriptionStatus() ? 'Cancelled' : 'Inactive') }}
                                 </span>

@@ -19,9 +19,7 @@ class Website extends Model
         'name',
         'logo',
         'logo_rect',
-        'slug',
         'domain',
-        'subdomain',
         'status',
         'plan',
         'settings',
@@ -123,15 +121,7 @@ class Website extends Model
      */
     public function getFullDomainAttribute(): string
     {
-        if ($this->domain) {
-            return $this->domain;
-        }
-        
-        if ($this->subdomain) {
-            return $this->subdomain . '.' . config('app.domain', 'stackifide.com');
-        }
-        
-        return $this->slug . '.' . config('app.domain', 'stackifide.com');
+        return (string) ($this->domain ?? '');
     }
 
     /**

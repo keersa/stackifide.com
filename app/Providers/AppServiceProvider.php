@@ -39,7 +39,6 @@ class AppServiceProvider extends ServiceProvider
         // Configure route model binding for website parameter
         Route::bind('website', function ($value) {
             return Website::where('id', $value)
-                ->orWhere('slug', $value)
                 ->firstOrFail();
         });
 
@@ -54,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
                 $websiteIdOrSlug = $segments[$websiteIndex + 1];
                 // Resolve website ID
                 $website = Website::where('id', $websiteIdOrSlug)
-                    ->orWhere('slug', $websiteIdOrSlug)
                     ->first();
                 
                 if ($website) {
@@ -80,7 +78,6 @@ class AppServiceProvider extends ServiceProvider
                 $websiteIdOrSlug = $segments[$websiteIndex + 1];
                 // Resolve website ID
                 $website = Website::where('id', $websiteIdOrSlug)
-                    ->orWhere('slug', $websiteIdOrSlug)
                     ->first();
                 
                 if ($website) {

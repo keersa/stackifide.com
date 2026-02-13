@@ -48,9 +48,7 @@ class WebsiteController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('slug', 'like', "%{$search}%")
-                    ->orWhere('domain', 'like', "%{$search}%")
-                    ->orWhere('subdomain', 'like', "%{$search}%");
+                    ->orWhere('domain', 'like', "%{$search}%");
             });
         }
 
@@ -89,14 +87,11 @@ class WebsiteController extends Controller
         // Convert empty strings to null for nullable fields
         $request->merge([
             'domain' => $request->input('domain') ?: null,
-            'subdomain' => $request->input('subdomain') ?: null,
         ]);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('websites', 'slug')],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')],
-            'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')],
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
@@ -109,9 +104,7 @@ class WebsiteController extends Controller
         $website = Website::create([
             'user_id' => $validated['user_id'],
             'name' => $validated['name'],
-            'slug' => $validated['slug'],
             'domain' => $validated['domain'] ?? null,
-            'subdomain' => $validated['subdomain'] ?? null,
             'status' => $validated['status'],
             'plan' => 'none',
             'theme' => $validated['theme'] ?? 'default',
@@ -164,14 +157,11 @@ class WebsiteController extends Controller
         // Convert empty strings to null for nullable fields
         $request->merge([
             'domain' => $request->input('domain') ?: null,
-            'subdomain' => $request->input('subdomain') ?: null,
         ]);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('websites', 'slug')->ignore($website->id)],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
-            'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'plan' => ['required', 'in:none,basic,pro,enterprise'],
             'description' => ['nullable', 'string'],

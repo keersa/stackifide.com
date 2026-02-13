@@ -23,7 +23,6 @@ class WebsiteImageController extends Controller
         }
 
         return Website::where('id', $routeWebsite)
-            ->orWhere('slug', $routeWebsite)
             ->firstOrFail();
     }
 

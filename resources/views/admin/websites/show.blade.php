@@ -15,21 +15,17 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12">
                             <div>
                                 <label class="text-[10px] font-black text-indigo-500 uppercase tracking-widest block mb-1">Live URL</label>
-                                <a href="{{ $current_active_uri }}" target="_blank" class="text-sm font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition-colors break-all">
-                                    {{ $current_active_uri }}
-                                </a>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-black text-indigo-500 uppercase tracking-widest block mb-1">Slug</label>
-                                <p class="text-sm font-mono text-gray-600 dark:text-gray-300">/{{ $website->slug }}</p>
+                                @if($current_active_uri)
+                                    <a href="{{ $current_active_uri }}" target="_blank" class="text-sm font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition-colors break-all">
+                                        {{ $current_active_uri }}
+                                    </a>
+                                @else
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white">—</p>
+                                @endif
                             </div>
                             <div>
                                 <label class="text-[10px] font-black text-indigo-500 uppercase tracking-widest block mb-1">Custom Domain</label>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $website->domain ?: '—' }}</p>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-black text-indigo-500 uppercase tracking-widest block mb-1">Subdomain</label>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $website->subdomain ? $website->subdomain . '.localhost' : '—' }}</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <label class="text-[10px] font-black text-indigo-500 uppercase tracking-widest block mb-1">Description</label>

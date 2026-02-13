@@ -23,7 +23,6 @@ class StoreHoursController extends Controller
         }
 
         return \App\Models\Website::where('id', $routeWebsite)
-            ->orWhere('slug', $routeWebsite)
             ->firstOrFail();
     }
 

@@ -16,7 +16,7 @@
                                 name="search" 
                                 id="search"
                                 value="{{ request('search') }}"
-                                placeholder="Name, slug, domain..."
+                                placeholder="Name, domain..."
                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     </div>
                     <div>
@@ -81,20 +81,11 @@
                                     <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                         {{ $website->name }}
                                     </div>
-                                    @if($website->slug)
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $website->slug }}
-                                        </div>
-                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($website->domain)
                                         <div class="text-sm text-gray-900 dark:text-gray-100">
                                             {{ $website->domain }}
-                                        </div>
-                                    @elseif($website->subdomain)
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $website->subdomain }}.stackifide.com
                                         </div>
                                     @else
                                         <div class="text-sm text-gray-400">
@@ -132,17 +123,21 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @php
                                         $current_active_uri = '';
-                                        if(config('app.env') === 'production') {
-                                            $current_active_uri = 'https://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
-                                        } else {
-                                            $current_active_uri = 'http://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
+                                        if ($website->domain) {
+                                            if(config('app.env') === 'production') {
+                                                $current_active_uri = 'https://' . $website->domain;
+                                            } else {
+                                                $current_active_uri = 'http://' . $website->domain;
+                                            }
                                         }
                                     @endphp
-                                    <a href="{{ $current_active_uri }}" 
-                                        target="_blank" rel="noopener noreferrer"
-                                        class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
-                                        View Site
-                                    </a>
+                                    @if($current_active_uri)
+                                        <a href="{{ $current_active_uri }}" 
+                                            target="_blank" rel="noopener noreferrer"
+                                            class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
+                                            View Site
+                                        </a>
+                                    @endif
                                     <a href="{{ route('admin.websites.edit', $website) }}" 
                                         class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300">
                                         Edit

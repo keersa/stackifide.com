@@ -7,10 +7,8 @@
     $current_active_uri = '#';
     if ($website->domain) {
         $current_active_uri = 'http://' . $website->domain;
-    } elseif ($website->subdomain) {
-        $current_active_uri = 'http://' . $website->subdomain . '.localhost:8000';
     } else {
-        $current_active_uri = 'http://' . $website->slug . '.localhost:8000';
+        $current_active_uri = '';
     }
 @endphp
 
@@ -34,7 +32,7 @@
             </div>
         </div>
         <div class="flex items-center gap-3 ml-2">
-            @if($website->domain || $website->subdomain)
+            @if($current_active_uri)
                 <a href="{{ $current_active_uri }}" target="_blank" 
                    class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold text-sm shadow-sm transition-all duration-200">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

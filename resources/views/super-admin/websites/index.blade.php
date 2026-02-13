@@ -16,7 +16,7 @@
                                name="search" 
                                id="search"
                                value="{{ request('search') }}"
-                               placeholder="Name, slug, domain..."
+                               placeholder="Name, domain..."
                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     </div>
                     <div>
@@ -94,20 +94,11 @@
                                             <span class="ml-2 text-xs text-red-600 dark:text-red-400">(Deleted)</span>
                                         @endif
                                     </div>
-                                    @if($website->slug)
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $website->slug }}
-                                        </div>
-                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($website->domain)
                                         <div class="text-sm text-gray-900 dark:text-gray-100">
                                             {{ $website->domain }}
-                                        </div>
-                                    @elseif($website->subdomain)
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $website->subdomain }}.stackifide.com
                                         </div>
                                     @else
                                         <div class="text-sm text-gray-400">

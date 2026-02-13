@@ -31,19 +31,6 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
-                                <input type="text" 
-                                       name="slug" 
-                                       id="slug"
-                                       value="{{ old('slug') }}"
-                                       placeholder="Auto-generated if left empty"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <p class="mt-1 text-sm text-gray-500">URL-friendly identifier</p>
-                                @error('slug')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
                                 <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Domain</label>
                                 <input type="text" 
                                        name="domain" 
@@ -52,19 +39,6 @@
                                        placeholder="restaurant.com"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 @error('domain')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="subdomain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subdomain</label>
-                                <input type="text" 
-                                       name="subdomain" 
-                                       id="subdomain"
-                                       value="{{ old('subdomain') }}"
-                                       placeholder="restaurant"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <p class="mt-1 text-sm text-gray-500">Will create: subdomain.stackifide.com</p>
-                                @error('subdomain')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

@@ -32,18 +32,6 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug *</label>
-                            <input type="text" 
-                                   name="slug" 
-                                   id="slug"
-                                   value="{{ old('slug', $website->slug) }}"
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            @error('slug')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
                             <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Domain</label>
                             <input type="text" 
                                    name="domain" 
@@ -51,17 +39,6 @@
                                    value="{{ old('domain', $website->domain) }}"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             @error('domain')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="subdomain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subdomain</label>
-                            <input type="text" 
-                                   name="subdomain" 
-                                   id="subdomain"
-                                   value="{{ old('subdomain', $website->subdomain) }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            @error('subdomain')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

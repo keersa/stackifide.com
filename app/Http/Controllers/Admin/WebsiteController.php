@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Website;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -41,9 +40,7 @@ class WebsiteController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('slug', 'like', "%{$search}%")
-                    ->orWhere('domain', 'like', "%{$search}%")
-                    ->orWhere('subdomain', 'like', "%{$search}%");
+                    ->orWhere('domain', 'like', "%{$search}%");
             });
         }
 
@@ -75,14 +72,11 @@ class WebsiteController extends Controller
         // Convert empty strings to null for nullable fields
         $request->merge([
             'domain' => $request->input('domain') ?: null,
-            'subdomain' => $request->input('subdomain') ?: null,
         ]);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('websites', 'slug')],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')],
-            'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')],
             'status' => ['required', 'in:active,suspended,pending,trial'],
             'description' => ['nullable', 'string'],
             'timezone' => [
@@ -101,9 +95,7 @@ class WebsiteController extends Controller
         $website = Website::create([
             'user_id' => Auth::id(),
             'name' => $validated['name'],
-            'slug' => $validated['slug'],
             'domain' => $validated['domain'] ?? null,
-            'subdomain' => $validated['subdomain'] ?? null,
             'status' => $validated['status'],
             'plan' => $validated['plan'],
             'description' => $validated['description'] ?? null,
@@ -148,10 +140,12 @@ class WebsiteController extends Controller
         }
 
         $current_active_uri = '';
-        if(config('app.env') === 'production') {
-            $current_active_uri = 'https://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
-        } else {
-            $current_active_uri = 'http://' . ($website->domain ?? $website->subdomain) . '.' . config('app.domain');
+        if ($website->domain) {
+            if(config('app.env') === 'production') {
+                $current_active_uri = 'https://' . $website->domain;
+            } else {
+                $current_active_uri = 'http://' . $website->domain;
+            }
         }
         return view('admin.websites.show', compact('website', 'current_active_uri'));
     }
@@ -193,15 +187,12 @@ class WebsiteController extends Controller
         })->all();
         $request->merge([
             'domain' => $request->input('domain') ?: null,
-            'subdomain' => $request->input('subdomain') ?: null,
             'social_links' => $socialLinksInput,
         ]);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('websites', 'slug')->ignore($website->id)],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
-            'subdomain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'subdomain')->ignore($website->id)],
             'description' => ['nullable', 'string'],
             'tagline' => ['nullable', 'string', 'max:255'],
             'timezone' => [

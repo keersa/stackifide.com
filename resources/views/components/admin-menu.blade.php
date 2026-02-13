@@ -13,10 +13,8 @@
         if ($routeWebsite instanceof \App\Models\Website) {
             $currentWebsite = $routeWebsite;
         } else {
-            // If it's a string (ID or slug), find the model
-            $currentWebsite = \App\Models\Website::where('id', $routeWebsite)
-                ->orWhere('slug', $routeWebsite)
-                ->first();
+            // If it's a string (ID), find the model
+            $currentWebsite = \App\Models\Website::where('id', $routeWebsite)->first();
         }
     } 
     // Fallback: extract from URL segments for website-related routes
@@ -24,10 +22,9 @@
         $segments = request()->segments();
         $websiteIndex = array_search('websites', $segments);
         if ($websiteIndex !== false && isset($segments[$websiteIndex + 1])) {
-            $websiteIdOrSlug = $segments[$websiteIndex + 1];
-            if (is_numeric($websiteIdOrSlug) || !in_array($websiteIdOrSlug, ['create', 'index'])) {
-                $currentWebsite = \App\Models\Website::where('id', $websiteIdOrSlug)
-                    ->orWhere('slug', $websiteIdOrSlug)
+            $websiteId = $segments[$websiteIndex + 1];
+            if (is_numeric($websiteId) || !in_array($websiteId, ['create', 'index'])) {
+                $currentWebsite = \App\Models\Website::where('id', $websiteId)
                     ->first();
             }
         }

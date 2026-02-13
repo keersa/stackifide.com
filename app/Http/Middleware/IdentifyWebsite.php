@@ -29,23 +29,9 @@ class IdentifyWebsite
         
         // Check if this is a localhost subdomain (e.g., restaurant1.localhost)
         if (str_ends_with($hostWithoutPort, '.localhost') || str_ends_with($hostWithoutPort, '.127.0.0.1')) {
-            // Extract subdomain from localhost
-            $subdomain = str_replace(['.localhost', '.127.0.0.1'], '', $hostWithoutPort);
-            
-            if ($subdomain && $subdomain !== $hostWithoutPort) {
-                // Try to find by subdomain first, then by slug as fallback
-                // Resolve website regardless of subscription so inactive sites can display with a notice
-                $website = Website::where(function($query) use ($subdomain) {
-                        $query->where('subdomain', $subdomain)
-                              ->orWhere('slug', $subdomain);
-                    })
-                    ->first();
-                
-                if ($website) {
-                    app()->instance('website', $website);
-                    return $next($request);
-                }
-            }
+            // Subdomain-based website routing is deprecated.
+            // Continue as main site without binding a website.
+            return $next($request);
         }
         
         // Handle plain localhost/127.0.0.1 (development)
@@ -54,9 +40,7 @@ class IdentifyWebsite
             // Check if there's a website parameter in the request (for testing)
             if ($request->has('website')) {
                 $websiteParam = $request->get('website');
-                $website = Website::where('slug', $websiteParam)
-                    ->orWhere('domain', $websiteParam)
-                    ->orWhere('subdomain', $websiteParam)
+                $website = Website::where('domain', $websiteParam)
                     ->first();
                 
                 if ($website) {
@@ -78,24 +62,6 @@ class IdentifyWebsite
         
         // If this is the main domain, skip website identification
         if ($host === $mainDomain || str_ends_with($host, '.' . $mainDomain)) {
-            // Check if it's a subdomain that might be a website
-            $subdomain = str_replace('.' . $mainDomain, '', $host);
-            
-            if ($subdomain && $subdomain !== $host) {
-                // Try to find by subdomain first, then by slug as fallback
-                $website = Website::where(function($query) use ($subdomain) {
-                        $query->where('subdomain', $subdomain)
-                              ->orWhere('slug', $subdomain);
-                    })
-                    ->active()
-                    ->first();
-                
-                if ($website) {
-                    app()->instance('website', $website);
-                    return $next($request);
-                }
-            }
-            
             // Main site, no website
             return $next($request);
         }

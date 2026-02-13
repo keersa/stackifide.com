@@ -26,16 +26,8 @@
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->name }}</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Slug</label>
-                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->slug }}</p>
-                    </div>
-                    <div>
                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Domain</label>
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->domain ?: '-' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Subdomain</label>
-                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $website->subdomain ?: '-' }}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Status</label>

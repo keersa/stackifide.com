@@ -24,9 +24,8 @@ class MenuController extends Controller
             return $routeWebsite;
         }
         
-        // If it's a string (ID or slug), find the model
+        // If it's a string (ID), find the model
         return \App\Models\Website::where('id', $routeWebsite)
-            ->orWhere('slug', $routeWebsite)
             ->firstOrFail();
     }
 
