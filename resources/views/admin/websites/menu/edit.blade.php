@@ -63,7 +63,7 @@
                                     $initialUrl = $initialPath;
                                 } elseif (!empty($initialPath)) {
                                     try {
-                                        $initialUrl = \Illuminate\Support\Facades\Storage::disk('s3')->url($initialPath);
+                                        $initialUrl = '/storage/' . ltrim($initialPath, '/');
                                     } catch (\Throwable $e) {
                                         $initialUrl = asset('storage/' . $initialPath);
                                     }
@@ -96,7 +96,7 @@
                                             @change="onPickFile($event)"
                                             class="block w-full text-sm text-gray-700 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
                                         >
-                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Crop will be locked to 4:3 and uploaded to S3.</p>
+                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Crop will be locked to 4:3 and uploaded to storage.</p>
                                         <template x-if="imagePath">
                                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 break-all">
                                                 Saved key: <span class="font-mono" x-text="imagePath"></span>

@@ -55,7 +55,7 @@ class WebsiteImageController extends Controller
     }
 
     /**
-     * Upload a website logo to S3.
+     * Upload a website logo to the configured storage disk.
      */
     public function uploadLogo(Request $request, $website): JsonResponse
     {
@@ -63,18 +63,6 @@ class WebsiteImageController extends Controller
         $this->checkWebsiteAccess($website);
 
         $type = $request->input('type', 'square'); // 'square' or 'rect'
-
-        config(['filesystems.disks.s3.throw' => true]);
-        if (method_exists(Storage::class, 'forgetDisk')) {
-            Storage::forgetDisk('s3');
-        }
-
-        $bucket = config('filesystems.disks.s3.bucket');
-        if (empty($bucket)) {
-            return response()->json([
-                'message' => 'S3 is not configured: missing AWS_BUCKET.',
-            ], 500);
-        }
 
         $validated = $request->validate([
             'image' => ['required', 'file', 'image', 'max:5120'],
@@ -91,27 +79,19 @@ class WebsiteImageController extends Controller
         $prefix = $type === 'rect' ? 'logo-rect-' : 'logo-';
         $filename = $prefix . (string) Str::uuid() . '.' . $extension;
         $path = "websites/{$website->id}/images/{$filename}";
+        $disk = Storage::disk('public');
 
         try {
-            // Attempt upload with public visibility first
-            try {
-                Storage::disk('s3')->putFileAs(
-                    "websites/{$website->id}/images",
-                    $file,
-                    $filename,
-                    ['visibility' => 'public']
-                );
-            } catch (\Throwable $e) {
-                // If ACLs are disabled, retry without visibility
-                if (str_contains($e->getMessage(), 'AccessControlListNotSupported') || str_contains($e->getMessage(), 'does not allow ACLs') || str_contains($e->getMessage(), '400 Bad Request')) {
-                    Storage::disk('s3')->putFileAs(
-                        "websites/{$website->id}/images",
-                        $file,
-                        $filename
-                    );
-                } else {
-                    throw $e;
-                }
+            $stored = $disk->putFileAs(
+                "websites/{$website->id}/images",
+                $file,
+                $filename,
+                ['visibility' => 'public']
+            );
+            if ($stored === false) {
+                return response()->json([
+                    'message' => 'Logo upload failed while writing to storage.',
+                ], 500);
             }
 
             // Update website logo field
@@ -164,7 +144,7 @@ class WebsiteImageController extends Controller
         $column = $type === 'rect' ? 'logo_rect' : 'logo';
 
         if ($website->$column) {
-            // "Soft delete" by removing the database reference but keeping the file in S3 for safety/history
+            // "Soft delete" by removing the database reference while keeping the file for safety/history
             $website->update([$column => null]);
         }
 

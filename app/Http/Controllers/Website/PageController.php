@@ -334,7 +334,7 @@ class PageController extends Controller
     }
 
     /**
-     * Upload a page content image to S3.
+     * Upload a page content image to the configured storage disk.
      * Expects: multipart/form-data with `image` file (can be client-cropped).
      * Returns: { path: string, url: string }
      */
@@ -343,18 +343,6 @@ class PageController extends Controller
         $routeWebsite = $request->route('website');
         $website = $routeWebsite ? $this->resolveWebsite($routeWebsite) : WebsiteHelper::current();
         $this->checkWebsiteAccess($website);
-
-        config(['filesystems.disks.s3.throw' => true]);
-        if (method_exists(Storage::class, 'forgetDisk')) {
-            Storage::forgetDisk('s3');
-        }
-
-        $bucket = config('filesystems.disks.s3.bucket');
-        if (empty($bucket)) {
-            return response()->json([
-                'message' => 'S3 is not configured: missing AWS_BUCKET.',
-            ], 500);
-        }
 
         $validated = $request->validate([
             'image' => ['required', 'file', 'image', 'max:5120'],
@@ -369,30 +357,24 @@ class PageController extends Controller
 
         $filename = 'page-content-' . (string) Str::uuid() . '.' . $extension;
         $path = "websites/{$website->id}/images/{$filename}";
+        $disk = Storage::disk('public');
 
         try {
-            try {
-                Storage::disk('s3')->putFileAs(
-                    "websites/{$website->id}/images",
-                    $file,
-                    $filename,
-                    ['visibility' => 'public']
-                );
-            } catch (\Throwable $e) {
-                if (str_contains($e->getMessage(), 'AccessControlListNotSupported') || str_contains($e->getMessage(), 'does not allow ACLs') || str_contains($e->getMessage(), '400 Bad Request')) {
-                    Storage::disk('s3')->putFileAs(
-                        "websites/{$website->id}/images",
-                        $file,
-                        $filename
-                    );
-                } else {
-                    throw $e;
-                }
+            $stored = $disk->putFileAs(
+                "websites/{$website->id}/images",
+                $file,
+                $filename,
+                ['visibility' => 'public']
+            );
+            if ($stored === false) {
+                return response()->json([
+                    'message' => 'Upload failed while writing to storage.',
+                ], 500);
             }
 
             return response()->json([
                 'path' => $path,
-                'url' => Storage::disk('s3')->url($path),
+                'url' => '/storage/' . ltrim($path, '/'),
             ]);
         } catch (\Throwable $e) {
             return response()->json([

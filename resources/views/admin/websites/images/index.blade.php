@@ -133,7 +133,7 @@
                             </div>
 
                             <div x-show="imagePath" class="hidden pt-4 border-t border-gray-50 dark:border-gray-700">
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current S3 Path</p>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current File Path</p>
                                 <p class="text-xs font-mono text-gray-500 break-all" x-text="imagePath"></p>
                             </div>
                         </div>
@@ -249,7 +249,7 @@
                             </div>
 
                             <div x-show="imagePath" class="hidden pt-4 border-t border-gray-50 dark:border-gray-700">
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current S3 Path</p>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current File Path</p>
                                 <p class="text-xs font-mono text-gray-500 break-all" x-text="imagePath"></p>
                             </div>
                         </div>

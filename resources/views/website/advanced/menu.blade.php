@@ -43,7 +43,7 @@
                                             $imageUrl = $item->image;
                                         } else {
                                             try {
-                                                $imageUrl = \Illuminate\Support\Facades\Storage::disk('s3')->url($item->image);
+                                                $imageUrl = '/storage/' . ltrim($item->image, '/');
                                             } catch (\Throwable $e) {
                                                 $imageUrl = asset('storage/' . $item->image);
                                             }

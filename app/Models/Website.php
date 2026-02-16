@@ -137,7 +137,7 @@ class Website extends Model
             return $this->logo;
         }
 
-        return \Illuminate\Support\Facades\Storage::disk('s3')->url($this->logo);
+        return '/storage/' . ltrim($this->logo, '/');
     }
 
     /**
@@ -153,7 +153,7 @@ class Website extends Model
             return $this->logo_rect;
         }
 
-        return \Illuminate\Support\Facades\Storage::disk('s3')->url($this->logo_rect);
+        return '/storage/' . ltrim($this->logo_rect, '/');
     }
 
     /**
