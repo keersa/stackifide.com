@@ -17,13 +17,10 @@
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
                 <div class="text-center">
                     @php
-                        $showLogoInHero = $website->show_logo_in_hero ?? true;
-                        $heroTitle = $website->hero_title ?: $website->name;
                         $logoUrl = $website->logo_rect_url;
-                        $showLogo = $showLogoInHero && $logoUrl;
                     @endphp
                     <p class="text-amber-200 dark:text-amber-300/80 text-xs sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium mb-3 sm:mb-4 advanced-fade-in {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">Welcome to</p>
-                    @if($showLogo)
+                    @if($logoUrl)
                         <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
                     @else
                         <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg tracking-tight advanced-fade-in advanced-stagger-1 {{ $heroHeadingEnabled ? 'website-hero-heading-override' : '' }}">
@@ -35,15 +32,8 @@
                             {{ $website->tagline }}
                         </p>
                     @endif
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center advanced-fade-in advanced-stagger-3">
-                        <a href="{{ route('website.menu') }}" 
-                           class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-amber-800 hover:bg-amber-50 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] min-h-[48px] sm:min-h-0">
-                            <span>View Menu</span>
-                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </a>
-                        @if($website->contact_info && isset($website->contact_info['phone']))
+                    @if($website->contact_info && isset($website->contact_info['phone']))
+                        <div class="flex justify-center advanced-fade-in advanced-stagger-3">
                             <a href="tel:{{ preg_replace('/\D/', '', $website->contact_info['phone']) }}" 
                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-white/80 text-white hover:bg-white/20 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold transition-all backdrop-blur-sm min-h-[48px] sm:min-h-0">
                                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,8 +41,8 @@
                                 </svg>
                                 Call Us
                             </a>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
@@ -127,15 +117,6 @@
                             </div>
                         </div>
                     @endforeach
-                </div>
-                <div class="text-center mt-8 sm:mt-12">
-                    <a href="{{ route('website.menu') }}" 
-                       class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] min-h-[48px]">
-                        View Full Menu
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </a>
                 </div>
             </div>
         @endif

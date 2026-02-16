@@ -85,15 +85,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.websites.homepage.edit', $currentWebsite) }}"
-                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.homepage.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-purple-800 text-white' : 'text-white dark:text-gray-200 hover:bg-gray-700 hover:text-white' }} transition">
-                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            Homepage
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('admin.websites.hours.index', $currentWebsite) }}"
                         class="flex items-center p-2 {{ request()->routeIs('admin.websites.hours.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-purple-800 text-white' : 'text-white dark:text-gray-200 hover:bg-gray-700 hover:text-white' }} transition">
                             <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,15 +94,6 @@
                         </a>
                     </li>
                     
-                    <li>
-                        <a href="{{ route('admin.websites.menu.index', $currentWebsite) }}" 
-                        class="flex items-center p-2 {{ request()->routeIs('admin.websites.menu.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-purple-800 text-white' : 'text-white dark:text-gray-200 hover:bg-gray-700 hover:text-white' }} transition">
-                            <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            Manage Menu
-                        </a>
-                    </li>
                     <li>
                         <a href="{{ route('admin.websites.images.index', $currentWebsite) }}"
                         class="flex items-center p-2 {{ request()->routeIs('admin.websites.images.*') && optional(request()->route('website'))->id === $currentWebsite->id ? 'bg-purple-800 text-white' : 'text-white dark:text-gray-200 hover:bg-gray-700 hover:text-white' }} transition">

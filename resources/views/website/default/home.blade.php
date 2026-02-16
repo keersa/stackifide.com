@@ -26,35 +26,26 @@
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 sm:py-32">
                 <div class="text-center">
                     @php
-                        $showLogoInHero = $website->show_logo_in_hero ?? true;
-                        $heroTitle = $website->hero_title ?: $website->name;
                         $logoUrl = $website->logo_rect_url;
-                        $showLogo = $showLogoInHero && $logoUrl;
                     @endphp
-                    @if($showLogo)
+                    @if($logoUrl)
                         <img src="{{ $logoUrl }}" alt="{{ $website->name }} Logo" class="mx-auto h-auto max-w-[400px] object-contain mb-5">
                     @else
                         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5 {{ $heroHeadingEnabled ? 'website-hero-heading-override' : '' }}">{{ $website->name }}</h1>
                     @endif
                     
-                    @if($website->hero_title) 
-                        <h3 class="text-2xl pb-8 {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">{{ $website->hero_title }}</h3>
-                    @elseif($website->tagline)
+                    @if($website->tagline)
                         <h3 class="text-2xl pb-8 {{ $heroTextEnabled ? 'website-hero-text-override' : '' }}">{{ $website->tagline }}</h3>
                     @endif
 
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="{{ route('website.menu') }}" 
-                           class="inline-flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-8 py-3.5 rounded-lg font-semibold transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5">
-                            View Menu
-                        </a>
-                        @if($website->contact_info && isset($website->contact_info['phone']))
+                    @if($website->contact_info && isset($website->contact_info['phone']))
+                        <div class="flex justify-center">
                             <a href="tel:{{ preg_replace('/\D/', '', $website->contact_info['phone']) }}" 
                                class="inline-flex items-center justify-center border-2 border-white/30 hover:border-white/60 hover:bg-white/10 text-white px-8 py-3.5 rounded-lg font-semibold transition-all">
                                 Call Us
                             </a>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                     
                 </div>
             </div>
@@ -167,13 +158,6 @@
                                 </div>
                             </div>
                         @endforeach
-                    </div>
-                    <div class="text-center mt-10">
-                        <a href="{{ route('website.menu') }}" 
-                           class="inline-flex items-center gap-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 px-8 py-3.5 rounded-lg font-semibold transition-all">
-                            View Full Menu
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                        </a>
                     </div>
                 </div>
             </div>

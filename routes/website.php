@@ -84,19 +84,4 @@ Route::middleware('website-site')->group(function () {
         return view("website.{$theme}.home", compact('website'));
     })->name('website.home');
 
-    Route::get('/menu', function () {
-        $website = \App\Helpers\WebsiteHelper::current();
-        if (!$website) {
-            abort(404);
-        }
-        $theme = in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
-        $menuItems = \App\Models\MenuItem::where('website_id', $website->id)
-            ->where('is_available', true)
-            ->orderBy('category')
-            ->orderBy('sort_order')
-            ->get()
-            ->groupBy('category');
-        return view("website.{$theme}.menu", compact('website', 'menuItems'));
-    })->name('website.menu');
-
 }); // End website site check middleware

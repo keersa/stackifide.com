@@ -135,10 +135,6 @@
                                         Hours
                                     </a>
                                 @endif
-                                <a href="{{ route('website.menu') }}" 
-                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold' : '' }}">
-                                    Menu
-                                </a>
                                 @auth
                                     @php
                                         $currentWebsite = \App\Helpers\WebsiteHelper::current();
@@ -215,11 +211,6 @@
                                         Hours
                                     </a>
                                 @endif
-                                <a href="{{ route('website.menu') }}" 
-                                   @click="mobileMenuOpen = false"
-                                   class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
-                                    Menu
-                                </a>
                                 @auth
                                     @if($currentWebsite ?? null)
                                         <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
@@ -270,7 +261,6 @@
                         @endif
                         <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm">
                             <a href="{{ route('website.home') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Home</a>
-                            <a href="{{ route('website.menu') }}" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Menu</a>
                             @if($hasHours)
                                 <a href="{{ route('website.home') }}#hours" class="text-gray-500 dark:text-gray-400 {{ $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400' }} transition-colors">Hours</a>
                             @endif
