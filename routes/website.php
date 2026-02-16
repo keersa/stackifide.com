@@ -99,40 +99,4 @@ Route::middleware('website-site')->group(function () {
         return view("website.{$theme}.menu", compact('website', 'menuItems'));
     })->name('website.menu');
 
-    Route::get('/{slug}', function ($slug) {
-        $website = \App\Helpers\WebsiteHelper::current();
-        
-        // This shouldn't happen if middleware is working correctly
-        // But if it does, provide a clear error
-        if (!$website) {
-            abort(404, 'Website not identified. The EnsureWebsiteSite middleware should have caught this.');
-        }
-        
-        // Skip if slug matches reserved routes (routes that have specific handlers)
-        $reservedRoutes = [
-            'menu',  // Has a specific route handler for menu display
-        ];
-        if (in_array($slug, $reservedRoutes)) {
-            abort(404);
-        }
-        
-        // Check if page exists (published or not, for better error messages)
-        $page = \App\Models\Page::where('website_id', $website->id)
-            ->where('slug', $slug)
-            ->first();
-            
-        if (!$page) {
-            // Provide helpful error message with link to create the page
-            $adminUrl = route('admin.websites.pages.create', $website);
-            abort(404, "Page with slug '{$slug}' not found for website '{$website->name}'. <a href='{$adminUrl}'>Create the page in the admin panel</a>.");
-        }
-        
-        if (!$page->is_published) {
-            $editUrl = route('admin.websites.pages.edit', [$website, $page]);
-            abort(404, "Page '{$slug}' exists but is not published. <a href='{$editUrl}'>Publish it in the admin panel</a> to view it.");
-        }
-        
-        $theme = in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
-        return view("website.{$theme}.page", compact('website', 'page'));
-    })->name('website.page');
 }); // End website site check middleware

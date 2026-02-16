@@ -92,20 +92,6 @@ if (!$isSubdomain) {
                 Route::get('hours/edit', [\App\Http\Controllers\Website\StoreHoursController::class, 'edit'])->name('hours.edit');
                 Route::put('hours', [\App\Http\Controllers\Website\StoreHoursController::class, 'update'])->name('hours.update');
 
-                Route::post('pages/upload-image', [\App\Http\Controllers\Website\PageController::class, 'uploadImage'])->name('pages.upload-image');
-                Route::post('pages/reorder', [\App\Http\Controllers\Website\PageController::class, 'reorder'])->name('pages.reorder');
-                Route::resource('pages', \App\Http\Controllers\Website\PageController::class)
-                    ->parameters(['pages' => 'page'])
-                    ->names([
-                        'index' => 'pages.index',
-                        'create' => 'pages.create',
-                        'store' => 'pages.store',
-                        'show' => 'pages.show',
-                        'edit' => 'pages.edit',
-                        'update' => 'pages.update',
-                        'destroy' => 'pages.destroy',
-                    ]);
-
                 // Subscription management
                 Route::prefix('subscriptions')->name('subscriptions.')->group(function () {
                     Route::get('create', [\App\Http\Controllers\Admin\SubscriptionController::class, 'create'])->name('create');

@@ -23,11 +23,6 @@
         @php
             $website = \App\Helpers\WebsiteHelper::current();
             $theme = $website && in_array($website->theme ?? 'default', ['default', 'advanced']) ? $website->theme : 'default';
-            $pages = $website ? \App\Models\Page::where('website_id', $website->id)
-                ->where('is_published', true)
-                ->orderBy('sort_order')
-                ->orderBy('title')
-                ->get() : collect();
             $hasHours = $website && \App\Models\StoreHour::where('website_id', $website->id)->exists();
             $isInactive = $website && !$website->isActive();
             $accentHover = $theme === 'advanced' ? 'hover:text-amber-600 dark:hover:text-amber-400' : 'hover:text-cyan-600 dark:hover:text-cyan-400';
@@ -144,12 +139,6 @@
                                    class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold' : '' }}">
                                     Menu
                                 </a>
-                                @foreach($pages as $page)
-                                    <a href="{{ route('website.page', $page->slug) }}" 
-                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('website.page') && request()->route('slug') == $page->slug ? $accentActive . ' font-semibold' : '' }}">
-                                        {{ $page->title }}
-                                    </a>
-                                @endforeach
                                 @auth
                                     @php
                                         $currentWebsite = \App\Helpers\WebsiteHelper::current();
@@ -231,13 +220,6 @@
                                    class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.menu') ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
                                     Menu
                                 </a>
-                                @foreach($pages as $page)
-                                    <a href="{{ route('website.page', $page->slug) }}" 
-                                       @click="mobileMenuOpen = false"
-                                       class="text-gray-700 dark:text-gray-300 {{ $accentHover }} px-4 py-3 rounded-md text-base font-medium transition {{ request()->routeIs('website.page') && request()->route('slug') == $page->slug ? $accentActive . ' font-semibold bg-gray-100 dark:bg-gray-700' : '' }}">
-                                        {{ $page->title }}
-                                    </a>
-                                @endforeach
                                 @auth
                                     @if($currentWebsite ?? null)
                                         <a href="{{ route('admin.websites.show', $currentWebsite) }}" 
