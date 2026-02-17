@@ -18,8 +18,6 @@ class PublicPagesController extends Controller
      */
     public function about()
     {
-
-
         $title = 'About Stackifide';
         return view('about', compact('title'));
     }
@@ -89,6 +87,17 @@ class PublicPagesController extends Controller
             'title' => $title,
             'faqs' => $faqs,
         ]);
+    }
+
+    /**
+     * Display the upgrades page.
+     */
+    public function upgrades()
+    {
+
+
+        $title = 'Stackifide Upgrades';
+        return view('upgrades', compact('title'));
     }
 
    
