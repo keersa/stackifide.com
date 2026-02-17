@@ -9,12 +9,12 @@
                     Subscription Based Restaurant Websites
                 </h1>
                 <p class="px-4 text-lg text-gray-600 dark:text-white mt-2 animate-[fadeIn_1.4s_ease-out]">
-                    Your restaurant needs a website that converts restaurant searchers into customers.
+                    Your restaurant needs a website that converts searchers into customers
                 </p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0 mx-auto max-w-7xl text-center">
                 <div class="relative border-2 border-blue-800 dark:border-black rounded-xl bg-gray-100 dark:bg-gray-800 dark:bg-opacity-30 pt-8 pb-24 lg:pb-8 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Website Supscriptions</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Website Subscriptions</h2>
                     <h3 class="mb-4 font-bold text-2xl text-black dark:text-lime-400 mb-4">Starting at $129/month</h3>
                     <div class="flex items-center justify-center gap-3 mb-6 bg-white dark:bg-gray-700 dark:border-gray-400 bg-opacity-70 dark:bg-opacity-20 rounded-lg p-2 text-gray-700 dark:text-white">
                         <svg class="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
