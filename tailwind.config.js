@@ -13,8 +13,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Manrope', 'Figtree', ...defaultTheme.fontFamily.sans],
                 display: ['Playfair Display', 'Georgia', 'serif'],
+                // Homepage: Google Fonts (loaded in layouts/home.blade.php)
+                'home-display': ['Outfit', 'Figtree', ...defaultTheme.fontFamily.sans],
+                'home-sans': ['Manrope', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },

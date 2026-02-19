@@ -17,11 +17,11 @@
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <div class="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
                             <p class="text-sm text-blue-200">One-time Setup</p>
-                            <p class="text-3xl font-bold">Custom</p>
+                            <p class="text-3xl font-bold">$189</p>
                         </div>
                         <div class="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
                             <p class="text-sm text-blue-200">Starting at</p>
-                            <p class="text-3xl font-bold">Custom<span class="text-lg">/month</span></p>
+                            <p class="text-3xl font-bold">$189<span class="text-lg">/month</span></p>
                         </div>
                     </div>
                 </div>

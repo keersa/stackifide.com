@@ -1,11 +1,11 @@
 <x-home-layout>
 
-    <div class="py-12">
+    <div class="py-12 font-home-sans">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="text-center mb-16">
                 <x-application-logo class="block !h-[140px] !w-auto fill-current text-gray-800 dark:text-gray-200 mx-auto animate-[fadeInScale_1s_ease-out] hover:scale-105 transition-transform duration-300" />
-                <h1 class="px-4 text-4xl font-bold text-gray-800 dark:text-white mt-4 animate-[fadeIn_1.2s_ease-out]">
+                <h1 class="font-home-display px-4 text-4xl font-bold text-gray-800 dark:text-white mt-4 animate-[fadeIn_1.2s_ease-out]">
                     Subscription Based Restaurant Websites
                 </h1>
                 <p class="px-4 text-lg text-gray-600 dark:text-white mt-2 animate-[fadeIn_1.4s_ease-out]">
@@ -14,7 +14,7 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0 mx-auto max-w-7xl text-center">
                 <div class="relative border-2 border-blue-800 dark:border-black rounded-xl bg-gray-100 dark:bg-gray-800 dark:bg-opacity-30 pt-8 pb-24 lg:pb-8 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Basic</h2>
+                    <h2 class="font-home-display text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Basic</h2>
                     <h3 class="mb-4 font-bold text-2xl text-black dark:text-lime-400 mb-4">$129/month</h3>
                     <div class="flex items-center justify-center gap-3 mb-6 bg-white dark:bg-gray-700 dark:border-gray-400 bg-opacity-70 dark:bg-opacity-20 rounded-lg p-2 text-gray-700 dark:text-white">
                         <svg class="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="relative border-2 border-blue-800 dark:border-black rounded-xl bg-gray-100 dark:bg-gray-800 dark:bg-opacity-30  pt-8 pb-24 lg:pb-8 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Pro</h2>
+                    <h2 class="font-home-display text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Pro</h2>
                     <h3 class="mb-4 font-bold text-2xl text-black dark:text-lime-400 mb-4">$189/month</h3>
                     <div class="flex items-center justify-center gap-3 mb-6 bg-white dark:bg-gray-700 dark:border-gray-400 bg-opacity-70 dark:bg-opacity-20 rounded-lg p-2 text-gray-700 dark:text-white">
                         <svg class="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,8 +173,8 @@
                             Custom
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">Custom Features</h2>
-                    <h3 class="mb-4 font-bold text-2xl text-blue-700 dark:text-white mb-4">For Unique Needs</h3>
+                    <h2 class="font-home-display text-3xl font-bold text-gray-800 dark:text-white mb-1">Custom Features</h2>
+                    <h3 class="font-home-display mb-4 font-bold text-2xl text-blue-700 dark:text-white mb-4">For Unique Needs</h3>
                     <p class="text-md text-gray-600 dark:text-white leading-relaxed mb-6">For most restaurant websites, our Basic or Pro plans are all that's needed to convert web searchers into real workd customers. But some restaurants have unique needs that require custom features.</p>
                     <p class="text-md text-gray-600 dark:text-white leading-relaxed mb-6">We're here to help.</p>
                     <p class="text-md text-gray-600 dark:text-white leading-relaxed mb-6">Our team of experienced designers and engineers are ready to build custom features to suit your needs—whether that's a unique workflow, a specific integration, or a fully bespoke solution.</p>
@@ -185,9 +185,9 @@
 
             <div id="demos" class="px-4 lg:px-0 py-24">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-3xl text-center font-bold text-gray-800 dark:text-gray-200 mb-8">View Our Demos</h2>
+                    <h2 class="font-home-display text-3xl text-center font-bold text-gray-800 dark:text-gray-200 mb-8">View Our Demos</h2>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
                     <a href="https://demo.stackifide.com/restaurant-01" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 1
                     </a>
@@ -196,6 +196,9 @@
                     </a>
                     <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 3
+                    </a>
+                    <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                        Demo 4
                     </a>
                 </div>
             </div>
