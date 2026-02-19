@@ -264,7 +264,7 @@
                                 </svg>
                                 <h3 class="text-2xl font-bold">Setup Fee</h3>
                             </div>
-                            <p class="text-4xl font-bold mb-2">Custom</p>
+                            <p class="text-4xl font-bold mb-2">$189<span class="text-lg font-normal"> one-time</span></p>
                             <p class="text-blue-100">Based on your specific requirements</p>
                         </div>
                         <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
@@ -274,7 +274,7 @@
                                 </svg>
                                 <h3 class="text-2xl font-bold">Monthly Fee</h3>
                             </div>
-                            <p class="text-4xl font-bold mb-2">Custom</p>
+                            <p class="text-4xl font-bold mb-2">$189<span class="text-lg font-normal">/month</span></p>
                             <p class="text-blue-100">Tailored to your feature set</p>
                         </div>
                     </div>

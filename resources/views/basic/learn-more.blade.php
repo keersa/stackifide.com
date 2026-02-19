@@ -392,7 +392,7 @@
                                 </svg>
                                 <h3 class="text-2xl font-bold">Setup Fee</h3>
                             </div>
-                            <p class="text-4xl font-bold mb-2">$199<span class="text-lg font-normal"> one-time</span></p>
+                            <p class="text-4xl font-bold mb-2">$129<span class="text-lg font-normal"> one-time</span></p>
                             <p class="text-indigo-100">Covers design, development, and initial setup</p>
                         </div>
                         <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
@@ -402,7 +402,7 @@
                                 </svg>
                                 <h3 class="text-2xl font-bold">Monthly Fee</h3>
                             </div>
-                            <p class="text-4xl font-bold mb-2">$199<span class="text-lg font-normal">/month</span></p>
+                            <p class="text-4xl font-bold mb-2">$129<span class="text-lg font-normal">/month</span></p>
                             <p class="text-indigo-100">Includes hosting, updates, and support</p>
                         </div>
                     </div>
