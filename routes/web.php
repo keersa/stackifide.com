@@ -39,6 +39,10 @@ if (!$isSubdomain) {
         Route::post('/basic/get-started', [BasicController::class, 'store'])->name('basic.store');
         Route::get('/basic/learn-more', [BasicController::class, 'learn'])->name('basic.learn-more');
 
+        Route::get('/pro/get-started', [ProController::class, 'survey'])->name('pro.get-started');
+        Route::post('/pro/get-started', [ProController::class, 'store'])->name('pro.store');
+        Route::get('/pro/learn-more', [ProController::class, 'learn'])->name('pro.learn-more');
+
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['auth', 'verified'])->name('dashboard');
