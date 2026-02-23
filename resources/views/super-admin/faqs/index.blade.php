@@ -6,12 +6,6 @@
     </x-slot>
 
     <div>
-        @if (session('success'))
-            <div class="mb-4 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-4 py-3 text-sm">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Drag items to reorder within each category. Order is saved automatically.</p>
 
         <div class="space-y-8">
