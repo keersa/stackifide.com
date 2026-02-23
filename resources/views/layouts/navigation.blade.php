@@ -29,11 +29,16 @@
         <div class="hidden lg:flex lg:items-center lg:space-x-4 lg:ml-auto">
             @if (Route::has('login'))
                 <nav class="flex items-center gap-4">
-                    <a href="{{ url('/faqs') }}"
-                        class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
-                        FAQs
-                    </a>
+              
                     @auth
+                        <a href="{{ route('about.index') }}"
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                            About
+                        </a>
+                        <a href="{{ url('/faqs') }}"
+                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
+                            FAQs
+                        </a>
                         <a href="{{ url('/admin/dashboard') }}"
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
