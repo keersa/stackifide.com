@@ -98,6 +98,8 @@ if (!$isSubdomain) {
         Route::resource('leads', \App\Http\Controllers\Admin\LeadController::class);
         Route::resource('users', \App\Http\Controllers\SuperAdmin\UserController::class);
         Route::get('logs', [\App\Http\Controllers\SuperAdmin\LogController::class, 'index'])->name('logs.index');
+        Route::post('faqs/reorder', [\App\Http\Controllers\SuperAdmin\FaqController::class, 'reorder'])->name('faqs.reorder');
+        Route::resource('faqs', \App\Http\Controllers\SuperAdmin\FaqController::class)->except(['show']);
         Route::get('websites', [\App\Http\Controllers\SuperAdmin\WebsiteController::class, 'index'])->name('websites.index');
         Route::get('websites/create', [\App\Http\Controllers\SuperAdmin\WebsiteController::class, 'create'])->name('websites.create');
         Route::post('websites', [\App\Http\Controllers\SuperAdmin\WebsiteController::class, 'store'])->name('websites.store');

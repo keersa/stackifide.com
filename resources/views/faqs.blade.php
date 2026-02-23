@@ -14,7 +14,7 @@
                         <nav class="flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 lg:overflow-visible" aria-label="FAQ categories">
                             @foreach($categories as $cat)
                                 <a href="#faq-{{ $cat['slug'] }}"
-                                   class="faq-category-link flex-shrink-0 lg:flex-shrink px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:bg-black dark:bg-opacity-40 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-opacity-10 transition-colors duration-200 border border-gray-200 dark:border-white"
+                                   class="faq-category-link flex-shrink-0 lg:flex-shrink px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:bg-black dark:bg-opacity-40 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-opacity-10 transition-colors duration-200 border border-gray-200 dark:border-black"
                                    data-category="{{ $cat['slug'] }}"
                                 >
                                     {{ $cat['label'] }}
@@ -28,7 +28,7 @@
                 <main class="flex-1 min-w-0 order-1 lg:order-2 scroll-mt-24">
                     @foreach($categories as $cat)
                         @php
-                            $sectionFaqs = array_filter($faqs, fn($faq) => ($faq['category'] ?? '') === $cat['slug']);
+                            $sectionFaqs = $faqs->where('category', $cat['slug']);
                         @endphp
                         @if(count($sectionFaqs) > 0)
                             <section id="faq-{{ $cat['slug'] }}" class="scroll-mt-28 mb-12 first:mt-0">
@@ -44,7 +44,7 @@
                                                 class="w-full px-5 py-4 text-left flex items-center justify-between bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200 focus:outline-none rounded-xl"
                                             >
                                                 <span class="font-semibold text-gray-900 dark:text-gray-100 pr-4 text-left">
-                                                    {{ $faq['question'] }}
+                                                    {{ $faq->question }}
                                                 </span>
                                                 <svg
                                                     class="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0 transition-transform duration-300"
@@ -69,7 +69,7 @@
                                             >
                                                 <div class="px-5 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                                                     <p class="leading-relaxed">
-                                                        {{ $faq['answer'] }}
+                                                        {{ $faq->answer }}
                                                     </p>
                                                 </div>
                                             </div>
