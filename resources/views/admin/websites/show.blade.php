@@ -87,7 +87,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Current Plan</p>
-                                    <p class="text-lg font-black text-gray-900 dark:text-white uppercase">{{ ucfirst($website->plan) }}</p>
+                                    <p class="text-lg font-black text-gray-900 dark:text-white">{{ ucfirst($website->plan) }} Subscription</p>
                                 </div>
                                 @if($website->isSubscriptionCanceled())
                                     @php
@@ -172,12 +172,12 @@
                                     <a href="{{ route('admin.websites.subscriptions.create', [$website, 'plan' => 'basic']) }}" 
                                        class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-4 rounded transition text-left flex items-center justify-between">
                                         <span>Basic Plan</span>
-                                        <span class="font-normal">$99/month</span>
+                                        <span class="font-normal">$129/month</span>
                                     </a>
                                     <a href="{{ route('admin.websites.subscriptions.create', [$website, 'plan' => 'pro']) }}" 
                                        class="block w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-3 px-4 rounded transition text-left flex items-center justify-between">
                                         <span>Pro Plan</span>
-                                        <span class="font-normal">$169/month</span>
+                                        <span class="font-normal">$189/month</span>
                                     </a>
                                 </div>
                             </div>

@@ -80,7 +80,7 @@
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
         <div>
             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Plan</p>
-            <span class="text-xl font-extrabold text-gray-900 dark:text-white uppercase">{{ $website->plan }}</span>
+            <span class="text-xl font-extrabold text-gray-900 dark:text-white">{{ ucfirst($website->plan) }} Subscription</span>
         </div>
         <div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
             <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
