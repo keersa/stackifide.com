@@ -29,19 +29,23 @@
         <div class="hidden lg:flex lg:items-center lg:space-x-4 lg:ml-auto">
             @if (Route::has('login'))
                 <nav class="flex items-center gap-4">
+                    <a href="{{ url('/faqs') }}"
+                        class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
+                        FAQs
+                    </a>
                     @auth
                         <a href="{{ url('/admin/dashboard') }}"
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
                         </a>
                         <a href="{{ url('/profile') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Account
                         </a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" 
-                                    class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] rounded-sm text-md leading-normal transition-colors">
+                                    class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                                 {{ __('Log Out') }}
                             </button>
                         </form>
@@ -106,6 +110,11 @@
 
         <!-- Mobile Menu Content -->
         <div class="p-4 space-y-4">
+            <a href="{{ route('faqs.index') }}"
+                @click="open = false"
+                class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
+                FAQs
+            </a>
             @if (Route::has('login'))
                 @auth
                     <a href="{{ url('/admin/dashboard') }}"
