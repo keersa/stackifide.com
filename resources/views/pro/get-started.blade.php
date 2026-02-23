@@ -200,8 +200,11 @@
                                                id="phone"
                                                value="{{ old('phone') }}"
                                                required
+                                               pattern="\(\d{3}\) \d{3}-\d{4}"
                                                placeholder="(555) 123-4567"
-                                               class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:bg-gray-700 dark:text-white transition-all">
+                                               maxlength="14"
+                                               class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:bg-gray-700 dark:text-white transition-all"
+                                               autocomplete="tel">
                                     </div>
                                     @error('phone')
                                         <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -387,4 +390,25 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function() {
+            var phone = document.getElementById('phone');
+            if (!phone) return;
+            function formatPhone(value) {
+                var digits = (value || '').replace(/\D/g, '').slice(0, 10);
+                if (digits.length <= 3) return digits.length ? '(' + digits : '';
+                if (digits.length <= 6) return '(' + digits.slice(0, 3) + ') ' + digits.slice(3);
+                return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+            }
+            function onPhoneInput() {
+                var start = phone.selectionStart, oldLen = phone.value.length;
+                phone.value = formatPhone(phone.value);
+                var newLen = phone.value.length;
+                phone.setSelectionRange(Math.max(0, start + (newLen - oldLen)), Math.max(0, start + (newLen - oldLen)));
+            }
+            phone.addEventListener('input', onPhoneInput);
+            if (phone.value) onPhoneInput();
+        })();
+    </script>
 </x-app-layout>

@@ -37,7 +37,7 @@ class BasicController extends Controller
             'contact_first_name' => 'required|string|max:255',
             'contact_last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => ['required', 'string', 'regex:/^\(\d{3}\) \d{3}-\d{4}$/'],
             'business_type' => 'nullable|string|max:255',
             'cuisine_type' => 'nullable|string|max:255',
             'number_of_locations' => 'nullable|integer|min:1',
@@ -50,6 +50,8 @@ class BasicController extends Controller
             'current_ordering_system' => 'nullable|in:GrubHub,DoorDash,Custom,Other',
             'special_requirements' => 'nullable|string',
             'notes' => 'nullable|string',
+        ], [
+            'phone.regex' => 'The phone number must be in the format (000) 000-0000.',
         ]);
 
         // Create lead with Basic plan defaults
@@ -63,12 +65,12 @@ class BasicController extends Controller
 
         $lead = Lead::create($leadData);
 
-        // Send notification to all admin users
+        // Send notification to super admins only
         try {
-            $admins = User::whereIn('role', [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])->get();
-            foreach ($admins as $admin) {
-                if ($admin->email) {
-                    $admin->notify(new NewLeadNotification($lead));
+            $superAdmins = User::where('role', User::ROLE_SUPER_ADMIN)->get();
+            foreach ($superAdmins as $user) {
+                if ($user->email) {
+                    $user->notify(new NewLeadNotification($lead));
                 }
             }
         } catch (\Exception $e) {
