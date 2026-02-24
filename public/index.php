@@ -1,5 +1,11 @@
 <?php
 
+$laravelTemp = __DIR__ . '/../storage/framework/temp';
+putenv('TMPDIR='.$laravelTemp);
+if (!file_exists($laravelTemp)) {
+    mkdir($laravelTemp, 0777, true);
+}
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
