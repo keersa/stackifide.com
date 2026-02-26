@@ -187,18 +187,21 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 class="font-home-display text-3xl text-center font-bold text-gray-800 dark:text-gray-200 mb-8">View Our Demos</h2>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                    <a href="https://demo.stackifide.com/restaurant-01" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
-                        Demo 1
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                    <a href="http://demo.stackifide.com/D001/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                        Bella Vista
                     </a>
-                    <a href="https://demo.stackifide.com/restaurant-02" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/D002/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 2
                     </a>
-                    <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/D003/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 3
                     </a>
-                    <a href="https://demo.stackifide.com/restaurant-03" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                    <a href="https://demo.stackifide.com/D004/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
                         Demo 4
+                    </a>
+                    <a href="https://demo.stackifide.com/D005/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
+                        Demo 5
                     </a>
                 </div>
             </div>
