@@ -236,7 +236,7 @@
                             
 
                             <!-- Contacts list -->
-                            <ul id="contacts-list" class="space-y-3">
+                            <ul id="contacts-list" class="">
                                 @foreach($lead->prospectiveContacts as $contact)
                                     <li class="contact-item border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30" data-contact-id="{{ $contact->id }}">
                                         <div class="contact-display flex flex-wrap items-start justify-between gap-2">
@@ -275,9 +275,8 @@
                                     </li>
                                 @endforeach
                             </ul>
-                            <p id="contacts-empty" class="text-sm text-gray-500 dark:text-gray-400 {{ $lead->prospectiveContacts->isEmpty() ? '' : 'hidden' }}">No contacts recorded yet. Add one above.</p>
-                            
-                            <button type="button" id="toggle-add-contact-btn" class="mt-8 mb-4 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2 px-4 rounded">
+
+                            <button type="button" id="toggle-add-contact-btn" class="mt-4 mb-4 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2 px-4 rounded">
                                 Add Customer Contact
                             </button>
 
