@@ -24,7 +24,7 @@
                     // Set initial background color immediately to prevent white flash
                     const style = document.createElement('style');
                     style.id = 'initial-bg-color';
-                    style.textContent = 'body { background-color: #65a30d !important; }';
+                    style.textContent = 'body { background-color: #1a7dbc !important; }';
                     document.head.appendChild(style);
                 }
             })();

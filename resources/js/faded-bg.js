@@ -78,7 +78,7 @@ function init() {
         }
         
         // Set initial background color immediately
-        document.body.style.backgroundColor = '#65a30d';
+        document.body.style.backgroundColor = '#1a7dbc';
         index = 1; // Set index to 1 so first cycle goes to next color
         startColorCycling();
     }
@@ -87,7 +87,7 @@ function init() {
     function handleDarkModeChange() {
         if (isDarkMode()) {
             // Set initial background color when switching to dark mode
-            document.body.style.backgroundColor = '#65a30d';
+            document.body.style.backgroundColor = '#1a7dbc';
             index = 1; // Set index to 1 so first cycle goes to next color
             startColorCycling();
         } else {
