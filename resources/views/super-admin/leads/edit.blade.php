@@ -238,13 +238,19 @@
                             <!-- Contacts list -->
                             <ul id="contacts-list" class="">
                                 @foreach($lead->prospectiveContacts as $contact)
-                                    <li class="contact-item border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30" data-contact-id="{{ $contact->id }}">
+                                    <li class="contact-item border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-2 bg-gray-50 dark:bg-gray-700/30" data-contact-id="{{ $contact->id }}">
                                         <div class="contact-display flex flex-wrap items-start justify-between gap-2">
                                             <div class="min-w-0 flex-1">
-                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $contact->contact_type_label }}</span>
-                                                <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">{{ $contact->created_at->format('M j, Y g:i A') }}</span>
+                                                <span class="text-gray-700 dark:text-gray-500 font-medium text-gray-900 dark:text-gray-100">{{ $contact->contact_type_label }}</span>
+                        
                                                 @if($contact->notes)
-                                                    <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">{{ $contact->notes }}</p>
+                                                    <p class="mt-1 text-md text-gray-700 dark:text-gray-300">{{ $contact->notes }}</p>
+                                                @endif
+                                                @if($contact->user)
+                                                    <div>
+                                                    <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">Added by {{ $contact->user->full_name ?: $contact->user->email }} </div> 
+                                                        <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $contact->created_at->format('M j, Y g:i A') }}</div>
+                                                    </div>
                                                 @endif
                                             </div>
                                             <div class="flex gap-2 shrink-0">
@@ -347,18 +353,20 @@
             var config = window.ProspectiveContactsConfig;
             if (!config) return;
 
-            function contactRowHtml(contact) {
+                function contactRowHtml(contact) {
                 var typeOpts = '';
                 for (var k in config.contactTypes) {
                     typeOpts += '<option value="' + k + '"' + (contact.contact_type === k ? ' selected' : '') + '>' + (config.contactTypes[k] || k) + '</option>';
                 }
                 var notesEsc = (contact.notes || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                var userNameEsc = (contact.user_name || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                 return '<li class="contact-item border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30" data-contact-id="' + contact.id + '">' +
                     '<div class="contact-display flex flex-wrap items-start justify-between gap-2">' +
                     '<div class="min-w-0 flex-1">' +
                     '<span class="font-medium text-gray-900 dark:text-gray-100">' + (contact.contact_type_label || contact.contact_type) + '</span>' +
                     ' <span class="text-sm text-gray-500 dark:text-gray-400">' + (contact.created_at_human || '') + '</span>' +
                     (contact.notes ? '<p class="mt-1 text-sm text-gray-700 dark:text-gray-300">' + notesEsc + '</p>' : '') +
+                    (contact.user_name ? '<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Added by ' + userNameEsc + '</p>' : '') +
                     '</div>' +
                     '<div class="flex gap-2 shrink-0">' +
                     '<button type="button" class="contact-edit-btn text-sm text-purple-600 hover:text-purple-800 dark:text-purple-400">Edit</button>' +

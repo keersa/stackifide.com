@@ -64,7 +64,9 @@ class Lead extends Model
      */
     public function prospectiveContacts(): HasMany
     {
-        return $this->hasMany(ProspectiveContact::class)->orderByDesc('created_at');
+        return $this->hasMany(ProspectiveContact::class)
+            ->with('user')
+            ->orderByDesc('created_at');
     }
 
     /**
