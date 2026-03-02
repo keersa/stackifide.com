@@ -2,10 +2,6 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <span>{{ __('Create New Lead') }}</span>
-            <a href="{{ route('super-admin.leads.index') }}" 
-               class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Back to Leads
-            </a>
         </div>
     </x-slot>
 
@@ -32,12 +28,14 @@
                             </div>
                             <div>
                                 <label for="business_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Business Type</label>
-                                <input type="text" 
-                                       name="business_type" 
-                                       id="business_type"
-                                       value="{{ old('business_type') }}"
-                                       placeholder="e.g., Restaurant, Cafe, Bar"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <select name="business_type" id="business_type"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <option value="">Select type</option>
+                                    <option value="Restaurant" {{ old('business_type') === 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                                    <option value="Food Truck" {{ old('business_type') === 'Food Truck' ? 'selected' : '' }}>Food Truck</option>
+                                    <option value="Bar" {{ old('business_type') === 'Bar' ? 'selected' : '' }}>Bar</option>
+                                    <option value="Other" {{ old('business_type') === 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="cuisine_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cuisine Type</label>
@@ -46,15 +44,6 @@
                                        id="cuisine_type"
                                        value="{{ old('cuisine_type') }}"
                                        placeholder="e.g., Italian, Mexican, Asian"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="number_of_locations" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Number of Locations</label>
-                                <input type="number" 
-                                       name="number_of_locations" 
-                                       id="number_of_locations"
-                                       value="{{ old('number_of_locations') }}"
-                                       min="1"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             </div>
                         </div>
@@ -92,19 +81,31 @@
                             </div>
                             <div>
                                 <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
-                                <input type="text" 
-                                       name="phone" 
+                                <input type="text"
+                                       name="phone"
                                        id="phone"
                                        value="{{ old('phone') }}"
+                                       placeholder="(813) 333-3333"
+                                       pattern="\(\d{3}\) \d{3}-\d{4}"
+                                       maxlength="14"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('phone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
                                 <label for="secondary_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Secondary Phone</label>
-                                <input type="text" 
-                                       name="secondary_phone" 
+                                <input type="text"
+                                       name="secondary_phone"
                                        id="secondary_phone"
                                        value="{{ old('secondary_phone') }}"
+                                       placeholder="(813) 333-3333"
+                                       pattern="\(\d{3}\) \d{3}-\d{4}"
+                                       maxlength="14"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('secondary_phone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -222,6 +223,7 @@
                                         id="source"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     <option value="">Select Source</option>
+                                    <option value="google_maps" {{ old('source') === 'google_maps' ? 'selected' : '' }}>Google Maps</option>
                                     <option value="website" {{ old('source') === 'website' ? 'selected' : '' }}>Website</option>
                                     <option value="referral" {{ old('source') === 'referral' ? 'selected' : '' }}>Referral</option>
                                     <option value="social_media" {{ old('source') === 'social_media' ? 'selected' : '' }}>Social Media</option>
@@ -229,45 +231,6 @@
                                     <option value="email" {{ old('source') === 'email' ? 'selected' : '' }}>Email</option>
                                     <option value="other" {{ old('source') === 'other' ? 'selected' : '' }}>Other</option>
                                 </select>
-                            </div>
-                            <div>
-                                <label for="estimated_value" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Estimated Value ($)</label>
-                                <input type="number" 
-                                       name="estimated_value" 
-                                       id="estimated_value"
-                                       value="{{ old('estimated_value') }}"
-                                       step="0.01"
-                                       min="0"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="assigned_to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assign To</label>
-                                <select name="assigned_to" 
-                                        id="assigned_to"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="">Unassigned</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ old('assigned_to') == $user->id ? 'selected' : '' }}>
-                                            {{ $user->full_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label for="first_contact_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">First Contact Date</label>
-                                <input type="date" 
-                                       name="first_contact_date" 
-                                       id="first_contact_date"
-                                       value="{{ old('first_contact_date', now()->format('Y-m-d')) }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="follow_up_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Follow Up Date</label>
-                                <input type="date" 
-                                       name="follow_up_date" 
-                                       id="follow_up_date"
-                                       value="{{ old('follow_up_date') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             </div>
                             <div class="md:col-span-2">
                                 <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tags</label>
@@ -283,27 +246,17 @@
                     </div>
                 </div>
 
-                <!-- Notes -->
+                <!-- Internal Notes -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Notes</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Public Notes</label>
-                                <textarea name="notes" 
-                                          id="notes"
-                                          rows="4"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('notes') }}</textarea>
-                                <p class="mt-1 text-sm text-gray-500">These notes can be shared with the client.</p>
-                            </div>
-                            <div>
-                                <label for="internal_notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Internal Notes</label>
-                                <textarea name="internal_notes" 
-                                          id="internal_notes"
-                                          rows="4"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('internal_notes') }}</textarea>
-                                <p class="mt-1 text-sm text-gray-500">Private notes - not visible to clients.</p>
-                            </div>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Internal Notes</h3>
+                        <div>
+                            <label for="internal_notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Internal Notes</label>
+                            <textarea name="internal_notes"
+                                      id="internal_notes"
+                                      rows="4"
+                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('internal_notes') }}</textarea>
+                            <p class="mt-1 text-sm text-gray-500">Private notes - not visible to clients.</p>
                         </div>
                     </div>
                 </div>
@@ -322,5 +275,29 @@
             </form>
         </div>
     </div>
+
+    <script>
+        (function() {
+            function formatPhone(value) {
+                var digits = (value || '').replace(/\D/g, '').slice(0, 10);
+                if (digits.length <= 3) return digits.length ? '(' + digits : '';
+                if (digits.length <= 6) return '(' + digits.slice(0, 3) + ') ' + digits.slice(3);
+                return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+            }
+            function bindPhone(input) {
+                if (!input) return;
+                function onInput() {
+                    var start = input.selectionStart, oldLen = input.value.length;
+                    input.value = formatPhone(input.value);
+                    var newLen = input.value.length;
+                    input.setSelectionRange(Math.max(0, start + (newLen - oldLen)), Math.max(0, start + (newLen - oldLen)));
+                }
+                input.addEventListener('input', onInput);
+                if (input.value) onInput();
+            }
+            bindPhone(document.getElementById('phone'));
+            bindPhone(document.getElementById('secondary_phone'));
+        })();
+    </script>
 </x-super-admin-layout>
 

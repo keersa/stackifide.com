@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasWebsiteScope;
 
@@ -56,6 +57,24 @@ class Lead extends Model
     public function assignedUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    /**
+     * Get the prospective contacts (customer contact log) for this lead.
+     */
+    public function prospectiveContacts(): HasMany
+    {
+        return $this->hasMany(ProspectiveContact::class)->orderByDesc('created_at');
+    }
+
+    /**
+     * Boot the model and register cascade delete for prospective contacts.
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function (Lead $lead) {
+            $lead->prospectiveContacts()->delete();
+        });
     }
 
     /**

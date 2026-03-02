@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\NewLeadNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class LeadController extends Controller
@@ -41,12 +42,12 @@ class LeadController extends Controller
             });
         }
 
-        $leads = $query->paginate(20);
+        $leads = $query->paginate(10);
 
         return view('super-admin.leads.index', [
             'leads' => $leads,
             'statuses' => ['new', 'contacted', 'qualified', 'proposal', 'negotiation', 'won', 'lost'],
-            'sources' => ['website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
+            'sources' => ['google_maps', 'website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
         ]);
     }
 
@@ -70,21 +71,21 @@ class LeadController extends Controller
             'contact_first_name' => 'nullable|string|max:255',
             'contact_last_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:255',
-            'secondary_phone' => 'nullable|string|max:255',
+            'phone' => ['nullable', 'string', 'regex:/^\(\d{3}\) \d{3}-\d{4}$/'],
+            'secondary_phone' => ['nullable', 'string', 'regex:/^\(\d{3}\) \d{3}-\d{4}$/'],
             'street_address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'current_url' => 'nullable|url|max:255',
-            'business_type' => 'nullable|string|max:255',
+            'business_type' => ['nullable', Rule::in(['Restaurant', 'Food Truck', 'Bar', 'Other'])],
             'cuisine_type' => 'nullable|string|max:255',
             'number_of_locations' => 'nullable|integer|min:1',
             'current_ordering_system' => 'nullable|in:GrubHub,DoorDash,Custom,Other',
             'special_requirements' => 'nullable|string',
             'status' => 'required|in:new,contacted,qualified,proposal,negotiation,won,lost',
-            'source' => 'nullable|in:website,referral,social_media,cold_call,email,other',
+            'source' => 'nullable|in:google_maps,website,referral,social_media,cold_call,email,other',
             'estimated_value' => 'nullable|numeric|min:0',
             'first_contact_date' => 'nullable|date',
             'last_contact_date' => 'nullable|date',
@@ -93,6 +94,9 @@ class LeadController extends Controller
             'internal_notes' => 'nullable|string',
             'tags' => 'nullable|string',
             'assigned_to' => 'nullable|exists:users,id',
+        ], [
+            'phone.regex' => 'The phone number must be in the format (000) 000-0000.',
+            'secondary_phone.regex' => 'The secondary phone number must be in the format (000) 000-0000.',
         ]);
 
         // Set first contact date if not provided
@@ -152,9 +156,12 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead): View
     {
+        $lead->load('prospectiveContacts');
+
         return view('super-admin.leads.edit', [
             'lead' => $lead,
             'users' => User::whereIn('role', ['admin', 'super_admin'])->get(),
+            'contactTypes' => \App\Models\ProspectiveContact::CONTACT_TYPES,
         ]);
     }
 
@@ -168,21 +175,21 @@ class LeadController extends Controller
             'contact_first_name' => 'nullable|string|max:255',
             'contact_last_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:255',
-            'secondary_phone' => 'nullable|string|max:255',
+            'phone' => ['nullable', 'string', 'regex:/^\(\d{3}\) \d{3}-\d{4}$/'],
+            'secondary_phone' => ['nullable', 'string', 'regex:/^\(\d{3}\) \d{3}-\d{4}$/'],
             'street_address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'current_url' => 'nullable|url|max:255',
-            'business_type' => 'nullable|string|max:255',
+            'business_type' => ['nullable', Rule::in(['Restaurant', 'Food Truck', 'Bar', 'Other'])],
             'cuisine_type' => 'nullable|string|max:255',
             'number_of_locations' => 'nullable|integer|min:1',
             'current_ordering_system' => 'nullable|in:GrubHub,DoorDash,Custom,Other',
             'special_requirements' => 'nullable|string',
             'status' => 'required|in:new,contacted,qualified,proposal,negotiation,won,lost',
-            'source' => 'nullable|in:website,referral,social_media,cold_call,email,other',
+            'source' => 'nullable|in:google_maps,website,referral,social_media,cold_call,email,other',
             'estimated_value' => 'nullable|numeric|min:0',
             'first_contact_date' => 'nullable|date',
             'last_contact_date' => 'nullable|date',
@@ -191,6 +198,9 @@ class LeadController extends Controller
             'internal_notes' => 'nullable|string',
             'tags' => 'nullable|string',
             'assigned_to' => 'nullable|exists:users,id',
+        ], [
+            'phone.regex' => 'The phone number must be in the format (000) 000-0000.',
+            'secondary_phone.regex' => 'The secondary phone number must be in the format (000) 000-0000.',
         ]);
 
         // Update last contact date if status changed
@@ -200,7 +210,7 @@ class LeadController extends Controller
 
         $lead->update($validated);
 
-        return redirect()->route('super-admin.leads.show', $lead)
+        return redirect()->route('super-admin.leads.edit', $lead)
             ->with('success', 'Lead updated successfully.');
     }
 

@@ -89,7 +89,8 @@ Route::middleware('main-site')->group(function () {
 // Super Admin routes (only on main site)
 Route::middleware(['auth', 'super_admin', 'main-site'])->prefix('super-admin')->name('super-admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'index'])->name('dashboard');
-    Route::resource('leads', \App\Http\Controllers\Admin\LeadController::class);
+    Route::resource('leads', \App\Http\Controllers\SuperAdmin\LeadController::class);
+    Route::resource('leads.prospective-contacts', \App\Http\Controllers\SuperAdmin\ProspectiveContactController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('users', \App\Http\Controllers\SuperAdmin\UserController::class);
     Route::get('logs', [\App\Http\Controllers\SuperAdmin\LogController::class, 'index'])->name('logs.index');
     Route::post('faqs/reorder', [\App\Http\Controllers\SuperAdmin\FaqController::class, 'reorder'])->name('faqs.reorder');
