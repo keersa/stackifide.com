@@ -40,10 +40,10 @@
                         </span>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400"> Subscription Plan</label>
-                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ ucfirst($website->plan) }} 
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Subscription Plan</label>
+                        <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ ucfirst($website->plan) }}
                         @if($website->stripe_subscription_id)
-                            <form method="POST" action="{{ route('admin.websites.subscriptions.sync', $website) }}" class="inline">
+                            <form method="POST" action="{{ route('admin.websites.subscriptions.sync', $website) }}" class="inline ml-2">
                                 @csrf
                                 <button type="submit" class="inline bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded">
                                     Sync Status

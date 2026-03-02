@@ -69,22 +69,6 @@
                                           rows="3"
                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('description') }}</textarea>
                             </div>
-                            <div>
-                                <label for="trial_ends_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Trial Ends At</label>
-                                <input type="date" 
-                                       name="trial_ends_at" 
-                                       id="trial_ends_at"
-                                       value="{{ old('trial_ends_at') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="subscription_ends_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subscription Ends At</label>
-                                <input type="date" 
-                                       name="subscription_ends_at" 
-                                       id="subscription_ends_at"
-                                       value="{{ old('subscription_ends_at') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
                         </div>
                     </div>
                 </div>

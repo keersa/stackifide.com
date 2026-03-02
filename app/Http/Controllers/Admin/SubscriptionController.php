@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Website;
+use App\Notifications\NewSubscriptionNotificationForAdmin;
+use App\Notifications\NewSubscriptionNotificationForSuperAdmin;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +45,7 @@ class SubscriptionController extends Controller
 
         $plan = $request->plan;
         $priceId = Website::getStripePriceIds()[$plan];
-        $planPrice = $plan === 'basic' ? 99 : 169;
+        $planPrice = $plan === 'basic' ? 129 : 189;
 
         return view('admin.websites.subscriptions.create', [
             'website' => $website,
@@ -88,6 +91,20 @@ class SubscriptionController extends Controller
         try {
             // Get or create Stripe customer
             $customerId = $website->stripe_id;
+            if ($customerId) {
+                try {
+                    $customer = Customer::retrieve($customerId);
+                    Customer::update($customerId, ['description' => $website->name]);
+                } catch (ApiErrorException $e) {
+                    // Customer was deleted in Stripe or wrong account (e.g. test vs live) — create new one
+                    if (str_contains($e->getMessage(), 'No such customer')) {
+                        $website->update(['stripe_id' => null]);
+                        $customerId = null;
+                    } else {
+                        throw $e;
+                    }
+                }
+            }
             if (!$customerId) {
                 $customer = Customer::create([
                     'email' => $website->user->email,
@@ -98,10 +115,6 @@ class SubscriptionController extends Controller
                     ],
                 ]);
                 $customerId = $customer->id;
-            } else {
-                $customer = Customer::retrieve($customerId);
-                // Keep customer description in sync with website title
-                Customer::update($customerId, ['description' => $website->name]);
             }
 
             // Attach payment method to customer (but don't set as default)
@@ -537,22 +550,130 @@ class SubscriptionController extends Controller
             
             // Check if payment succeeded or subscription is active
             if ($paymentIntent->status === 'succeeded' || $subscription->status === 'active') {
-                $plan = $subscription->metadata->plan ?? 'basic';
-                
-                // Update website with subscription info
-                $this->updateWebsiteSubscription($website, $subscription, $subscription->customer, $plan);
-                
+                $plan = $subscription->metadata?->plan ?? 'basic';
+                $customerId = is_object($subscription->customer)
+                    ? $subscription->customer->id
+                    : $subscription->customer;
+
+                Log::info('Subscription active: updating website and sending notifications', [
+                    'website_id' => $website->id,
+                    'subscription_id' => $subscription->id,
+                ]);
+
+                try {
+                    // Update website with subscription info
+                    $this->updateWebsiteSubscription($website, $subscription, $customerId, $plan);
+                    $website->refresh();
+                    $website->load('user');
+                } catch (\Throwable $e) {
+                    Log::error('Failed to update website subscription', [
+                        'website_id' => $website->id,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                    throw $e;
+                }
+
+                // Ensure subscription emails go via SMTP (ignore cached config that might use 'log')
+                if (config('mail.default') !== 'smtp') {
+                    config(['mail.default' => 'smtp']);
+                }
+                Log::info('Mail driver for subscription notifications', ['driver' => config('mail.default')]);
+
+                // Notify all super admins (detailed internal email)
+                $superAdmins = User::where('role', User::ROLE_SUPER_ADMIN)
+                    ->whereNotNull('email')
+                    ->get();
+                Log::info('Sending new subscription notifications', [
+                    'website_id' => $website->id,
+                    'super_admin_count' => $superAdmins->count(),
+                    'owner_id' => $website->user_id,
+                ]);
+                foreach ($superAdmins as $superAdmin) {
+                    try {
+                        $superAdmin->notify(new NewSubscriptionNotificationForSuperAdmin($website));
+                        Log::info('Sent new subscription email to super admin', ['user_id' => $superAdmin->id]);
+                    } catch (\Throwable $e) {
+                        Log::error('Failed to send new subscription notification to super admin', [
+                            'user_id' => $superAdmin->id,
+                            'website_id' => $website->id,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+
+                // Notify the website owner (friendly summary email), regardless of role
+                $owner = $website->user;
+                if ($website->user_id && $owner && $owner->email) {
+                    try {
+                        $owner->notify(new NewSubscriptionNotificationForAdmin($website));
+                        Log::info('Sent new subscription email to website owner', ['user_id' => $owner->id]);
+                    } catch (\Throwable $e) {
+                        Log::error('Failed to send new subscription notification to website owner', [
+                            'user_id' => $owner->id,
+                            'website_id' => $website->id,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Subscription created successfully!',
                 ]);
             }
             
-            // If payment is still processing, that's okay - subscription might become active soon
+            // If payment is still processing, re-check subscription in case it became active
             if ($paymentIntent->status === 'processing') {
+                $subscription = Subscription::retrieve($subscriptionId);
+                if ($subscription->status === 'active') {
+                    $plan = $subscription->metadata?->plan ?? 'basic';
+                    $customerId = is_object($subscription->customer)
+                        ? $subscription->customer->id
+                        : $subscription->customer;
+                    Log::info('Subscription became active (processing path): updating website and sending notifications', [
+                        'website_id' => $website->id,
+                        'subscription_id' => $subscription->id,
+                    ]);
+                    $this->updateWebsiteSubscription($website, $subscription, $customerId, $plan);
+                    $website->refresh();
+                    $website->load('user');
+
+                    if (config('mail.default') !== 'smtp') {
+                        config(['mail.default' => 'smtp']);
+                    }
+
+                    foreach (User::where('role', User::ROLE_SUPER_ADMIN)->whereNotNull('email')->get() as $superAdmin) {
+                        try {
+                            $superAdmin->notify(new NewSubscriptionNotificationForSuperAdmin($website));
+                            Log::info('Sent new subscription email to super admin (processing path)', ['user_id' => $superAdmin->id]);
+                        } catch (\Throwable $e) {
+                            Log::error('Failed to send new subscription notification to super admin', [
+                                'user_id' => $superAdmin->id,
+                                'website_id' => $website->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
+                    $owner = $website->user;
+                    if ($website->user_id && $owner && $owner->email) {
+                        try {
+                            $owner->notify(new NewSubscriptionNotificationForAdmin($website));
+                            Log::info('Sent new subscription email to website owner (processing path)', ['user_id' => $owner->id]);
+                        } catch (\Throwable $e) {
+                            Log::error('Failed to send new subscription notification to website owner', [
+                                'user_id' => $owner->id,
+                                'website_id' => $website->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
+                }
                 return response()->json([
                     'success' => true,
-                    'message' => 'Payment is processing. Subscription will be activated shortly.',
+                    'message' => $subscription->status === 'active'
+                        ? 'Subscription created successfully!'
+                        : 'Payment is processing. Subscription will be activated shortly.',
                 ]);
             }
 
@@ -574,11 +695,14 @@ class SubscriptionController extends Controller
      */
     private function updateWebsiteSubscription(Website $website, Subscription $subscription, string $customerId, string $plan): void
     {
+        $price = $subscription->items->data[0]->price ?? null;
+        $stripePriceId = $price && is_object($price) ? $price->id : $price;
+
         $website->update([
             'plan' => $plan,
             'stripe_id' => $customerId,
             'stripe_subscription_id' => $subscription->id,
-            'stripe_price_id' => $subscription->items->data[0]->price->id,
+            'stripe_price_id' => $stripePriceId,
             'stripe_status' => $subscription->status,
             'stripe_trial_ends_at' => $subscription->trial_end ? 
                 \Carbon\Carbon::createFromTimestamp($subscription->trial_end) : null,

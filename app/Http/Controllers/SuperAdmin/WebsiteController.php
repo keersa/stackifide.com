@@ -123,6 +123,7 @@ class WebsiteController extends Controller
     public function show($id): View
     {
         $website = Website::withTrashed()->with('user')->findOrFail($id);
+
         return view('super-admin.websites.show', compact('website'));
     }
 

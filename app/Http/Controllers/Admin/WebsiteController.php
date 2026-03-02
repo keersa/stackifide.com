@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use Stripe\Stripe;
-use Stripe\Subscription;
 
 class WebsiteController extends Controller
 {
@@ -97,7 +95,7 @@ class WebsiteController extends Controller
             'name' => $validated['name'],
             'domain' => $validated['domain'] ?? null,
             'status' => $validated['status'],
-            'plan' => $validated['plan'],
+            'plan' => $validated['plan'] ?? 'none',
             'description' => $validated['description'] ?? null,
             'timezone' => $validated['timezone'] ?? null,
         ]);
@@ -119,25 +117,6 @@ class WebsiteController extends Controller
         }
         
         $website->load('user');
-
-        // When subscription is Canceled but we don't have an expiration date, fetch from Stripe so the date can be shown
-        if ($website->hasCanceledSubscriptionStatus() && !$website->getSubscriptionExpirationDate() && $website->stripe_subscription_id && config('services.stripe.secret')) {
-            try {
-                Stripe::setApiKey(config('services.stripe.secret'));
-                $subscription = Subscription::retrieve($website->stripe_subscription_id);
-                $endTimestamp = $subscription->cancel_at ?? $subscription->current_period_end ?? null;
-                $periodEnd = $endTimestamp ? \Carbon\Carbon::createFromTimestamp($endTimestamp) : null;
-                if ($periodEnd) {
-                    $website->update([
-                        'stripe_ends_at' => $periodEnd,
-                        'subscription_ends_at' => $periodEnd,
-                    ]);
-                    $website->refresh();
-                }
-            } catch (\Exception $e) {
-                // Ignore Stripe errors; page will show Canceled without date
-            }
-        }
 
         $current_active_uri = '';
         if ($website->domain) {
