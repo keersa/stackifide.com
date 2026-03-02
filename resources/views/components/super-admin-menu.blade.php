@@ -1,6 +1,9 @@
 @props(['active' => null])
 
-<aside class="w-64 bg-purple-900 dark:bg-purple-950 min-h-screen" aria-label="Sidebar">
+<aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 min-h-screen bg-purple-900 dark:bg-purple-950 transform transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0 flex-shrink-0"
+     :class="{ 'translate-x-0': sidebarOpen }"
+     @click="if ($event.target.closest('a')) $dispatch('close-sidebar')"
+     aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto">
         <!-- Logo/Title -->
         <div class="mb-8 px-3">

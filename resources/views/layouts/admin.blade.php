@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
-     x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true) }" 
+     x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && true), sidebarOpen: false }" 
      x-init="$watch('darkMode', value => { localStorage.setItem('darkMode', value); document.documentElement.classList.toggle('dark', value); })"
-     x-bind:class="{ 'dark': darkMode }">
+     x-bind:class="{ 'dark': darkMode }"
+     @close-sidebar.window="sidebarOpen = false">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +46,20 @@
         @stack('styles')
     </head>
     <body class="font-sans antialiased bg-gradient-to-r md:bg-gradient-to-br from-white via-gray-300 to-white md:dark:bg-gradient-to-br dark:from-gray-600 dark:via-black dark:to-gray-800">
-        <div class="flex min-h-screen">
+        <div class="flex min-h-screen relative">
+            <!-- Mobile sidebar backdrop -->
+            <div x-show="sidebarOpen"
+                 x-transition:enter="transition-opacity ease-out duration-200"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-150"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="sidebarOpen = false"
+                 class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                 aria-hidden="true"
+                 style="display: none;"></div>
+
             <!-- Sidebar Menu -->
             <x-admin-menu />
             
@@ -53,19 +67,27 @@
             <div class="flex-1 flex flex-col">
                 <!-- Top Navigation Bar -->
                 <header class="bg-gray-800 dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-                    <div class="px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between items-center h-16">
-                            <!-- Page Title -->
-                            <div class="flex items-center">
+                    <div class="px-3 sm:px-6 lg:px-8">
+                        <div class="flex justify-between items-center h-14 sm:h-16 gap-2 min-w-0">
+                            <!-- Mobile menu button + Page Title -->
+                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                                <button @click="sidebarOpen = !sidebarOpen"
+                                        type="button"
+                                        class="lg:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 shrink-0"
+                                        aria-label="Open menu">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                </button>
                                 @isset($header)
-                                    <h1 class="text-xl font-semibold text-white dark:text-gray-100">
+                                    <h1 class="text-base sm:text-xl font-semibold text-white dark:text-gray-100 truncate">
                                         {{ $header }}
                                     </h1>
                                 @endisset
                             </div>
 
                             <!-- User Menu -->
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1 sm:gap-4 shrink-0">
                                 <!-- Dark Mode Toggle -->
                                 <button @click="darkMode = !darkMode" 
                                         class="p-2 rounded-md text-gray-300 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
@@ -78,11 +100,11 @@
                                     </svg>
                                 </button>
 
-                                <div class="text-sm text-gray-300 dark:text-gray-300">
-                                    {{ Auth::user()->full_name }}
+                                <div class="hidden sm:block text-sm text-gray-300 dark:text-gray-300 truncate max-w-[120px] md:max-w-none">
+                                    <span class="truncate">{{ Auth::user()->full_name }}</span>
                                     <span class="text-gray-400 dark:text-gray-400">
                                         @if(Auth::user()->isSuperAdmin())
-                                            <a href="{{ route('super-admin.dashboard') }}"> (Super Admin) </a>  
+                                            <a href="{{ route('super-admin.dashboard') }}"> (Super Admin) </a>
                                         @elseif(Auth::user()->isAdmin())
                                             <a href="{{ route('admin.dashboard') }}"> (Admin) </a>
                                         @else
@@ -127,8 +149,8 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="flex-1 overflow-y-auto">
-                    <div class="py-6 px-4 sm:px-6 lg:px-8">
+                <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                    <div class="py-4 sm:py-6 px-3 sm:px-6 lg:px-8">
                         @if (session('success'))
                             <div class="mb-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 px-4 py-3 rounded relative" role="alert">
                                 <span class="block sm:inline">{{ session('success') }}</span>
