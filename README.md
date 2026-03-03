@@ -86,6 +86,12 @@ Stackifide provides a clean, intuitive interface that makes website management s
    php artisan migrate
    ```
 
+5b. **Create storage link** (so uploaded images, e.g. website logos, are served correctly)
+   ```bash
+   php artisan storage:link
+   ```
+   This creates `public/storage` → `storage/app/public`. **On production, if logo/image URLs return 404, run this command on the server.**
+
 6. **Seed the database** (optional - creates a test admin user)
    ```bash
    php artisan db:seed

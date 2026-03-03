@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicPagesController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 
 $host = $_SERVER['HTTP_HOST'] ?? '';
@@ -18,6 +19,19 @@ if (str_contains($host, '.localhost') || str_contains($host, '.127.0.0.1')) {
     $isSubdomain = count($parts) >= 3 || (count($parts) === 2 && !in_array($parts[0], ['www', 'localhost', '127']));
 }
 
+// Serve storage files when public/storage symlink is missing (e.g. HostGator shared hosting).
+// Do NOT create a symlink at public_html/storage on such hosts—let this route serve /storage/*.
+Route::get('/storage/{path}', function (string $path) {
+    $path = trim($path, '/');
+    if ($path === '' || str_contains($path, '..')) {
+        abort(404);
+    }
+    $disk = Storage::disk('public');
+    if (!$disk->exists($path)) {
+        abort(404);
+    }
+    return $disk->response($path);
+})->where('path', '.*')->name('storage.fallback');
 
 Route::middleware('main-site')->group(function () {
     Route::get('/', function () {return view('welcome'); })->name('welcome');

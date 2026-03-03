@@ -122,7 +122,7 @@ class Website extends Model
     }
 
     /**
-     * Get the logo URL.
+     * Get the logo URL. Uses /uploads/ (public) so files work on shared hosting without symlinks.
      */
     public function getLogoUrlAttribute(): ?string
     {
@@ -134,11 +134,12 @@ class Website extends Model
             return $this->logo;
         }
 
-        return '/storage/' . ltrim($this->logo, '/');
+        $path = ltrim($this->logo, '/');
+        return asset('uploads/' . $path);
     }
 
     /**
-     * Get the rectangular logo URL.
+     * Get the rectangular logo URL. Uses /uploads/ (public) so files work on shared hosting without symlinks.
      */
     public function getLogoRectUrlAttribute(): ?string
     {
@@ -150,7 +151,8 @@ class Website extends Model
             return $this->logo_rect;
         }
 
-        return '/storage/' . ltrim($this->logo_rect, '/');
+        $path = ltrim($this->logo_rect, '/');
+        return asset('uploads/' . $path);
     }
 
     /**

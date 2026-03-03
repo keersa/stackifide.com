@@ -86,7 +86,7 @@ document.addEventListener('alpine:init', () => {
                 );
                 if (!blob) throw new Error('Could not process image.');
 
-                const ext = this.outputType === 'image/webp' ? 'webp' : 'jpg';
+                const ext = this.outputType === 'image/webp' ? 'webp' : this.outputType === 'image/png' ? 'png' : 'jpg';
                 const file = new File([blob], `menu.${ext}`, { type: this.outputType });
                 const form = new FormData();
                 form.append('image', file);
