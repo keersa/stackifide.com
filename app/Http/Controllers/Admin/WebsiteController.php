@@ -47,7 +47,7 @@ class WebsiteController extends Controller
         return view('admin.websites.index', [
             'websites' => $websites,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['none', 'basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'custom'],
         ]);
     }
 
@@ -57,8 +57,7 @@ class WebsiteController extends Controller
     public function create(): View
     {
         return view('admin.websites.create', [
-            'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['none', 'basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'custom'],
         ]);
     }
 
@@ -75,7 +74,6 @@ class WebsiteController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')],
-            'status' => ['required', 'in:active,suspended,pending,trial'],
             'description' => ['nullable', 'string'],
             'timezone' => [
                 'nullable',
@@ -94,7 +92,7 @@ class WebsiteController extends Controller
             'user_id' => Auth::id(),
             'name' => $validated['name'],
             'domain' => $validated['domain'] ?? null,
-            'status' => $validated['status'],
+            'status' => 'new',
             'plan' => $validated['plan'] ?? 'none',
             'description' => $validated['description'] ?? null,
             'timezone' => $validated['timezone'] ?? null,

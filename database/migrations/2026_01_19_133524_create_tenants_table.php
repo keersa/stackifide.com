@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('domain')->unique()->nullable(); // Custom domain (e.g., restaurant.com)
             $table->string('subdomain')->unique()->nullable(); // Subdomain (e.g., restaurant.stackifide.com)
             $table->enum('status', ['active', 'suspended', 'pending', 'trial'])->default('pending');
-            $table->string('plan')->default('basic'); // basic, pro, enterprise
+            $table->string('plan')->default('basic'); // basic, pro, custom
             $table->json('settings')->nullable(); // Theme, colors, logo, etc.
             $table->json('contact_info')->nullable(); // Phone, email, address, etc.
             $table->text('description')->nullable();

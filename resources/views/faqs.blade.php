@@ -14,7 +14,7 @@
                         <nav class="flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 lg:overflow-visible" aria-label="FAQ categories">
                             @foreach($categories as $cat)
                                 <a href="#faq-{{ $cat['slug'] }}"
-                                   class="faq-category-link flex-shrink-0 lg:flex-shrink px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:bg-black dark:bg-opacity-40 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-opacity-10 transition-colors duration-200 border border-gray-200 dark:border-black"
+                                   class="faq-category-link flex-shrink-0 lg:flex-shrink px-4 py-2.5 rounded-lg text-sm font-bold text-white bg-purple-700 dark:bg-black dark:bg-opacity-40 dark:text-white dark:hover:text-gray-200 hover:bg-blue-700 dark:hover:bg-opacity-10 transition-colors duration-200 border border-gray-200 dark:border-black"
                                    data-category="{{ $cat['slug'] }}"
                                 >
                                     {{ $cat['label'] }}

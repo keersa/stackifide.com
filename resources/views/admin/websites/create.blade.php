@@ -31,7 +31,7 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Domain</label>
+                                <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Domain Name</label>
                                 <input type="text" 
                                        name="domain" 
                                        id="domain"
@@ -42,26 +42,8 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status *</label>
-                                <select name="status" 
-                                        id="status"
-                                        required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    @foreach($statuses as $status)
-                                        <option value="{{ $status }}" {{ old('status') === $status ? 'selected' : '' }}>
-                                            {{ ucfirst($status) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <p class="block text-sm font-medium text-gray-700 dark:text-gray-300">Plan</p>
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">New sites start with no plan. Subscribe to Basic or Pro from the website dashboard after creation.</p>
-                            </div>
+                        
+                        
                             <div class="md:col-span-2">
                                 <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                                 <textarea name="description" 

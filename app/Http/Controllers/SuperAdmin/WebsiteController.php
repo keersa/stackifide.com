@@ -56,8 +56,8 @@ class WebsiteController extends Controller
 
         return view('super-admin.websites.index', [
             'websites' => $websites,
-            'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['none', 'basic', 'pro', 'enterprise'],
+            'statuses' => ['new', 'active', 'suspended', 'pending'],
+            'plans' => ['none', 'basic', 'pro', 'custom'],
         ]);
     }
 
@@ -74,7 +74,7 @@ class WebsiteController extends Controller
 
         return view('super-admin.websites.create', [
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['basic', 'pro', 'enterprise'],
+            'plans' => ['basic', 'pro', 'custom'],
             'users' => $users,
         ]);
     }
@@ -143,7 +143,7 @@ class WebsiteController extends Controller
         return view('super-admin.websites.edit', [
             'website' => $website,
             'statuses' => ['active', 'suspended', 'pending', 'trial'],
-            'plans' => ['none', 'basic', 'pro', 'enterprise'],
+            'plans' => ['none', 'basic', 'pro', 'custom'],
             'users' => $users,
         ]);
     }
@@ -164,7 +164,7 @@ class WebsiteController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'domain' => ['nullable', 'string', 'max:255', Rule::unique('websites', 'domain')->ignore($website->id)],
             'status' => ['required', 'in:active,suspended,pending,trial'],
-            'plan' => ['required', 'in:none,basic,pro,enterprise'],
+            'plan' => ['required', 'in:none,basic,pro,custom'],
             'description' => ['nullable', 'string'],
             'user_id' => ['required', 'exists:users,id'],
             'theme' => ['nullable', 'string', 'in:default,advanced'],

@@ -43,10 +43,6 @@
                            class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
                             Dashboard
                         </a>
-                        <a href="{{ url('/profile') }}"
-                           class="inline-block px-5 py-1.5 text-[#1b1b18] dark:text-white border border-transparent hover:border-[#19140035] dark:hover:border-gray-600 rounded-sm text-md leading-normal transition-colors">
-                            Account
-                        </a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" 
@@ -115,6 +111,11 @@
 
         <!-- Mobile Menu Content -->
         <div class="p-4 space-y-4">
+            <a href="{{ route('about.index') }}"
+                @click="open = false"
+                class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
+                About
+            </a>
             <a href="{{ route('faqs.index') }}"
                 @click="open = false"
                 class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
@@ -127,16 +128,6 @@
                        class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
                         Dashboard
                     </a>
-                    <a href="{{ url('/websites') }}"
-                       @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
-                        Websites
-                    </a>
-                    <a href="{{ url('/profile') }}"
-                       @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
-                        Account
-                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" 
@@ -146,16 +137,6 @@
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('about.index') }}"
-                       @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
-                        About
-                    </a>
-                    <a href="{{ route('faqs.index') }}"
-                       @click="open = false"
-                       class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
-                        FAQs
-                    </a>
                     <a href="{{ route('pricing.index') }}"
                        @click="open = false"
                        class="block px-4 py-3 text-[#1b1b18] dark:text-white bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md text-base font-medium transition-colors">
