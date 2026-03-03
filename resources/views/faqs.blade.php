@@ -69,7 +69,7 @@
                                             >
                                                 <div class="px-5 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                                                     <p class="leading-relaxed">
-                                                        {{ $faq->answer }}
+                                                        {!! nl2br($faq->answer) !!}
                                                     </p>
                                                 </div>
                                             </div>
