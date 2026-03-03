@@ -12,6 +12,12 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                primary: {
+                    blue: '#1a7dbc',
+                    green: '#F1C40F',
+                },
+            },
             fontFamily: {
                 sans: ['ABeeZee', 'Figtree', ...defaultTheme.fontFamily.sans],
                 display: ['Playfair Display', 'Georgia', 'serif'],
