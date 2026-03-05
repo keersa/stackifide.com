@@ -30,6 +30,12 @@
                             <svg class="w-5 h-5 text-lime-600 dark:text-lime-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
+                            <span class="font-black">Responsive Design Optimized for Mobile and Desktop</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-gray-100 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
+                            <svg class="w-5 h-5 text-lime-600 dark:text-lime-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
                             <span class="font-black">Managed Hosting with 99.9% Uptime</span>
                         </li>
                         <li class="flex items-start gap-3 text-slate-600 dark:text-gray-100 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
@@ -67,14 +73,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <span class="font-black">Social Media Integration</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-slate-600 dark:text-gray-100 bg-white dark:bg-gray-900 py-2 px-4 mb-1 rounded-lg">
-                            <svg class="w-5 h-5 text-lime-600 dark:text-lime-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="font-black">Responsive Design Optimized for Mobile and Desktop</span>
-                        </li>
-                        
+                        </li>   
                     </ul>
                     <div class="absolute bottom-5 left-0 right-0 grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8 px-4">
                         <a href="{{ route('basic.learn-more') }}"  class="bg-white dark:bg-gray-900 p-4 text-xl font-black text-center rounded-xl border border-gray-800 dark:border-black text-black dark:text-white hover:shadow-lg transition-all hover:scale-105 duration-200">
@@ -201,7 +200,7 @@
                         Spicier Garden
                     </a>
                     <a href="https://demo.stackifide.com/D005/" target="_blank" class="text-xl font-bold border border-gray-800 dark:border-black text-gray-800 dark:text-gray-200 mb-4bg-gray-100 dark:bg-gray-800 p-4 text-center rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white duration-200">
-                        Bella
+                        Burger Splurge
                     </a>
                 </div>
             </div>

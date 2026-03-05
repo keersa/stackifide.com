@@ -126,6 +126,38 @@
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $lead->current_ordering_system }}</dd>
                                     </div>
                                 @endif
+                                @if($lead->facebook_url)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Facebook</dt>
+                                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                            <a href="{{ $lead->facebook_url }}" target="_blank" rel="noopener" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">View profile</a>
+                                        </dd>
+                                    </div>
+                                @endif
+                                @if($lead->instagram_url)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Instagram</dt>
+                                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                            <a href="{{ $lead->instagram_url }}" target="_blank" rel="noopener" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">View profile</a>
+                                        </dd>
+                                    </div>
+                                @endif
+                                @if($lead->yelp_url)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Yelp</dt>
+                                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                            <a href="{{ $lead->yelp_url }}" target="_blank" rel="noopener" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">View business</a>
+                                        </dd>
+                                    </div>
+                                @endif
+                                @if($lead->youtube_url)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">YouTube</dt>
+                                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                            <a href="{{ $lead->youtube_url }}" target="_blank" rel="noopener" class="text-purple-600 hover:text-purple-900 dark:text-purple-400">View channel</a>
+                                        </dd>
+                                    </div>
+                                @endif
                                 @if($lead->special_requirements)
                                     <div class="md:col-span-2">
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Special Requirements</dt>

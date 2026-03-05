@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <script src="https://analytics.ahrefs.com/analytics.js" data-key="Fg2O5scfv/1HKqRtXxcD2Q" async></script>
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CHRWQ8QHS2"></script>
         <script>

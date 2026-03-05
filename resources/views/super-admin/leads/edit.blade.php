@@ -29,10 +29,14 @@
                                 </div>
                                 <div>
                                     <label for="business_type" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Business Type</label>
-                                    <input type="text" name="business_type" id="business_type"
-                                           value="{{ old('business_type', $lead->business_type) }}"
-                                           placeholder="e.g., Restaurant, Cafe, Bar"
-                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <select name="business_type" id="business_type"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="">Select type</option>
+                                        <option value="Restaurant" {{ old('business_type', $lead->business_type) === 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                                        <option value="Food Truck" {{ old('business_type', $lead->business_type) === 'Food Truck' ? 'selected' : '' }}>Food Truck</option>
+                                        <option value="Bar" {{ old('business_type', $lead->business_type) === 'Bar' ? 'selected' : '' }}>Bar</option>
+                                        <option value="Other" {{ old('business_type', $lead->business_type) === 'Other' ? 'selected' : '' }}>Other</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="cuisine_type" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cuisine Type</label>
@@ -99,7 +103,7 @@
                     <!-- Address Information -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information (Optional)</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="md:col-span-2">
                                     <label for="street_address" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Street Address</label>
@@ -157,6 +161,34 @@
                                         <option value="Custom" {{ old('current_ordering_system', $lead->current_ordering_system) === 'Custom' ? 'selected' : '' }}>Custom</option>
                                         <option value="Other" {{ old('current_ordering_system', $lead->current_ordering_system) === 'Other' ? 'selected' : '' }}>Other</option>
                                     </select>
+                                </div>
+                                <div>
+                                    <label for="facebook_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Facebook</label>
+                                    <input type="url" name="facebook_url" id="facebook_url"
+                                           value="{{ old('facebook_url', $lead->facebook_url) }}"
+                                           placeholder="https://facebook.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="instagram_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Instagram</label>
+                                    <input type="url" name="instagram_url" id="instagram_url"
+                                           value="{{ old('instagram_url', $lead->instagram_url) }}"
+                                           placeholder="https://instagram.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="yelp_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Yelp</label>
+                                    <input type="url" name="yelp_url" id="yelp_url"
+                                           value="{{ old('yelp_url', $lead->yelp_url) }}"
+                                           placeholder="https://yelp.com/biz/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="youtube_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">YouTube</label>
+                                    <input type="url" name="youtube_url" id="youtube_url"
+                                           value="{{ old('youtube_url', $lead->youtube_url) }}"
+                                           placeholder="https://youtube.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="special_requirements" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Special Requirements</label>
@@ -314,15 +346,57 @@
                 </div>
             </div>
 
-            <div class="text-center py-8">
+            <div class="text-center py-8 flex flex-wrap items-center justify-center gap-3">
+                <button type="button" id="lead-delete-btn"
+                        class="inline-block px-12 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded">
+                    Delete
+                </button>
                 <button type="submit"
-                        class="inline-block px-12 py-2 mx-auto bg-purple-600 hover:bg-purple-700 text-white font-bold rounded">
+                        class="inline-block px-12 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded">
                     Update Lead
                 </button>
             </div>
-         
+        </form>
+        <form id="lead-delete-form" action="{{ route('super-admin.leads.destroy', $lead) }}" method="post" class="hidden">
+            @csrf
+            @method('DELETE')
         </form>
     </div>
+
+    <!-- Delete lead confirmation modal -->
+    <div id="delete-lead-modal" class="fixed inset-0 z-50 hidden" aria-modal="true" role="dialog" aria-labelledby="delete-lead-modal-title">
+        <div class="fixed inset-0 bg-black/50 dark:bg-black/60" id="delete-lead-modal-backdrop"></div>
+        <div class="fixed left-1/2 top-1/2 z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
+            <h3 id="delete-lead-modal-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100">Delete lead?</h3>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">This lead will be moved to the deleted list. It can be restored from the leads list if needed.</p>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" id="delete-lead-modal-cancel" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="button" id="delete-lead-modal-confirm" class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var modal = document.getElementById('delete-lead-modal');
+            var btn = document.getElementById('lead-delete-btn');
+            var form = document.getElementById('lead-delete-form');
+            var cancel = document.getElementById('delete-lead-modal-cancel');
+            var confirmBtn = document.getElementById('delete-lead-modal-confirm');
+            var backdrop = document.getElementById('delete-lead-modal-backdrop');
+            if (!modal || !btn || !form) return;
+            function openModal() { modal.classList.remove('hidden'); }
+            function closeModal() { modal.classList.add('hidden'); }
+            btn.addEventListener('click', openModal);
+            cancel.addEventListener('click', closeModal);
+            if (backdrop) backdrop.addEventListener('click', closeModal);
+            confirmBtn.addEventListener('click', function() { form.submit(); });
+        })();
+    </script>
 
     <!-- Delete contact confirmation modal -->
     <div id="delete-contact-modal" class="fixed inset-0 z-50 hidden" aria-modal="true" role="dialog" aria-labelledby="delete-contact-modal-title">

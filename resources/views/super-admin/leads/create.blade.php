@@ -114,7 +114,7 @@
                 <!-- Address Information -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information (Optional)</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="md:col-span-2">
                                 <label for="street_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Street Address</label>
@@ -185,6 +185,34 @@
                                     <option value="Custom" {{ old('current_ordering_system') === 'Custom' ? 'selected' : '' }}>Custom</option>
                                     <option value="Other" {{ old('current_ordering_system') === 'Other' ? 'selected' : '' }}>Other</option>
                                 </select>
+                            </div>
+                            <div>
+                                <label for="facebook_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Facebook</label>
+                                <input type="url" name="facebook_url" id="facebook_url"
+                                       value="{{ old('facebook_url') }}"
+                                       placeholder="https://facebook.com/..."
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="instagram_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Instagram</label>
+                                <input type="url" name="instagram_url" id="instagram_url"
+                                       value="{{ old('instagram_url') }}"
+                                       placeholder="https://instagram.com/..."
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="yelp_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Yelp</label>
+                                <input type="url" name="yelp_url" id="yelp_url"
+                                       value="{{ old('yelp_url') }}"
+                                       placeholder="https://yelp.com/biz/..."
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="youtube_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">YouTube</label>
+                                <input type="url" name="youtube_url" id="youtube_url"
+                                       value="{{ old('youtube_url') }}"
+                                       placeholder="https://youtube.com/..."
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             </div>
                             <div class="md:col-span-2">
                                 <label for="special_requirements" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Special Requirements</label>
