@@ -124,19 +124,20 @@ class LeadController extends Controller
 
         $lead = Lead::create($validated);
 
-        // Send notification to all admin users (except the one creating the lead if they're an admin)
-        try {
-            $admins = User::whereIn('role', [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])
-                ->where('id', '!=', auth()->id())
-                ->get();
-            foreach ($admins as $admin) {
-                if ($admin->email) {
-                    $admin->notify(new NewLeadNotification($lead));
+        // When a super admin creates a lead, no email notifications are sent.
+        if (!auth()->user()->isSuperAdmin()) {
+            try {
+                $admins = User::whereIn('role', [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])
+                    ->where('id', '!=', auth()->id())
+                    ->get();
+                foreach ($admins as $admin) {
+                    if ($admin->email) {
+                        $admin->notify(new NewLeadNotification($lead));
+                    }
                 }
+            } catch (\Exception $e) {
+                \Log::error('Failed to send lead notification email: ' . $e->getMessage());
             }
-        } catch (\Exception $e) {
-            // Log the error but don't fail the lead creation
-            \Log::error('Failed to send lead notification email: ' . $e->getMessage());
         }
 
         return redirect()->route('super-admin.leads.index')
