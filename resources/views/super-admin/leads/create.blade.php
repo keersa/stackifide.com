@@ -6,303 +6,272 @@
     </x-slot>
 
     <div>
-            <form method="POST" action="{{ route('super-admin.leads.store') }}" class="space-y-6">
-                @csrf
+        <form method="POST" action="{{ route('super-admin.leads.store') }}">
+            @csrf
 
-                <!-- Basic Information -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Basic Information</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="restaurant_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Restaurant Name *</label>
-                                <input type="text" 
-                                       name="restaurant_name" 
-                                       id="restaurant_name"
-                                       value="{{ old('restaurant_name') }}"
-                                       required
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                @error('restaurant_name')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Basic Information -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Basic Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="restaurant_name" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Restaurant Name *</label>
+                                    <input type="text" name="restaurant_name" id="restaurant_name"
+                                           value="{{ old('restaurant_name') }}" required
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @error('restaurant_name')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="business_type" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Business Type</label>
+                                    <select name="business_type" id="business_type"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="">Select type</option>
+                                        <option value="Restaurant" {{ old('business_type') === 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                                        <option value="Food Truck" {{ old('business_type') === 'Food Truck' ? 'selected' : '' }}>Food Truck</option>
+                                        <option value="Bar" {{ old('business_type') === 'Bar' ? 'selected' : '' }}>Bar</option>
+                                        <option value="Other" {{ old('business_type') === 'Other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="cuisine_type" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cuisine Type</label>
+                                    <input type="text" name="cuisine_type" id="cuisine_type"
+                                           value="{{ old('cuisine_type') }}"
+                                           placeholder="e.g., Italian, Mexican, Asian"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
                             </div>
-                            <div>
-                                <label for="business_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Business Type</label>
-                                <select name="business_type" id="business_type"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="">Select type</option>
-                                    <option value="Restaurant" {{ old('business_type') === 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
-                                    <option value="Food Truck" {{ old('business_type') === 'Food Truck' ? 'selected' : '' }}>Food Truck</option>
-                                    <option value="Bar" {{ old('business_type') === 'Bar' ? 'selected' : '' }}>Bar</option>
-                                    <option value="Other" {{ old('business_type') === 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contact Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="contact_first_name" class="block text-sm font-medium text-gray-500 dark:text-gray-400">First Name</label>
+                                    <input type="text" name="contact_first_name" id="contact_first_name"
+                                           value="{{ old('contact_first_name') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="contact_last_name" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Last Name</label>
+                                    <input type="text" name="contact_last_name" id="contact_last_name"
+                                           value="{{ old('contact_last_name') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Email</label>
+                                    <input type="email" name="email" id="email"
+                                           value="{{ old('email') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Phone</label>
+                                    <input type="text" name="phone" id="phone"
+                                           value="{{ old('phone') }}"
+                                           placeholder="(813) 333-3333"
+                                           pattern="\(\d{3}\) \d{3}-\d{4}"
+                                           maxlength="14"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @error('phone')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="secondary_phone" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Secondary Phone</label>
+                                    <input type="text" name="secondary_phone" id="secondary_phone"
+                                           value="{{ old('secondary_phone') }}"
+                                           placeholder="(813) 333-3333"
+                                           pattern="\(\d{3}\) \d{3}-\d{4}"
+                                           maxlength="14"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    @error('secondary_phone')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="md:col-span-2">
+                                    <label for="street_address" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Street Address</label>
+                                    <input type="text" name="street_address" id="street_address"
+                                           value="{{ old('street_address') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-gray-500 dark:text-gray-400">City</label>
+                                    <input type="text" name="city" id="city"
+                                           value="{{ old('city') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="state" class="block text-sm font-medium text-gray-500 dark:text-gray-400">State</label>
+                                    <input type="text" name="state" id="state"
+                                           value="{{ old('state') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="postal_code" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Postal Code</label>
+                                    <input type="text" name="postal_code" id="postal_code"
+                                           value="{{ old('postal_code') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="country" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Country</label>
+                                    <input type="text" name="country" id="country"
+                                           value="{{ old('country', 'United States') }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Details -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Business Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="current_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Current Website URL</label>
+                                    <input type="url" name="current_url" id="current_url"
+                                           value="{{ old('current_url') }}"
+                                           placeholder="https://example.com"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="current_ordering_system" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Current Ordering System</label>
+                                    <select name="current_ordering_system" id="current_ordering_system"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="">Select an option</option>
+                                        <option value="GrubHub" {{ old('current_ordering_system') === 'GrubHub' ? 'selected' : '' }}>GrubHub</option>
+                                        <option value="DoorDash" {{ old('current_ordering_system') === 'DoorDash' ? 'selected' : '' }}>DoorDash</option>
+                                        <option value="Custom" {{ old('current_ordering_system') === 'Custom' ? 'selected' : '' }}>Custom</option>
+                                        <option value="Other" {{ old('current_ordering_system') === 'Other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="facebook_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Facebook</label>
+                                    <input type="url" name="facebook_url" id="facebook_url"
+                                           value="{{ old('facebook_url') }}"
+                                           placeholder="https://facebook.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="instagram_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Instagram</label>
+                                    <input type="url" name="instagram_url" id="instagram_url"
+                                           value="{{ old('instagram_url') }}"
+                                           placeholder="https://instagram.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="yelp_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Yelp</label>
+                                    <input type="url" name="yelp_url" id="yelp_url"
+                                           value="{{ old('yelp_url') }}"
+                                           placeholder="https://yelp.com/biz/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="youtube_url" class="block text-sm font-medium text-gray-500 dark:text-gray-400">YouTube</label>
+                                    <input type="url" name="youtube_url" id="youtube_url"
+                                           value="{{ old('youtube_url') }}"
+                                           placeholder="https://youtube.com/..."
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="special_requirements" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Special Requirements</label>
+                                    <textarea name="special_requirements" id="special_requirements" rows="3"
+                                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('special_requirements') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Internal Notes -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Internal Notes</h3>
                             <div>
-                                <label for="cuisine_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cuisine Type</label>
-                                <input type="text" 
-                                       name="cuisine_type" 
-                                       id="cuisine_type"
-                                       value="{{ old('cuisine_type') }}"
-                                       placeholder="e.g., Italian, Mexican, Asian"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <label for="internal_notes" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Internal Notes</label>
+                                <textarea name="internal_notes" id="internal_notes" rows="4"
+                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('internal_notes') }}</textarea>
+                                <p class="mt-1 text-sm text-gray-500">Private notes - not visible to clients.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Information -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contact Information</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="contact_first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>
-                                <input type="text" 
-                                       name="contact_first_name" 
-                                       id="contact_first_name"
-                                       value="{{ old('contact_first_name') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="contact_last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Last Name</label>
-                                <input type="text" 
-                                       name="contact_last_name" 
-                                       id="contact_last_name"
-                                       value="{{ old('contact_last_name') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                                <input type="email" 
-                                       name="email" 
-                                       id="email"
-                                       value="{{ old('email') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
-                                <input type="text"
-                                       name="phone"
-                                       id="phone"
-                                       value="{{ old('phone') }}"
-                                       placeholder="(813) 333-3333"
-                                       pattern="\(\d{3}\) \d{3}-\d{4}"
-                                       maxlength="14"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                @error('phone')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="secondary_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Secondary Phone</label>
-                                <input type="text"
-                                       name="secondary_phone"
-                                       id="secondary_phone"
-                                       value="{{ old('secondary_phone') }}"
-                                       placeholder="(813) 333-3333"
-                                       pattern="\(\d{3}\) \d{3}-\d{4}"
-                                       maxlength="14"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                @error('secondary_phone')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    <!-- Lead Status -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Lead Status</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Status *</label>
+                                    <select name="status" id="status" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="new" {{ old('status') === 'new' ? 'selected' : '' }}>New</option>
+                                        <option value="contacted" {{ old('status') === 'contacted' ? 'selected' : '' }}>Contacted</option>
+                                        <option value="qualified" {{ old('status') === 'qualified' ? 'selected' : '' }}>Qualified</option>
+                                        <option value="has_website" {{ old('status') === 'has_website' ? 'selected' : '' }}>Has Website</option>
+                                        <option value="proposal" {{ old('status') === 'proposal' ? 'selected' : '' }}>Proposal</option>
+                                        <option value="negotiation" {{ old('status') === 'negotiation' ? 'selected' : '' }}>Negotiation</option>
+                                        <option value="won" {{ old('status') === 'won' ? 'selected' : '' }}>Won</option>
+                                        <option value="lost" {{ old('status') === 'lost' ? 'selected' : '' }}>Lost</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="source" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Source</label>
+                                    <select name="source" id="source"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="">Select Source</option>
+                                        <option value="google_maps" {{ old('source') === 'google_maps' ? 'selected' : '' }}>Google Maps</option>
+                                        <option value="website" {{ old('source') === 'website' ? 'selected' : '' }}>Website</option>
+                                        <option value="referral" {{ old('source') === 'referral' ? 'selected' : '' }}>Referral</option>
+                                        <option value="social_media" {{ old('source') === 'social_media' ? 'selected' : '' }}>Social Media</option>
+                                        <option value="cold_call" {{ old('source') === 'cold_call' ? 'selected' : '' }}>Cold Call</option>
+                                        <option value="email" {{ old('source') === 'email' ? 'selected' : '' }}>Email</option>
+                                        <option value="other" {{ old('source') === 'other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="tags" class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tags</label>
+                                    <input type="text" name="tags" id="tags"
+                                           value="{{ is_array(old('tags')) ? implode(', ', old('tags')) : old('tags') }}"
+                                           placeholder="Enter tags separated by commas"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <p class="mt-1 text-sm text-gray-500">Separate multiple tags with commas</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Address Information -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Address Information</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2">
-                                <label for="street_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Street Address</label>
-                                <input type="text" 
-                                       name="street_address" 
-                                       id="street_address"
-                                       value="{{ old('street_address') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
-                                <input type="text" 
-                                       name="city" 
-                                       id="city"
-                                       value="{{ old('city') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
-                                <input type="text" 
-                                       name="state" 
-                                       id="state"
-                                       value="{{ old('state') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Postal Code</label>
-                                <input type="text" 
-                                       name="postal_code" 
-                                       id="postal_code"
-                                       value="{{ old('postal_code') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
-                                <input type="text" 
-                                       name="country" 
-                                       id="country"
-                                       value="{{ old('country', 'United States') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Business Details -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Business Details</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="current_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current Website URL</label>
-                                <input type="url" 
-                                       name="current_url" 
-                                       id="current_url"
-                                       value="{{ old('current_url') }}"
-                                       placeholder="https://example.com"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="current_ordering_system" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current Ordering System</label>
-                                <select name="current_ordering_system" 
-                                        id="current_ordering_system"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="">Select an option</option>
-                                    <option value="GrubHub" {{ old('current_ordering_system') === 'GrubHub' ? 'selected' : '' }}>GrubHub</option>
-                                    <option value="DoorDash" {{ old('current_ordering_system') === 'DoorDash' ? 'selected' : '' }}>DoorDash</option>
-                                    <option value="Custom" {{ old('current_ordering_system') === 'Custom' ? 'selected' : '' }}>Custom</option>
-                                    <option value="Other" {{ old('current_ordering_system') === 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="facebook_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Facebook</label>
-                                <input type="url" name="facebook_url" id="facebook_url"
-                                       value="{{ old('facebook_url') }}"
-                                       placeholder="https://facebook.com/..."
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="instagram_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Instagram</label>
-                                <input type="url" name="instagram_url" id="instagram_url"
-                                       value="{{ old('instagram_url') }}"
-                                       placeholder="https://instagram.com/..."
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="yelp_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Yelp</label>
-                                <input type="url" name="yelp_url" id="yelp_url"
-                                       value="{{ old('yelp_url') }}"
-                                       placeholder="https://yelp.com/biz/..."
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="youtube_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">YouTube</label>
-                                <input type="url" name="youtube_url" id="youtube_url"
-                                       value="{{ old('youtube_url') }}"
-                                       placeholder="https://youtube.com/..."
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label for="special_requirements" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Special Requirements</label>
-                                <textarea name="special_requirements" 
-                                          id="special_requirements"
-                                          rows="3"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('special_requirements') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lead Management -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Lead Management</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status *</label>
-                                <select name="status" 
-                                        id="status"
-                                        required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="new" {{ old('status') === 'new' ? 'selected' : '' }}>New</option>
-                                    <option value="contacted" {{ old('status') === 'contacted' ? 'selected' : '' }}>Contacted</option>
-                                    <option value="qualified" {{ old('status') === 'qualified' ? 'selected' : '' }}>Qualified</option>
-                                    <option value="has_website" {{ old('status') === 'has_website' ? 'selected' : '' }}>Has Website</option>
-                                    <option value="proposal" {{ old('status') === 'proposal' ? 'selected' : '' }}>Proposal</option>
-                                    <option value="negotiation" {{ old('status') === 'negotiation' ? 'selected' : '' }}>Negotiation</option>
-                                    <option value="won" {{ old('status') === 'won' ? 'selected' : '' }}>Won</option>
-                                    <option value="lost" {{ old('status') === 'lost' ? 'selected' : '' }}>Lost</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="source" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Source</label>
-                                <select name="source" 
-                                        id="source"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="">Select Source</option>
-                                    <option value="google_maps" {{ old('source') === 'google_maps' ? 'selected' : '' }}>Google Maps</option>
-                                    <option value="website" {{ old('source') === 'website' ? 'selected' : '' }}>Website</option>
-                                    <option value="referral" {{ old('source') === 'referral' ? 'selected' : '' }}>Referral</option>
-                                    <option value="social_media" {{ old('source') === 'social_media' ? 'selected' : '' }}>Social Media</option>
-                                    <option value="cold_call" {{ old('source') === 'cold_call' ? 'selected' : '' }}>Cold Call</option>
-                                    <option value="email" {{ old('source') === 'email' ? 'selected' : '' }}>Email</option>
-                                    <option value="other" {{ old('source') === 'other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tags</label>
-                                <input type="text" 
-                                       name="tags" 
-                                       id="tags"
-                                       value="{{ old('tags', is_array(old('tags')) ? implode(', ', old('tags')) : '') }}"
-                                       placeholder="Enter tags separated by commas (e.g., VIP, Follow-up, Hot Lead)"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <p class="mt-1 text-sm text-gray-500">Separate multiple tags with commas</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Internal Notes -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Internal Notes</h3>
-                        <div>
-                            <label for="internal_notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Internal Notes</label>
-                            <textarea name="internal_notes"
-                                      id="internal_notes"
-                                      rows="4"
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">{{ old('internal_notes') }}</textarea>
-                            <p class="mt-1 text-sm text-gray-500">Private notes - not visible to clients.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submit Buttons -->
-                <div class="flex justify-end space-x-4">
-                    <a href="{{ route('super-admin.leads.index') }}" 
-                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
-                        Cancel
-                    </a>
-                    <button type="submit" 
-                            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
-                        Create Lead
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="text-center py-8 flex flex-wrap items-center justify-center gap-3">
+                <a href="{{ route('super-admin.leads.index') }}"
+                   class="inline-block px-12 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-bold rounded">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="inline-block px-12 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded">
+                    Create Lead
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -329,4 +298,3 @@
         })();
     </script>
 </x-super-admin-layout>
-
