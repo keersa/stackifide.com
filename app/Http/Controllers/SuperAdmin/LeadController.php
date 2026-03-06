@@ -46,7 +46,7 @@ class LeadController extends Controller
 
         return view('super-admin.leads.index', [
             'leads' => $leads,
-            'statuses' => ['new', 'contacted', 'qualified', 'proposal', 'negotiation', 'won', 'lost'],
+            'statuses' => ['new', 'contacted', 'qualified', 'has_website', 'proposal', 'negotiation', 'won', 'lost'],
             'sources' => ['google_maps', 'website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
         ]);
     }
@@ -88,7 +88,7 @@ class LeadController extends Controller
             'number_of_locations' => 'nullable|integer|min:1',
             'current_ordering_system' => 'nullable|in:GrubHub,DoorDash,Custom,Other',
             'special_requirements' => 'nullable|string',
-            'status' => 'required|in:new,contacted,qualified,proposal,negotiation,won,lost',
+            'status' => 'required|in:new,contacted,qualified,has_website,proposal,negotiation,won,lost',
             'source' => 'nullable|in:google_maps,website,referral,social_media,cold_call,email,other',
             'estimated_value' => 'nullable|numeric|min:0',
             'first_contact_date' => 'nullable|date',
@@ -196,7 +196,7 @@ class LeadController extends Controller
             'number_of_locations' => 'nullable|integer|min:1',
             'current_ordering_system' => 'nullable|in:GrubHub,DoorDash,Custom,Other',
             'special_requirements' => 'nullable|string',
-            'status' => 'required|in:new,contacted,qualified,proposal,negotiation,won,lost',
+            'status' => 'required|in:new,contacted,qualified,has_website,proposal,negotiation,won,lost',
             'source' => 'nullable|in:google_maps,website,referral,social_media,cold_call,email,other',
             'estimated_value' => 'nullable|numeric|min:0',
             'first_contact_date' => 'nullable|date',

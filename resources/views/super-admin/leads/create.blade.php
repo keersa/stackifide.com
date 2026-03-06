@@ -239,6 +239,7 @@
                                     <option value="new" {{ old('status') === 'new' ? 'selected' : '' }}>New</option>
                                     <option value="contacted" {{ old('status') === 'contacted' ? 'selected' : '' }}>Contacted</option>
                                     <option value="qualified" {{ old('status') === 'qualified' ? 'selected' : '' }}>Qualified</option>
+                                    <option value="has_website" {{ old('status') === 'has_website' ? 'selected' : '' }}>Has Website</option>
                                     <option value="proposal" {{ old('status') === 'proposal' ? 'selected' : '' }}>Proposal</option>
                                     <option value="negotiation" {{ old('status') === 'negotiation' ? 'selected' : '' }}>Negotiation</option>
                                     <option value="won" {{ old('status') === 'won' ? 'selected' : '' }}>Won</option>

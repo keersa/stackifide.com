@@ -227,6 +227,7 @@
                                         <option value="new" {{ old('status', $lead->status) === 'new' ? 'selected' : '' }}>New</option>
                                         <option value="contacted" {{ old('status', $lead->status) === 'contacted' ? 'selected' : '' }}>Contacted</option>
                                         <option value="qualified" {{ old('status', $lead->status) === 'qualified' ? 'selected' : '' }}>Qualified</option>
+                                        <option value="has_website" {{ old('status', $lead->status) === 'has_website' ? 'selected' : '' }}>Has Website</option>
                                         <option value="proposal" {{ old('status', $lead->status) === 'proposal' ? 'selected' : '' }}>Proposal</option>
                                         <option value="negotiation" {{ old('status', $lead->status) === 'negotiation' ? 'selected' : '' }}>Negotiation</option>
                                         <option value="won" {{ old('status', $lead->status) === 'won' ? 'selected' : '' }}>Won</option>
