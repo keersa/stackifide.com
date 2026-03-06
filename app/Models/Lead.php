@@ -25,6 +25,8 @@ class Lead extends Model
         'state',
         'postal_code',
         'country',
+        'latitude',
+        'longitude',
         'current_url',
         'facebook_url',
         'instagram_url',
@@ -48,6 +50,8 @@ class Lead extends Model
     ];
 
     protected $casts = [
+        'latitude' => 'float',
+        'longitude' => 'float',
         'estimated_value' => 'decimal:2',
         'first_contact_date' => 'date',
         'last_contact_date' => 'date',

@@ -2,6 +2,14 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <span>{{ __('Leads Management') }}</span>
+            <a href="{{ route('super-admin.leads.map') }}"
+               title="Map view"
+               class="inline-flex items-center justify-center w-9 h-9 rounded-md text-purple-600 hover:text-purple-800 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/20"
+               aria-label="Map view">
+                <svg class="w-5 h-5 ml-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+            </a>
         </div>
     </x-slot>
 

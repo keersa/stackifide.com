@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\NewLeadNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -42,13 +43,97 @@ class LeadController extends Controller
             });
         }
 
-        $leads = $query->paginate(10);
+        $leads = $query->paginate(16);
 
         return view('super-admin.leads.index', [
             'leads' => $leads,
             'statuses' => ['new', 'contacted', 'qualified', 'has_website', 'proposal', 'negotiation', 'won', 'lost'],
             'sources' => ['google_maps', 'website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
         ]);
+    }
+
+    /**
+     * Display the leads map view (USA with color-coded pins by status).
+     */
+    public function map(Request $request): View
+    {
+        $query = Lead::select(['id', 'restaurant_name', 'city', 'state', 'street_address', 'status', 'latitude', 'longitude'])
+            ->where(function ($q) {
+                $q->whereNotNull('latitude')->whereNotNull('longitude')
+                    ->orWhere(function ($q2) {
+                        $q2->where(function ($q3) {
+                            $q3->whereNotNull('city')->where('city', '!=', '')
+                                ->orWhereNotNull('state')->where('state', '!=', '');
+                        });
+                    });
+            });
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('restaurant_name', 'like', "%{$search}%")
+                    ->orWhere('contact_first_name', 'like', "%{$search}%")
+                    ->orWhere('contact_last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $leads = $query->get()
+            ->map(fn ($lead) => [
+                'id' => $lead->id,
+                'restaurant_name' => $lead->restaurant_name,
+                'city' => $lead->city,
+                'state' => $lead->state,
+                'street_address' => $lead->street_address,
+                'status' => $lead->status,
+                'latitude' => $lead->latitude ? (float) $lead->latitude : null,
+                'longitude' => $lead->longitude ? (float) $lead->longitude : null,
+                'show_url' => route('super-admin.leads.show', $lead),
+            ]);
+
+        return view('super-admin.leads.map', [
+            'leads' => $leads,
+            'statuses' => ['new', 'contacted', 'qualified', 'has_website', 'proposal', 'negotiation', 'won', 'lost'],
+            'sources' => ['google_maps', 'website', 'referral', 'social_media', 'cold_call', 'email', 'other'],
+        ]);
+    }
+
+    /**
+     * Update a lead's stored coordinates (called after first geocode on map).
+     */
+    public function updateCoordinates(Request $request, Lead $lead): \Illuminate\Http\JsonResponse
+    {
+        Log::info('Lead coordinates request received', [
+            'lead_id' => $lead->id,
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
+        ]);
+
+        try {
+            $validated = $request->validate([
+                'latitude' => 'required|numeric|between:-90,90',
+                'longitude' => 'required|numeric|between:-180,180',
+            ]);
+
+            $lead->latitude = (float) $validated['latitude'];
+            $lead->longitude = (float) $validated['longitude'];
+            $lead->save();
+
+            Log::info('Lead coordinates saved', ['lead_id' => $lead->id, 'latitude' => $validated['latitude'], 'longitude' => $validated['longitude']]);
+
+            return response()->json(['success' => true]);
+        } catch (\Throwable $e) {
+            Log::warning('Lead coordinates save failed', ['lead_id' => $lead->id, 'error' => $e->getMessage()]);
+
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+        }
     }
 
     /**

@@ -17,16 +17,14 @@ return new class extends Migration
             return;
         }
 
-        // MySQL requires the AUTO_INCREMENT column to be the first column of a key (usually PRIMARY KEY).
-        // If the server's table has id without a key, we must add PRIMARY KEY (id) first.
+        // Only ensure id is AUTO_INCREMENT. Do not ADD PRIMARY KEY here: the table usually
+        // already has one, and information_schema can report it missing on some setups,
+        // causing "Multiple primary key defined" when we try to add it.
         try {
-            DB::statement('ALTER TABLE websites DROP PRIMARY KEY');
+            DB::statement('ALTER TABLE websites MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT');
         } catch (\Throwable $e) {
-            // No primary key or already dropped; ignore
+            // Column may already be correct, or table lacks primary key; don't fail the migration
         }
-
-        DB::statement('ALTER TABLE websites ADD PRIMARY KEY (id)');
-        DB::statement('ALTER TABLE websites MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT');
     }
 
     /**

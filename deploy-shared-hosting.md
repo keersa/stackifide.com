@@ -72,7 +72,26 @@ If your host does not allow symlinks, you may need to use a custom route or skip
 - Set `APP_URL` to your real URL (e.g. `https://yourdomain.com`).
 - Ensure `public_html/stackifide/storage` and `public_html/stackifide/bootstrap/cache` are writable by the web server (e.g. chmod 775 or whatever your host requires).
 
-## 6. Summary
+## 6. After each deploy (important)
+
+Run these from the Laravel root (e.g. `public_html/stackifide/`) so new routes and config are picked up:
+
+```bash
+php artisan route:clear
+php artisan config:clear
+php artisan route:cache
+php artisan config:cache
+```
+
+If you skip `route:clear` and `route:cache`, new routes (e.g. `super-admin/leads/{id}/coordinates`) will not be found and you’ll get 404s. To confirm the coordinates route is registered:
+
+```bash
+php artisan route:list | grep coordinates
+```
+
+You should see a line for `super-admin/leads/{lead}/coordinates`.
+
+## 7. Summary
 
 | Location | Purpose |
 |----------|--------|
@@ -81,5 +100,7 @@ If your host does not allow symlinks, you may need to use a custom route or skip
 | `public_html/build/`, etc. | Rest of Laravel `public/` contents |
 | `public_html/stackifide/` | Full Laravel app (app, bootstrap, config, vendor, .env, etc.) |
 | `public_html/stackifide/.htaccess` | `Require all denied` to block direct access |
+
+After each deploy, run the commands in **§6** so route/config cache includes new routes.
 
 After this, `https://yourdomain.com` should load Laravel. If you use a different subfolder name, remember to set `$laravelDir` in `public_html/index.php`.

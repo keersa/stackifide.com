@@ -103,6 +103,8 @@ Route::middleware('main-site')->group(function () {
 // Super Admin routes (only on main site)
 Route::middleware(['auth', 'super_admin', 'main-site'])->prefix('super-admin')->name('super-admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'index'])->name('dashboard');
+    Route::get('leads/map', [\App\Http\Controllers\SuperAdmin\LeadController::class, 'map'])->name('leads.map');
+    Route::match(['patch', 'post'], 'leads/{lead}/coordinates', [\App\Http\Controllers\SuperAdmin\LeadController::class, 'updateCoordinates'])->name('leads.coordinates');
     Route::resource('leads', \App\Http\Controllers\SuperAdmin\LeadController::class);
     Route::resource('leads.prospective-contacts', \App\Http\Controllers\SuperAdmin\ProspectiveContactController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('users', \App\Http\Controllers\SuperAdmin\UserController::class);

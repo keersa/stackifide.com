@@ -263,7 +263,7 @@
 
             <div class="text-center py-8 flex flex-wrap items-center justify-center gap-3">
                 <a href="{{ route('super-admin.leads.index') }}"
-                   class="inline-block px-12 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-bold rounded">
+                   class="inline-block px-12 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-800 font-bold rounded">
                     Cancel
                 </a>
                 <button type="submit"
